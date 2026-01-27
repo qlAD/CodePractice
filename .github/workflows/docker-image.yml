@@ -21,7 +21,7 @@ jobs:
           echo "MYSQL_USER=codepractice" >> .env.local
           echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env.local
 
-      - name: Build and Push Docker Image with Docker Compose
+      - name: Build and Push Docker Image
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -33,11 +33,14 @@ jobs:
           # 登录阿里云镜像仓库
           docker login --username=${DOCKER_USERNAME} --password=${DOCKER_PASSWORD} ${ALIYUN_REGISTRY}
 
-          # 使用 Docker Compose 构建镜像
-          docker compose -f docker-compose.yml build
+          # 直接使用 Docker 命令构建镜像并指定名称
+          docker build -t codepractice:latest .
+
+          # 查看构建后的镜像
+          docker images
 
           # 标记镜像
-          docker tag codepractice_app:latest ${ALIYUN_REGISTRY}/docker-qladgk/codepractice:latest
+          docker tag codepractice:latest ${ALIYUN_REGISTRY}/docker-qladgk/codepractice:latest
 
           # 推送镜像到阿里云镜像仓库
           docker push ${ALIYUN_REGISTRY}/docker-qladgk/codepractice:latest
