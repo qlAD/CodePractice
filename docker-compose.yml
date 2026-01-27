@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: codepractice_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: code_practice
+      MYSQL_USER: codepractice
+      MYSQL_PASSWORD: codepractice_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/mysql-schema.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - codepractice_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: codepractice_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: code_practice
+      MYSQL_USER: codepractice
+      MYSQL_PASSWORD: codepractice_password
+    depends_on:
+      - mysql
+    networks:
+      - codepractice_network
+
+volumes:
+  mysql_data:
+
+networks:
+  codepractice_network:
+    driver: bridge
