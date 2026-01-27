@@ -95,7 +95,7 @@ CREATE TABLE questions (
   INDEX idx_language (language),
   INDEX idx_type (type),
   INDEX idx_chapter (chapter_id),
-  INDEX idx_difficulty (difficulty),
+  INDEX idx_difficulty (difficulty)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='题目表';
 
 -- =====================================================
