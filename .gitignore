@@ -25,3 +25,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# my
+my-mysql-schema.sql
+my-docker-compose.yml
