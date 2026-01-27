@@ -1,0 +1,43 @@
+name: Docker Compose CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create .env.local file
+        run: |
+          echo "NODE_ENV=production" >> .env.local
+          echo "MYSQL_HOST=mysql" >> .env.local
+          echo "MYSQL_PORT=3306" >> .env.local
+          echo "MYSQL_DATABASE=code_practice" >> .env.local
+          echo "MYSQL_USER=codepractice" >> .env.local
+          echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env.local
+
+      - name: Build and Push Docker Image with Docker Compose
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          ALIYUN_REGISTRY: ${{ secrets.ALIYUN_REGISTRY }}
+        run: |
+          # 检查 Docker 版本
+          docker version
+
+          # 登录阿里云镜像仓库
+          docker login --username=${DOCKER_USERNAME} --password=${DOCKER_PASSWORD} ${ALIYUN_REGISTRY}
+
+          # 使用 Docker Compose 构建镜像
+          docker compose -f docker-compose.yml build
+
+          # 标记镜像
+          docker tag codepractice_app:latest ${ALIYUN_REGISTRY}/docker-qladgk/codepractice:latest
+
+          # 推送镜像到阿里云镜像仓库
+          docker push ${ALIYUN_REGISTRY}/docker-qladgk/codepractice:latest
