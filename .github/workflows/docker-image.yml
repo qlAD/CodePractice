@@ -15,10 +15,10 @@ jobs:
       - name: Create .env.local file
         run: |
           echo "NODE_ENV=production" >> .env.local
-          echo "MYSQL_HOST=mysql" >> .env.local
-          echo "MYSQL_PORT=3306" >> .env.local
-          echo "MYSQL_DATABASE=code_practice" >> .env.local
-          echo "MYSQL_USER=codepractice" >> .env.local
+          echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env.local
+          echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env.local
+          echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env.local
+          echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env.local
           echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env.local
 
       - name: Build and Push Docker Image
