@@ -1,8 +1,10 @@
 'use client'
 
 import { useRef, useCallback } from 'react'
-import Editor, { OnMount, OnChange } from '@monaco-editor/react'
+import Editor, { OnMount, OnChange, loader } from '@monaco-editor/react'
 import type { Language } from '@/lib/types'
+
+loader.config({ paths: { vs: 'https://cdn.jsdelivr.net.cn/npm/monaco-editor@latest/min/vs' } })
 
 const languageMap: Record<Language, string> = {
   java: 'java',
