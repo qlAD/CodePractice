@@ -1,40 +1,40 @@
 INSERT INTO code_practice.questions (`language`,`type`,chapter_id,difficulty,content,`options`,code_template,answer,score,created_at,updated_at) VALUES
-	 ('java','single_choice',1,'medium','下面哪个标识符是合法的','["#_pound", "$123+w", "5Interstate", "a_b"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','下列哪一个是合法的标识符','["12class", "+viod", "-5", "_black"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','下列数据类型的精度由高到低的顺序是','["float,double,int,long", "double,float,int,byte", "byte,long,double,float", "double,int,float,long"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','整型数据类型中，需要内存空间最少的是( )','["short", "long", "int", "byte"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','以下标识符中哪项是不合法的（ ）','["class", "$double", "hello", "BigMeaninglessName"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','对于一个三位的正整数 n,取出它的十位数字k(k为整型)的表达式是','["k = n / 10 % 10", "k = n%10 % 10", "k = n % 10", "k = n / 10"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','下列语句哪一个正确（ ）','["Java\\u7a0b\\u5e8f\\u7ecf\\u7f16\\u8bd1\\u540e\\u4f1a\\u4ea7\\u751fmachine code", "Java\\u7a0b\\u5e8f\\u7ecf\\u7f16\\u8bd1\\u540e\\u4f1a\\u4ea7\\u751fbyte code", "Java\\u7a0b\\u5e8f\\u7ecf\\u7f16\\u8bd1\\u540e\\u4f1a\\u4ea7\\u751fDLL", "\\u4ee5\\u4e0a\\u90fd\\u4e0d\\u6b63\\u786e"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+	 ('java','single_choice',1,'medium','下面哪个标识符是合法的','["#_pound", "$123+w", "5Interstate", "a_b"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','下列哪一个是合法的标识符','["12class", "+viod", "-5", "_black"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','下列数据类型的精度由高到低的顺序是','["float,double,int,long", "double,float,int,byte", "byte,long,double,float", "double,int,float,long"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','整型数据类型中，需要内存空间最少的是( )','["short", "long", "int", "byte"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','以下标识符中哪项是不合法的（ ）','["class", "$double", "hello", "BigMeaninglessName"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','对于一个三位的正整数 n,取出它的十位数字k(k为整型)的表达式是','["k = n / 10 % 10", "k = n%10 % 10", "k = n % 10", "k = n / 10"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','下列语句哪一个正确（ ）','["Java\\u7a0b\\u5e8f\\u7ecf\\u7f16\\u8bd1\\u540e\\u4f1a\\u4ea7\\u751fmachine code", "Java\\u7a0b\\u5e8f\\u7ecf\\u7f16\\u8bd1\\u540e\\u4f1a\\u4ea7\\u751fbyte code", "Java\\u7a0b\\u5e8f\\u7ecf\\u7f16\\u8bd1\\u540e\\u4f1a\\u4ea7\\u751fDLL", "\\u4ee5\\u4e0a\\u90fd\\u4e0d\\u6b63\\u786e"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','执行如下程序代码
 a=0;c=0; do{ --c; a=a-1; }while(a>0);
-后，C的值是( )','["0", "1", "-1", "\\u6b7b\\u5faa\\u73af"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',2,'medium','下列关于for循环和while循环的说法中哪个是正确的？ （ ）','["while\\u5faa\\u73af\\u4e2d\\u4e0d\\u80fd\\u4f7f\\u7528continue\\u8bed\\u53e5\\uff0cfor\\u5faa\\u73af\\u4e2d\\u53ef\\u4ee5\\u4f7f\\u7528\\uff1b", "while\\u5faa\\u73af\\u7684\\u5faa\\u73af\\u6761\\u4ef6\\u4e0d\\u80fd\\u7701\\u7565\\uff0cfor\\u5faa\\u73af\\u7684\\u5faa\\u73af\\u6761\\u4ef6\\u53ef\\u4ee5\\u7701\\u7565\\uff1b", "while\\u5faa\\u73af\\u8bed\\u53e5\\u524d\\u4e0d\\u80fd\\u52a0\\u8bed\\u53e5\\u6807\\u53f7\\uff0cfor\\u5faa\\u73af\\u53ef\\u4ee5\\u52a0\\u8bed\\u53e5\\u6807\\u53f7\\uff1b", "\\u4ee5\\u4e0a\\u5168\\u90fd\\u4e0d\\u5bf9"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',2,'medium','下列对Java语言的叙述中,错误的是','["Java\\u865a\\u62df\\u673a\\u89e3\\u91ca\\u6267\\u884c\\u5b57\\u8282\\u7801", "Java\\u4e2d\\u6267\\u884c\\u8df3\\u8f6c\\u529f\\u80fd\\u7684\\u8bed\\u53e5\\u662fswitch\\u8bed\\u53e5", "Java\\u7684\\u7c7b\\u662f\\u5bf9\\u5177\\u6709\\u76f8\\u540c\\u884c\\u4e3a\\u5bf9\\u8c61\\u7684\\u4e00\\u79cd\\u62bd\\u8c61", "Java\\u4e2d\\u7684\\u5783\\u573e\\u56de\\u6536\\u673a\\u5236\\u662f\\u4e00\\u4e2a\\u7cfb\\u7edf\\u7ea7\\u7684\\u7ebf\\u7a0b"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',2,'medium','在switch(expression)语句中,expression的数据类型不能是','["byte", "char", "float", "short"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+后，C的值是( )','["0", "1", "-1", "\\u6b7b\\u5faa\\u73af"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',2,'medium','下列关于for循环和while循环的说法中哪个是正确的？ （ ）','["while\\u5faa\\u73af\\u4e2d\\u4e0d\\u80fd\\u4f7f\\u7528continue\\u8bed\\u53e5\\uff0cfor\\u5faa\\u73af\\u4e2d\\u53ef\\u4ee5\\u4f7f\\u7528\\uff1b", "while\\u5faa\\u73af\\u7684\\u5faa\\u73af\\u6761\\u4ef6\\u4e0d\\u80fd\\u7701\\u7565\\uff0cfor\\u5faa\\u73af\\u7684\\u5faa\\u73af\\u6761\\u4ef6\\u53ef\\u4ee5\\u7701\\u7565\\uff1b", "while\\u5faa\\u73af\\u8bed\\u53e5\\u524d\\u4e0d\\u80fd\\u52a0\\u8bed\\u53e5\\u6807\\u53f7\\uff0cfor\\u5faa\\u73af\\u53ef\\u4ee5\\u52a0\\u8bed\\u53e5\\u6807\\u53f7\\uff1b", "\\u4ee5\\u4e0a\\u5168\\u90fd\\u4e0d\\u5bf9"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',2,'medium','下列对Java语言的叙述中,错误的是','["Java\\u865a\\u62df\\u673a\\u89e3\\u91ca\\u6267\\u884c\\u5b57\\u8282\\u7801", "Java\\u4e2d\\u6267\\u884c\\u8df3\\u8f6c\\u529f\\u80fd\\u7684\\u8bed\\u53e5\\u662fswitch\\u8bed\\u53e5", "Java\\u7684\\u7c7b\\u662f\\u5bf9\\u5177\\u6709\\u76f8\\u540c\\u884c\\u4e3a\\u5bf9\\u8c61\\u7684\\u4e00\\u79cd\\u62bd\\u8c61", "Java\\u4e2d\\u7684\\u5783\\u573e\\u56de\\u6536\\u673a\\u5236\\u662f\\u4e00\\u4e2a\\u7cfb\\u7edf\\u7ea7\\u7684\\u7ebf\\u7a0b"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',2,'medium','在switch(expression)语句中,expression的数据类型不能是','["byte", "char", "float", "short"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','下列语句序列执行后,s的值是
 int s=1,i=1;
 while(i<=4){
 s=s*i;
-i++;}','["6", "4", "24", "5"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',2,'medium','Java 支持的3 种跳转语句不包括','["break\\u8bed\\u53e5", "continue\\u8bed\\u53e5", "return\\u8bed\\u53e5", "goto\\u8bed\\u53e5"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',2,'medium','若a和b是整型变量并以正确赋值,以下正确的switch语句是:','["switch(a+b);{}", "switch(a+b*3.0){}", "switch a{}", "switch(a%b) {}"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',5,'medium','下列哪些语句关于Java内存回收的说明是正确的? （ ）','["\\u7a0b\\u5e8f\\u5458\\u5fc5\\u987b\\u521b\\u5efa\\u4e00\\u4e2a\\u7ebf\\u7a0b\\u6765\\u91ca\\u653e\\u5185\\u5b58", "\\u5185\\u5b58\\u56de\\u6536\\u7a0b\\u5e8f\\u8d1f\\u8d23\\u91ca\\u653e\\u65e0\\u7528\\u5185\\u5b58", "\\u5185\\u5b58\\u56de\\u6536\\u7a0b\\u5e8f\\u5141\\u8bb8\\u7a0b\\u5e8f\\u5458\\u76f4\\u63a5\\u91ca\\u653e\\u5185\\u5b58", "\\u5185\\u5b58\\u56de\\u6536\\u7a0b\\u5e8f\\u53ef\\u4ee5\\u5728\\u6307\\u5b9a\\u7684\\u65f6\\u95f4\\u91ca\\u653e\\u5185\\u5b58\\u5bf9\\u8c61"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',5,'medium','Java 类可以作为( )','["\\u7c7b\\u578b\\u5b9a\\u4e49\\u673a\\u5236", "\\u6570\\u636e\\u5c01\\u88c5\\u673a\\u5236", "\\u7c7b\\u578b\\u5b9a\\u4e49\\u673a\\u5236\\u548c\\u6570\\u636e\\u5c01\\u88c5\\u673a\\u5236", "\\u4e0a\\u8ff0\\u90fd\\u4e0d\\u5bf9"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',5,'medium','方法的重载是指,两个方法具有相同名称和不同的参数形式.其中不同的参数形式是指()','["\\u53c2\\u6570\\u4e2a\\u6570\\u3001\\u7c7b\\u578b\\u3001\\u987a\\u5e8f\\u4e0d\\u540c", "\\u53c2\\u6570\\u6709\\u65e0\\u8fd4\\u56de\\u503c", "\\u65b9\\u6cd5\\u7684\\u4fee\\u9970\\u7b26\\u4e0d\\u540c", "\\u4ee5\\u4e0a\\u90fd\\u4e0d\\u5bf9"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',5,'medium','在Java中,一个类可同时定义许多同名的方法,这些方法的形式参数的个数、类型或顺序各不相同,返回的值也可以不相同.这种面向对象程序特性称为?','["\\u9690\\u85cf", "\\u8986\\u76d6", "\\u91cd\\u8f7d", "Java\\u4e0d\\u652f\\u6301\\u6b64\\u7279\\u6027"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+i++;}','["6", "4", "24", "5"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',2,'medium','Java 支持的3 种跳转语句不包括','["break\\u8bed\\u53e5", "continue\\u8bed\\u53e5", "return\\u8bed\\u53e5", "goto\\u8bed\\u53e5"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',2,'medium','若a和b是整型变量并以正确赋值,以下正确的switch语句是:','["switch(a+b);{}", "switch(a+b*3.0){}", "switch a{}", "switch(a%b) {}"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',5,'medium','下列哪些语句关于Java内存回收的说明是正确的? （ ）','["\\u7a0b\\u5e8f\\u5458\\u5fc5\\u987b\\u521b\\u5efa\\u4e00\\u4e2a\\u7ebf\\u7a0b\\u6765\\u91ca\\u653e\\u5185\\u5b58", "\\u5185\\u5b58\\u56de\\u6536\\u7a0b\\u5e8f\\u8d1f\\u8d23\\u91ca\\u653e\\u65e0\\u7528\\u5185\\u5b58", "\\u5185\\u5b58\\u56de\\u6536\\u7a0b\\u5e8f\\u5141\\u8bb8\\u7a0b\\u5e8f\\u5458\\u76f4\\u63a5\\u91ca\\u653e\\u5185\\u5b58", "\\u5185\\u5b58\\u56de\\u6536\\u7a0b\\u5e8f\\u53ef\\u4ee5\\u5728\\u6307\\u5b9a\\u7684\\u65f6\\u95f4\\u91ca\\u653e\\u5185\\u5b58\\u5bf9\\u8c61"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',5,'medium','Java 类可以作为( )','["\\u7c7b\\u578b\\u5b9a\\u4e49\\u673a\\u5236", "\\u6570\\u636e\\u5c01\\u88c5\\u673a\\u5236", "\\u7c7b\\u578b\\u5b9a\\u4e49\\u673a\\u5236\\u548c\\u6570\\u636e\\u5c01\\u88c5\\u673a\\u5236", "\\u4e0a\\u8ff0\\u90fd\\u4e0d\\u5bf9"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',5,'medium','方法的重载是指,两个方法具有相同名称和不同的参数形式.其中不同的参数形式是指()','["\\u53c2\\u6570\\u4e2a\\u6570\\u3001\\u7c7b\\u578b\\u3001\\u987a\\u5e8f\\u4e0d\\u540c", "\\u53c2\\u6570\\u6709\\u65e0\\u8fd4\\u56de\\u503c", "\\u65b9\\u6cd5\\u7684\\u4fee\\u9970\\u7b26\\u4e0d\\u540c", "\\u4ee5\\u4e0a\\u90fd\\u4e0d\\u5bf9"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',5,'medium','在Java中,一个类可同时定义许多同名的方法,这些方法的形式参数的个数、类型或顺序各不相同,返回的值也可以不相同.这种面向对象程序特性称为?','["\\u9690\\u85cf", "\\u8986\\u76d6", "\\u91cd\\u8f7d", "Java\\u4e0d\\u652f\\u6301\\u6b64\\u7279\\u6027"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',5,'medium','有以下方法的定义,请选择该方法的返回类型?
 type method(byte x,float y){
     return x/y*2;
-}','["byte", "short", "int", "float"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','下面关于数组定义语句不正确的是?','["int[ ]  a1,a2;", "int  a0[ ]={11,2,30,84,5};", "double[] d=new double[8];", "float f[ ]=new  {2.0f,3.5f,5.6f,7.8f};"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','下面哪种写法可以实现访问数组arr的第1个元素?','["arr[0]", "arr(0)", "arr[1]", "arr(1)"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','下列对长度为4的数组a的定义中,正确的是?','["int[4] a=new int[];", "int a[]=new int[5];", "int a[]={2,4,2,1};", "int[4] a=new int[4];"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','在一个应用程序中定义了数组a：int[ ]  a={1,2,3,4,5,6,7,8,9,10},为了打印输出数组a的最后一个数组元素，下面正确的代码是?','["System.out.println(a[10]);", "System.out.println(a[9]);", "System.out.println(a[a.length]);", "System.out.println(a(8));"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','下面哪一个是合法的数组声明和构造语句?','["int[] ages = [100];", "int ages = new int[100];", "int[] ages = new int[100];", "int() ages = new int(100);"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','int a[ ]={45,4,67,23,65,87,34,52,56};数组中a[5]的值为','["23", "45", "65", "87"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','设有定义语句int  a[ ]={3,9,-9,-2,8}; 则以下对此语句的叙述错误的是?','["a\\u6570\\u7ec4\\u67095\\u4e2a\\u5143\\u7d20", "\\u6570\\u7ec4\\u4e2d\\u7684\\u6bcf\\u4e2a\\u5143\\u7d20\\u662f\\u6574\\u578b", "a\\u7684\\u503c\\u4e3a3", "\\u5bf9\\u6570\\u7ec4\\u5143\\u7d20\\u7684\\u5f15\\u7528a[a.length-1]\\u662f\\u5408\\u6cd5\\u7684"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',14,'medium','下列描述中正确的是：','["HashMap\\u4e2d\\u7684\\u5143\\u7d20\\u65e0\\u5e8f\\u53ef\\u91cd\\u590d", "HashMap\\u4e2d\\u7684\\u5143\\u7d20\\u6709\\u5e8f\\u4e0d\\u53ef\\u91cd\\u590d", "HashMap\\u4e2d\\u7684\\u5143\\u7d20\\u952e\\uff0d\\u503c\\u6210\\u5bf9\\u51fa\\u73b0", "HashSet\\u4e2d\\u7684\\u5143\\u7d20\\u952e\\uff0d\\u503c\\u6210\\u5bf9\\u51fa\\u73b0"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+}','["byte", "short", "int", "float"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','下面关于数组定义语句不正确的是?','["int[ ]  a1,a2;", "int  a0[ ]={11,2,30,84,5};", "double[] d=new double[8];", "float f[ ]=new  {2.0f,3.5f,5.6f,7.8f};"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','下面哪种写法可以实现访问数组arr的第1个元素?','["arr[0]", "arr(0)", "arr[1]", "arr(1)"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','下列对长度为4的数组a的定义中,正确的是?','["int[4] a=new int[];", "int a[]=new int[5];", "int a[]={2,4,2,1};", "int[4] a=new int[4];"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','在一个应用程序中定义了数组a：int[ ]  a={1,2,3,4,5,6,7,8,9,10},为了打印输出数组a的最后一个数组元素，下面正确的代码是?','["System.out.println(a[10]);", "System.out.println(a[9]);", "System.out.println(a[a.length]);", "System.out.println(a(8));"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','下面哪一个是合法的数组声明和构造语句?','["int[] ages = [100];", "int ages = new int[100];", "int[] ages = new int[100];", "int() ages = new int(100);"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','int a[ ]={45,4,67,23,65,87,34,52,56};数组中a[5]的值为','["23", "45", "65", "87"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','设有定义语句int  a[ ]={3,9,-9,-2,8}; 则以下对此语句的叙述错误的是?','["a\\u6570\\u7ec4\\u67095\\u4e2a\\u5143\\u7d20", "\\u6570\\u7ec4\\u4e2d\\u7684\\u6bcf\\u4e2a\\u5143\\u7d20\\u662f\\u6574\\u578b", "a\\u7684\\u503c\\u4e3a3", "\\u5bf9\\u6570\\u7ec4\\u5143\\u7d20\\u7684\\u5f15\\u7528a[a.length-1]\\u662f\\u5408\\u6cd5\\u7684"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',14,'medium','下列描述中正确的是：','["HashMap\\u4e2d\\u7684\\u5143\\u7d20\\u65e0\\u5e8f\\u53ef\\u91cd\\u590d", "HashMap\\u4e2d\\u7684\\u5143\\u7d20\\u6709\\u5e8f\\u4e0d\\u53ef\\u91cd\\u590d", "HashMap\\u4e2d\\u7684\\u5143\\u7d20\\u952e\\uff0d\\u503c\\u6210\\u5bf9\\u51fa\\u73b0", "HashSet\\u4e2d\\u7684\\u5143\\u7d20\\u952e\\uff0d\\u503c\\u6210\\u5bf9\\u51fa\\u73b0"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',14,'medium','list是一个ArrayList的对象，哪个选项的代码填写到//todo delete处，可以在Iterator遍历的过程中正确并安全的删除一个list中保存的对象？
        Iterator it = list.iterator();
        int index = 0;
@@ -44,7 +44,7 @@ type method(byte x,float y){
            //todo delete
               }
               index ++;
-       }','["list.remove(obj);", "list.remove(index);", "list.remove(it.next());", "it.remove();"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+       }','["list.remove(obj);", "list.remove(index);", "list.remove(it.next());", "it.remove();"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',14,'medium','题示代码的功能为：对于一个存放Person对象的ArrayList进行循环遍历，并取到每个Person对象的idCard和userName。
 public class Person{
 private Long idCard;
@@ -64,13 +64,13 @@ list.add(p2);
 for(《插入代码》){
 System.out.println(person.getIdCard()+":"+person.getUserName());
 }
-那么《插入代码》处的代码为()','["List list:person", "List list:Person", "Person person:List", "Person person:list"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+那么《插入代码》处的代码为()','["List list:person", "List list:Person", "Person person:List", "Person person:list"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',14,'medium','题目代码的功能是：采用Iterator进行循环遍历到集合中的每一个元素，并将其移除，《插入代码》处应填入的代码是
 ArrayList list = new ArrayList();
 list.add("java");
 list.add("php");
 list.add(".net");
-《插入代码》 为()','["Iterator it=list.iterator();\\nwhile(it.hasNext()){\\nit.next();\\nit.remove();\\n}", "Iterator it=list.iterator();\\nwhile(it.hasNext()){\\nit.remove();\\n}", "Iterator it=list.iterator();\\nwhile(it. hasNext()){\\nObject obj=it.next();\\nlist.remove(obj);\\n}", "Iterator it=list.iterator();\\nwhile(it.hasNext()){\\nlist.remove();\\n}"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+《插入代码》 为()','["Iterator it=list.iterator();\\nwhile(it.hasNext()){\\nit.next();\\nit.remove();\\n}", "Iterator it=list.iterator();\\nwhile(it.hasNext()){\\nit.remove();\\n}", "Iterator it=list.iterator();\\nwhile(it. hasNext()){\\nObject obj=it.next();\\nlist.remove(obj);\\n}", "Iterator it=list.iterator();\\nwhile(it.hasNext()){\\nlist.remove();\\n}"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','fill_blank',1,'medium','功能：定义一个学生类Prog1，包括姓名、学号、数学成绩、外语
       成绩、计算机成绩等属性，以及初始化各属性的构造方法、
       计算学生平均成绩的方法、显示学生成绩单的方法',NULL,'import java.awt.*;
@@ -118,7 +118,7 @@ double
 =======(答案3)=======
 ()
 =======(答案4)=======
-average()',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+average()',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','fill_blank',1,'medium','功能：数组a已从小到大排好顺序，将一个数插入数组a中,使其仍
       然有序',NULL,'class Prog1
 {
@@ -168,7 +168,7 @@ number<a[i]
 =======(答案3)=======
 a[i]
 =======(答案4)=======
-temp2',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+temp2',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','fill_blank',1,'medium','功能：定义一个Date类，包括年、月、日三个属性，以及设置日期
       的方法，显示日期的方法；定义一个学生类Prog1，包括姓
       名、生日属性，包括设置姓名与生日的方法，显示姓名生日的
@@ -226,7 +226,7 @@ int d
 =======(答案3)=======
 new
 =======(答案4)=======
-calAge()',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+calAge()',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','error_fix',1,'medium','题目：根据学生的考试的百分制成绩得出分数等级。
      (90~100为A级，80~89为B级，70~79为C级，60~69为D级，
       60分以下为E级)',NULL,'import java.io.*;
@@ -264,7 +264,7 @@ grade=Integer.parseInt(str);
 =======(答案3)=======
 if (grade>=90)
 =======(答案4)=======
-else',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+else',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','error_fix',1,'medium','题目：计算斐波纳契数列的第20项，并以每行5项的形式输出。
       (斐波纳契数列的第一项为0，第二项为1，其后各项依次
       为相临前两项之和，即0，1，1，2，3，5，8...)',NULL,'public class Prog1
@@ -292,7 +292,7 @@ for (i=3;i<=20;i++)
 =======(答案3)=======
 f1=f2;
 =======(答案4)=======
-f2=f3;',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+f2=f3;',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','error_fix',1,'medium','题目：在屏幕上输出如下图形
               *
             * * *
@@ -333,7 +333,7 @@ for (j=1;j<=2*i-1;j++)
 =======(答案3)=======
 System.out.println();
 =======(答案4)=======
-for(j=1;j<=i;j++)',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+for(j=1;j<=i;j++)',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',20,'medium','题目：一球从100米高度(变量名：high)自由落下，每次落地后反跳回原高度的一半；再落下。
 编写一个方法(方法名：statLength)计算球在第n次落地时，共经过多少米？。在main方法中调用
 该方法计算并输出球在第10次落地时经过的距离。
@@ -357,7 +357,7 @@ for(j=1;j<=i;j++)',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
 	}
 	public static void main(String[] args){
 		System.out.println (statLength(10));
-	}',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+	}',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',2,'medium','题目：使用while循环和if语句实现计算并输出1-100的能被3整除的数的和，循环变量名为i，存放和的变量名为sum。',NULL,'public class Prog1{
 /**********Program**********/
 public static void main(String[] args) {
@@ -375,7 +375,7 @@ sum=sum+i;
 i++;（或者写 i=i+1）
 }
 System.out.println("结果为 "+sum);
-}',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+}',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',12,'medium','题目：从键盘输入的10个整数，保存到数组a中，将数组中的元素按逆序重新存放后输出。
 要求使用for循环，循环变量名为i。
 举例：
@@ -409,7 +409,7 @@ for(i=0;i<=a.length/2;i++){
 for(i=0;i<a.length;i++)
 {
 System.out.println(a[i]);
-}',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+}',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',30,'medium','（ArrayList）按要求完成题目编写：
 1）创建ArrayList对象list，添加三个Integer对象s1、s2、s3，值分别为20、21、22
 2） 通过for循环对list进行遍历，输出全部Integer的值
@@ -440,20 +440,20 @@ public class Prog1{
 		for (Integer s : list) {
 			System.out.println(s);
 		}
-	}',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','执行语句int i=1,j=++i;后i与j的值分别为（ ）','["1\\u4e0e1", "2\\u4e0e1", "1\\u4e0e2", "2\\u4e0e2"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','下列运算符合法的是（ ）','["&&", "<>", "if", ":="]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','以下的选项中能正确表示Java语言中的一个整型常量的是','["12.", "-20", "1,000", "4 5 6"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','设int x = 1 , y = 2 , z = 3,则表达式 y+=z--/++x中y的值是','["3", "3.5", "4", "4.5"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','下列不可作为java语言标识符的是( )','["a2", "$2", "_2", "22"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','Java是从（ ）语言改进重新设计。','["Ada", "C++", "Pasacal", "BASIC"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+	}',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','执行语句int i=1,j=++i;后i与j的值分别为（ ）','["1\\u4e0e1", "2\\u4e0e1", "1\\u4e0e2", "2\\u4e0e2"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','下列运算符合法的是（ ）','["&&", "<>", "if", ":="]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','以下的选项中能正确表示Java语言中的一个整型常量的是','["12.", "-20", "1,000", "4 5 6"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','设int x = 1 , y = 2 , z = 3,则表达式 y+=z--/++x中y的值是','["3", "3.5", "4", "4.5"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','下列不可作为java语言标识符的是( )','["a2", "$2", "_2", "22"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','Java是从（ ）语言改进重新设计。','["Ada", "C++", "Pasacal", "BASIC"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','有以下代码,其中变量i可能的类型是
 switch(i){
-default:System.out.println("hello"); }','["byte", "long", "double", "A and B"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+default:System.out.println("hello"); }','["byte", "long", "double", "A and B"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','下列语句序列执行后,x 的值是
 int a=4,b=1,x=6;
 if(a==b) x+=a;
-else x=++a*x;','["15", "30", "25", "5"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+else x=++a*x;','["15", "30", "25", "5"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','有如下程序段：
 int total=0;
 for(int i=0;i<4;i++){
@@ -461,13 +461,13 @@ if(i==1)continue;
 if(i==2)break;
 total +=i;
 }
-则执行完该程序段后total的值为（ ）','["0", "1", "3", "6"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',2,'medium','下列语句中执行跳转功能的语句是','["for\\u8bed\\u53e5", "while\\u8bed\\u53e5", "continue\\u8bed\\u53e5", "switch\\u8bed\\u53e5"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',5,'medium','在Java中，一个类可同时定义许多同名的方法，这些方法的形式参数个数、类型或顺序各不相同，传回的值也可以不相同。这种面向对象程序的特性称为（ ）','["\\u9690\\u85cf", "\\u8986\\u76d6", "\\u91cd\\u8f7d", "Java\\u4e0d\\u652f\\u6301\\u6b64\\u7279\\u6027"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',5,'medium','为了区分类中重载的同名的不同方法，要求(  )','["\\u91c7\\u7528\\u4e0d\\u540c\\u7684\\u5f62\\u5f0f\\u53c2\\u6570\\u5217\\u8868", "\\u8fd4\\u56de\\u503c\\u7684\\u6570\\u636e\\u7c7b\\u578b\\u4e0d\\u540c", "\\u8c03\\u7528\\u65f6\\u7528\\u7c7b\\u540d\\u6216\\u8005\\u5bf9\\u8c61\\u540d\\u505a\\u524d\\u7f00", "\\u53c2\\u6570\\u540d\\u4e0d\\u540c"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','设 i、j 为int型变量名，a 为int型数组名，以下选项中，正确的赋值语句是','["i = i + 2", "a[0] = 7;", "i++ - --j;", "a(0) = 66;"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','设有定义语句int  a[ ]={66,88,99}; 则以下对此语句的叙述错误的是','["\\u5b9a\\u4e49\\u4e86\\u4e00\\u4e2a\\u540d\\u4e3aa\\u7684\\u4e00\\u7ef4\\u6570\\u7ec4", "a\\u6570\\u7ec4\\u67093\\u4e2a\\u5143\\u7d20", "a\\u6570\\u7ec4\\u7684\\u5143\\u7d20\\u7684\\u4e0b\\u6807\\u4e3a1\\uff5e3", "\\u6570\\u7ec4\\u4e2d\\u7684\\u6bcf\\u4e2a\\u5143\\u7d20\\u662f\\u6574\\u578b"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',12,'medium','下面关于对象数组的叙述正确的是?','["\\u5bf9\\u8c61\\u6570\\u7ec4\\u7684\\u957f\\u5ea6\\u53ef\\u4ee5\\u4fee\\u6539", "\\u5bf9\\u8c61\\u6570\\u7ec4\\u91cc\\u7684\\u6bcf\\u4e2a\\u5143\\u7d20\\u90fd\\u662f\\u90a3\\u4e2a\\u5bf9\\u8c61\\u7684\\u5f15\\u7528", "\\u5bf9\\u8c61\\u6570\\u7ec4\\u7684\\u7d22\\u5f15\\u662f\\u4ece1\\u5f00\\u59cb\\u7684", "\\u6570\\u7ec4\\u4e2d\\u53ef\\u4ee5\\u5b58\\u653e\\u591a\\u79cd\\u7c7b\\u578b\\u7684\\u5bf9\\u8c61"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+则执行完该程序段后total的值为（ ）','["0", "1", "3", "6"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',2,'medium','下列语句中执行跳转功能的语句是','["for\\u8bed\\u53e5", "while\\u8bed\\u53e5", "continue\\u8bed\\u53e5", "switch\\u8bed\\u53e5"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',5,'medium','在Java中，一个类可同时定义许多同名的方法，这些方法的形式参数个数、类型或顺序各不相同，传回的值也可以不相同。这种面向对象程序的特性称为（ ）','["\\u9690\\u85cf", "\\u8986\\u76d6", "\\u91cd\\u8f7d", "Java\\u4e0d\\u652f\\u6301\\u6b64\\u7279\\u6027"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',5,'medium','为了区分类中重载的同名的不同方法，要求(  )','["\\u91c7\\u7528\\u4e0d\\u540c\\u7684\\u5f62\\u5f0f\\u53c2\\u6570\\u5217\\u8868", "\\u8fd4\\u56de\\u503c\\u7684\\u6570\\u636e\\u7c7b\\u578b\\u4e0d\\u540c", "\\u8c03\\u7528\\u65f6\\u7528\\u7c7b\\u540d\\u6216\\u8005\\u5bf9\\u8c61\\u540d\\u505a\\u524d\\u7f00", "\\u53c2\\u6570\\u540d\\u4e0d\\u540c"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','设 i、j 为int型变量名，a 为int型数组名，以下选项中，正确的赋值语句是','["i = i + 2", "a[0] = 7;", "i++ - --j;", "a(0) = 66;"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','设有定义语句int  a[ ]={66,88,99}; 则以下对此语句的叙述错误的是','["\\u5b9a\\u4e49\\u4e86\\u4e00\\u4e2a\\u540d\\u4e3aa\\u7684\\u4e00\\u7ef4\\u6570\\u7ec4", "a\\u6570\\u7ec4\\u67093\\u4e2a\\u5143\\u7d20", "a\\u6570\\u7ec4\\u7684\\u5143\\u7d20\\u7684\\u4e0b\\u6807\\u4e3a1\\uff5e3", "\\u6570\\u7ec4\\u4e2d\\u7684\\u6bcf\\u4e2a\\u5143\\u7d20\\u662f\\u6574\\u578b"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',12,'medium','下面关于对象数组的叙述正确的是?','["\\u5bf9\\u8c61\\u6570\\u7ec4\\u7684\\u957f\\u5ea6\\u53ef\\u4ee5\\u4fee\\u6539", "\\u5bf9\\u8c61\\u6570\\u7ec4\\u91cc\\u7684\\u6bcf\\u4e2a\\u5143\\u7d20\\u90fd\\u662f\\u90a3\\u4e2a\\u5bf9\\u8c61\\u7684\\u5f15\\u7528", "\\u5bf9\\u8c61\\u6570\\u7ec4\\u7684\\u7d22\\u5f15\\u662f\\u4ece1\\u5f00\\u59cb\\u7684", "\\u6570\\u7ec4\\u4e2d\\u53ef\\u4ee5\\u5b58\\u653e\\u591a\\u79cd\\u7c7b\\u578b\\u7684\\u5bf9\\u8c61"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',14,'medium','list是一个ArrayList的对象，哪个选项的代码填写到//todo delete处，可以在Iterator遍历的过程中正确并安全的删除一个list中保存的对象？
  Iterator it = list.iterator();
        int index = 0;
@@ -477,8 +477,8 @@ total +=i;
            //todo delete
               }
               index ++;
-       }','["list.remove(obj);", "list.remove(index);", "list.remove(it.next());", "it.remove();"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',14,'medium','Java的集合框架中重要的接口java.util.Collection定义了许多方法。选项中哪个方法不是Collection接口所定义的？','["int size()", "boolean containsAll(Collection c)", "compareTo(Object obj)", "boolean remove(Object obj)"]',NULL,'C',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+       }','["list.remove(obj);", "list.remove(index);", "list.remove(it.next());", "it.remove();"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',14,'medium','Java的集合框架中重要的接口java.util.Collection定义了许多方法。选项中哪个方法不是Collection接口所定义的？','["int size()", "boolean containsAll(Collection c)", "compareTo(Object obj)", "boolean remove(Object obj)"]',NULL,'C',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','fill_blank',1,'medium','功能：定义一个Student类，包括年、月、日三个属性，以及设置日
       期的方法，显示日期的方法；定义一个Prog1，包括姓名、生
       日属性，包括设置姓名与生日的方法，显示姓名生日的方法',NULL,'class Student
@@ -528,7 +528,7 @@ extends
 =======(答案3)=======
 printDate()
 =======(答案4)=======
-printStudent()',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+printStudent()',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','fill_blank',1,'medium','功能：编写应用程序，该类中有一个方法sort()参数和返回值类型
       均为字符串数组，从命令行传入多个字符串，调用方法sort()
       对该字符串数组按字母顺序排序。',NULL,'public class Prog1
@@ -571,7 +571,7 @@ sort
 =======(答案3)=======
 s.length
 =======(答案4)=======
-s[i]=s[j]',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+s[i]=s[j]',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','fill_blank',1,'medium','功能：按如下要求定义两个类A和B, 类A中定义一个int 类型属
       性x（将其赋值为8）和一个在命令行下输出x值的方法
       myPrint()。类B是类A的子类，其中也定义一个int 类型
@@ -620,7 +620,7 @@ extends A
 =======(答案3)=======
 String
 =======(答案4)=======
-super',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+super',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','error_fix',1,'medium','题目：从键盘上输入一个自然数m，将m的立方表示成m个连续的奇
       数之和。提示：其中最大的奇数为m×(m+1)-1',NULL,'import java.io.*;
 public class Prog1
@@ -659,7 +659,7 @@ s=s+p;
 =======(答案4)=======
 }while(t!=0);
 =========或=========
-}while(s==m*m*m);',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+}while(s==m*m*m);',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','error_fix',1,'medium','题目：求键盘上输入的一个整数的所有因子，以5个一行的形式输出
       ，并求出所有因子之和。（如果一个整数a能被整数b整除，
        则b是a的因子。）',NULL,'import java.io.*;
@@ -697,7 +697,7 @@ if(n%k==0)
 =======(答案3)=======
 if (cn%5==0)
 =======(答案4)=======
-sum+=k;}',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+sum+=k;}',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','error_fix',1,'medium','题目：求出数组a中能被3整除的数的和值',NULL,'import java.io.* ;
 public class Prog1
 {
@@ -721,7 +721,7 @@ for  ( i=0; i<a.length; i++ )
 =======(答案3)=======
 if ( a[i]%3==0 )
 =======(答案4)=======
-s+=a[i];',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+s+=a[i];',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',20,'medium','题目：编写一个sum 方法，计算1~n之间所有能被3整除或者个位数是3的整数的和；并在main方法中调用该方法计算n=100时的和，并输出。',NULL,'public class Prog1{
 /**********Program**********/
 
@@ -745,7 +745,7 @@ s+=a[i];',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
 public static void main(String[] args)
 {
    System.out.println(sum(100));
-}',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+}',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',2,'medium','题目：输入一组成绩，输入-1代表结束，查找最高成绩，并保存在变量max中，输出max，要求使用while循环实现。',NULL,'import java.util.Scanner;
 public class Prog1{
 
@@ -768,7 +768,7 @@ while(score!=-1){
     }
    score=sc.nextInt();
 }
-System.out.println(max);',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+System.out.println(max);',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',12,'medium','题目：定义一个长度为100的布尔型数组，数组名为fig，并用for循环语句将数组所有元素赋值为false',NULL,'public class Prog1{
 /**********Program**********/
 
@@ -780,7 +780,7 @@ for(int i=0;i<fig.length;i++){
  g[i]=false;
  System.out.println("fig[ "+i+" ]= "+fig[i]);
     }
-   }',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+   }',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',30,'medium','定义字符串变量s， "aababcabcdabcde",编程获取字符串中每一个字母出现的次数，
 并按要求输出结果:a(5)b(4)c(3)d(2)e(1)
 1、定义一个字符串(写完之后可以升级成键盘录入)
@@ -835,23 +835,23 @@ public class Prog1 {
         System.out.println("统计的结果为：");
         System.out.println(result);
     }
-}',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','下列单词中,不属于Java关键字的是','["NULL", "class", "this", "byte"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','有一段java 应用程序，它的主类名是a1，那么保存它的源文件名可以是( )','["a1.java", "a1.class", "a1", "\\u4ee5\\u4e0a\\u90fd\\u5bf9"]',NULL,'A',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',1,'medium','Java语言中,占用32位存储空间的是','["long,double", "long,float", "int,double", "int,float"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+}',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','下列单词中,不属于Java关键字的是','["NULL", "class", "this", "byte"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','有一段java 应用程序，它的主类名是a1，那么保存它的源文件名可以是( )','["a1.java", "a1.class", "a1", "\\u4ee5\\u4e0a\\u90fd\\u5bf9"]',NULL,'A',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',1,'medium','Java语言中,占用32位存储空间的是','["long,double", "long,float", "int,double", "int,float"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','以下for循环的执行次数是:
-for(int x=0;(x==0)&(x<4);x++);','["\\u65e0\\u9650\\u6b21", "1\\u6b21", "4\\u6b21", "3\\u6b21"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+for(int x=0;(x==0)&(x<4);x++);','["\\u65e0\\u9650\\u6b21", "1\\u6b21", "4\\u6b21", "3\\u6b21"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','以下由 for 语句构成的循环执行的次数是
-for(int i=0;i>0;i++);','["\\u6709\\u8bed\\u6cd5\\u9519,\\u4e0d\\u80fd\\u6267\\u884c", "\\u65e0\\u9650\\u6b21", "\\u6267\\u884c1\\u6b21", "\\u4e00\\u6b21\\u4e5f\\u4e0d\\u6267\\u884c"]',NULL,'D',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+for(int i=0;i>0;i++);','["\\u6709\\u8bed\\u6cd5\\u9519,\\u4e0d\\u80fd\\u6267\\u884c", "\\u65e0\\u9650\\u6b21", "\\u6267\\u884c1\\u6b21", "\\u4e00\\u6b21\\u4e5f\\u4e0d\\u6267\\u884c"]',NULL,'D',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','有以下代码,运行完后i的最终值是
 int i=1;
 int j=i++;
-if((i>++j)&&(i++==j))   i+=j;','["1", "2", "3", "4"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+if((i>++j)&&(i++==j))   i+=j;','["1", "2", "3", "4"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','single_choice',2,'medium','下列语句序列执行后,m的值是
 int m=1;
 for(int i=5;i>0;i--)
-m*=i;','["15", "120", "60", "0"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
-	 ('java','single_choice',14,'medium','欲构造ArrayList类的一个实例，此类继承了List接口，下列哪个方法是正确的？','["ArrayList myList=new Object\\uff08\\uff09\\uff1b", "List myList=new ArrayList\\uff08\\uff09\\uff1b", "ArrayList myList=new List\\uff08\\uff09\\uff1b", "List myList=new List\\uff08\\uff09\\uff1b"]',NULL,'B',1,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+m*=i;','["15", "120", "60", "0"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
+	 ('java','single_choice',14,'medium','欲构造ArrayList类的一个实例，此类继承了List接口，下列哪个方法是正确的？','["ArrayList myList=new Object\\uff08\\uff09\\uff1b", "List myList=new ArrayList\\uff08\\uff09\\uff1b", "ArrayList myList=new List\\uff08\\uff09\\uff1b", "List myList=new List\\uff08\\uff09\\uff1b"]',NULL,'B',1,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','fill_blank',1,'medium','功能：编写Application,求从命令行传入任意多个整数的最大值',NULL,'import java.io.*;
 public class Prog1
 {
@@ -892,7 +892,7 @@ Integer
 =======(答案3)=======
 array.length
 =======(答案4)=======
-max',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+max',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','fill_blank',1,'medium','功能：找出一个二维数组中的鞍点，即该位置上的元素在该行上
       最大，在该列上最小。也可能没有鞍点',NULL,'public class Prog1
 {
@@ -936,7 +936,7 @@ a[i][j]>t1
 =======(答案3)=======
 row=j
 =======(答案4)=======
-break',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+break',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','error_fix',1,'medium','题目：计算 1/1+1/2+1/3+...+1/100 的值',NULL,'public class Prog1
 {  
   public static void  main( String args[ ])
@@ -961,7 +961,7 @@ sum+=1.0/i;
 =========或=========
 sum+=1.0/(double)i;
 =======(答案4)=======
-System.out.println( "sum="+sum );',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+System.out.println( "sum="+sum );',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','error_fix',1,'medium','题目：求出1~1000以内的完全平方数，要求每行输出5个数（完全
       平方数是指能够表示成另一个整数的平方的整数）',NULL,'import java.io.*;
 public class Prog1
@@ -992,7 +992,7 @@ n=i*i;
 =======(答案3)=======
 continue;
 =======(答案4)=======
-if(p%5==0)',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+if(p%5==0)',5,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',20,'medium','题目：编写一个area方法，计算半径为r的圆的面积；并在main方法中调用该方法计算半径为5.5的圆的面积，并输出该面积。',NULL,'public class Prog1{
 /**********Program**********/
 
@@ -1009,7 +1009,7 @@ if(p%5==0)',5,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
 public static void main(String[] args)
 {
    System.out.println(area(5.5));
-}',10,'2026-01-27 20:06:34','2026-01-27 20:06:34'),
+}',10,'2026-01-27 23:07:40','2026-01-27 23:07:40'),
 	 ('java','programming',30,'medium','（ArrayList）按要求完成题目编写：
 1）创建ArrayList对象list，添加三个字符串对象s1、s2、s3，字符串的值分别为001、002、003
 2） 通过for循环对list进行遍历，输出全部字符串
@@ -1043,4 +1043,4 @@ public class Prog1{
 
 			System.out.println(s);
 		}
-}',10,'2026-01-27 20:06:34','2026-01-27 20:06:34');
+}',10,'2026-01-27 23:07:40','2026-01-27 23:07:40');

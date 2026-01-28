@@ -376,7 +376,7 @@ export async function POST(request: Request) {
         is_correct: isCorrect,
         score: earnedScore,
         time_spent: 0,
-        status: status // Add status field
+        is_marked: 0
       })
 
       // 检查该题目是否在错题本中

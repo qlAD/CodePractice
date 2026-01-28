@@ -181,6 +181,7 @@ export async function PUT(request: Request) {
         is_correct: isCorrect,
         score,
         time_spent: time_spent || 0,
+        is_marked: 0
       })
 
       // 更新练习记录

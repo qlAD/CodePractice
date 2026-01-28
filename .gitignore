@@ -27,5 +27,6 @@ yarn-error.log*
 next-env.d.ts
 
 # my
+mysql_data/
 my-mysql-schema.sql
 my-docker-compose.yml
