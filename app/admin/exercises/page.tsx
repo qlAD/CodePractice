@@ -24,6 +24,9 @@ interface PracticeRecord {
   student_name: string
   student_id: string
   language: string | null
+  question_type: string | null
+  chapter_id: number | null
+  chapter_name: string | null
   mode: string
   total_count: number
   correct_count: number
@@ -39,10 +42,17 @@ const languageNames: Record<string, string> = {
 }
 
 const modeNames: Record<string, string> = {
-  language: '按语言',
-  type: '按题型',
-  chapter: '按章节',
+  by_language: '按语言',
+  by_type: '按题型',
+  by_chapter: '按章节',
   exam: '模拟考试',
+}
+
+const questionTypeNames: Record<string, string> = {
+  single_choice: '单选题',
+  fill_blank: '填空题',
+  error_fix: '改错题',
+  programming: '编程题',
 }
 
 export default function PracticeManagementPage() {
@@ -56,9 +66,25 @@ export default function PracticeManagementPage() {
   const fetchData = async () => {
     setLoading(true)
     try {
-      const recordsRes = await fetch('/api/practice/records?limit=50')
-      const recordsData = await recordsRes.json()
-      if (recordsData.success) setRecords((recordsData.data || []).filter((record: PracticeRecord) => record.mode === 'exam'))
+      const limit = 200
+      let offset = 0
+      let total = 0
+      const allRecords: PracticeRecord[] = []
+
+      do {
+        const recordsRes = await fetch(`/api/practice/records?limit=${limit}&offset=${offset}`)
+        const recordsData = await recordsRes.json()
+        if (!recordsData.success) break
+
+        const batch = recordsData.data || []
+        total = recordsData.total || 0
+        allRecords.push(...batch)
+        offset += batch.length
+
+        if (batch.length === 0) break
+      } while (offset < total)
+
+      setRecords(allRecords)
     } catch (error) {
       console.error('Failed to fetch data:', error)
     } finally {
@@ -71,13 +97,67 @@ export default function PracticeManagementPage() {
     return new Date(dateStr).toLocaleString('zh-CN')
   }
 
+  const formatLanguage = (language: string | null) => {
+    if (!language) return ''
+    return languageNames[language] || language
+  }
+
+  const formatMode = (record: PracticeRecord) => {
+    if (record.mode === 'by_language') {
+      if (!record.language) return '错题本'
+      const language = languageNames[record.language] || record.language
+      return `按语言（${language}）`
+    }
+
+    if (record.mode === 'by_type') {
+      if (!record.question_type) return '按题型（-）'
+      const typeNames = record.question_type
+        .split(',')
+        .map(type => type.trim())
+        .filter(Boolean)
+        .map(type => questionTypeNames[type] || type)
+      return `按题型（${typeNames.join('、') || '-'}）`
+    }
+
+    if (record.mode === 'by_chapter') {
+      return `按章节（${record.chapter_name || '-'}）`
+    }
+
+    if (record.mode === 'exam') {
+      const details: string[] = []
+
+      if (record.language) {
+        details.push(`${languageNames[record.language] || record.language}`)
+      }
+
+      if (record.question_type) {
+        const typeNames = record.question_type
+          .split(',')
+          .map(type => type.trim())
+          .filter(Boolean)
+          .map(type => questionTypeNames[type] || type)
+        if (typeNames.length > 0) {
+          details.push(`题型：${typeNames.join('、')}`)
+        }
+      }
+
+      if (record.chapter_name) {
+        details.push(`章节：${record.chapter_name}`)
+      }
+
+      return details.length > 0 ? `模拟考试（${details.join('，')}）` : '模拟考试'
+    }
+
+    return modeNames[record.mode] || record.mode
+  }
+
   const handleDownload = () => {
     const headers = ['学生姓名', '学号', '语言', '模式', '题目数', '正确数', '得分', '开始时间', '完成时间']
     const rows = records.map(record => [
       record.student_name,
       record.student_id,
-      record.language ? (languageNames[record.language] || record.language) : '-',
-      modeNames[record.mode] || record.mode,
+      formatLanguage(record.language),
+      formatMode(record),
       record.total_count,
       record.correct_count,
       record.score,
@@ -115,7 +195,7 @@ export default function PracticeManagementPage() {
       <Card>
         <CardHeader>
           <CardTitle>练习记录</CardTitle>
-          <CardDescription>最近 {records.length} 条学生模拟考试记录</CardDescription>
+          <CardDescription>共 {records.length} 条学生练习记录</CardDescription>
         </CardHeader>
         <CardContent>
           {records.length === 0 ? (
@@ -142,8 +222,8 @@ export default function PracticeManagementPage() {
                   <TableRow key={record.id}>
                     <TableCell className="font-medium">{record.student_name}</TableCell>
                     <TableCell>{record.student_id}</TableCell>
-                    <TableCell>{record.language ? (languageNames[record.language] || record.language) : '-'}</TableCell>
-                    <TableCell>{modeNames[record.mode] || record.mode}</TableCell>
+                    <TableCell>{formatLanguage(record.language)}</TableCell>
+                    <TableCell>{formatMode(record)}</TableCell>
                     <TableCell>{record.total_count}</TableCell>
                     <TableCell>{record.correct_count}</TableCell>
                     <TableCell>

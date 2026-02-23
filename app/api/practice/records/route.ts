@@ -11,11 +11,12 @@ export async function GET(request: Request) {
 
     let sql = `
       SELECT 
-        pr.id, pr.practice_mode as mode, pr.language, pr.score, pr.total_score, 
+        pr.id, pr.practice_mode as mode, pr.language, pr.question_type, pr.chapter_id, c.name as chapter_name, pr.score, pr.total_score, 
         pr.correct_count, pr.total_questions as total_count, pr.time_spent as duration, pr.started_at as created_at,
         s.name as student_name, s.student_id, s.class_name
       FROM practice_records pr
       JOIN students s ON pr.student_id = s.id
+      LEFT JOIN chapters c ON pr.chapter_id = c.id
       WHERE 1=1
     `
     const params: unknown[] = []
