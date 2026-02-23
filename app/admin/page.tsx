@@ -29,7 +29,7 @@ interface DashboardStats {
   }
   questionsByLanguage: Array<{ language: string; count: number }>
   questionsByType: Array<{ type: string; count: number }>
-  recentStudents: Array<{ id: number; name: string; student_id: string; practice_count: number }>
+  recentStudents: Array<{ id: number; name: string; student_id: string; practice_count: number; last_practice_at: string | null }>
 }
 
 const languageColorMap: Record<string, string> = {
@@ -87,6 +87,7 @@ export default function AdminDashboardPage() {
     id: student.id,
     name: student.name,
     practice_count: student.practice_count,
+    last_practice_at: student.last_practice_at,
   }))
 
   return (
@@ -232,7 +233,9 @@ export default function AdminDashboardPage() {
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <Clock className="w-3 h-3 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground">{new Date().toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {activity.last_practice_at ? new Date(activity.last_practice_at).toLocaleString('zh-CN') : '-'}
+                      </span>
                     </div>
                   </div>
                 </div>

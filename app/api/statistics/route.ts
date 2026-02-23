@@ -97,8 +97,8 @@ export async function GET() {
     )
 
     // 最近活跃的学生（只统计模拟考试）
-    const recentStudents = await db.query<{ id: number; name: string; student_id: string; practice_count: number }>(
-      `SELECT s.id, s.name, s.student_id, COUNT(p.id) as practice_count
+    const recentStudents = await db.query<{ id: number; name: string; student_id: string; practice_count: number; last_practice_at: string | null }>(
+      `SELECT s.id, s.name, s.student_id, COUNT(p.id) as practice_count, MAX(p.started_at) as last_practice_at
        FROM students s
        LEFT JOIN practice_records p ON s.id = p.student_id AND p.started_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND p.practice_mode = "exam"
        GROUP BY s.id
