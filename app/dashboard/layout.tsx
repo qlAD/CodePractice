@@ -24,10 +24,10 @@ export default function DashboardLayout({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
+      <div className="app-shell flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-muted-foreground">加载中...</p>
+          <p className="text-sm text-muted-foreground">加载中…</p>
         </div>
       </div>
     )
@@ -38,10 +38,10 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="app-shell">
       <Sidebar />
-      <main className="lg:pl-64">
-        <div className="p-4 lg:p-8 pt-16 lg:pt-8">
+      <main className="min-h-screen lg:pl-64">
+        <div className="min-h-screen min-w-0 w-full border-0 bg-card p-4 pt-16 lg:border-l lg:border-border lg:p-8 lg:pt-8">
           {children}
         </div>
       </main>

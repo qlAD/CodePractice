@@ -110,20 +110,18 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Welcome section */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div className="flex flex-col gap-6 rounded-lg border border-border bg-card p-6 shadow-card sm:flex-row sm:items-center sm:justify-between lg:p-8">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-foreground">
+          <p className="text-xs font-medium text-primary">学习中心</p>
+          <h1 className="mt-1 text-xl font-bold text-heading sm:text-2xl">
             欢迎回来，{user?.name}
           </h1>
-          <p className="text-muted-foreground mt-1">
-            继续你的编程练习之旅
-          </p>
+          <p className="mt-2 max-w-xl text-sm text-muted-foreground">继续你的编程练习之旅</p>
         </div>
-        <Link href="/dashboard/practice?mode=paper">
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+        <Link href="/dashboard/practice?mode=paper" className="shrink-0">
+          <Button size="lg" className="h-11 gap-2 px-6">
             开始练习
-            <ArrowRight className="ml-2 w-4 h-4" />
+            <ArrowRight className="h-4 w-4" />
           </Button>
         </Link>
       </div>
@@ -332,17 +330,20 @@ function StatsCard({
   highlight?: boolean
 }) {
   return (
-    <Card className={`bg-card border-border ${highlight ? 'border-primary/50' : ''}`}>
-      <CardContent className="p-4 lg:p-6">
-        <div className="flex items-center gap-3 mb-2">
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${highlight ? 'bg-primary/20 text-primary' : 'bg-secondary text-muted-foreground'}`}>
+    <Card
+      className={`transition-card border-border hover:shadow-card-hover ${highlight ? 'border-primary/35 ring-1 ring-primary/20' : ''}`}
+    >
+      <CardContent className="p-5">
+        <div className="mb-3 flex items-center gap-3">
+          <div
+            className={`flex h-10 w-10 items-center justify-center rounded-md ${highlight ? 'bg-primary/12 text-primary' : 'bg-muted text-muted-foreground'}`}
+          >
             {icon}
           </div>
         </div>
-        <div className={`text-2xl lg:text-3xl font-bold ${highlight ? 'text-primary' : 'text-foreground'}`}>
-          {value}
-        </div>
-        <div className="text-xs text-muted-foreground mt-1">{description}</div>
+        <div className={`text-2xl font-bold tabular-nums ${highlight ? 'text-primary' : 'text-heading'}`}>{value}</div>
+        <div className="mt-1 text-xs font-medium text-muted-foreground">{title}</div>
+        <div className="mt-0.5 text-xs text-muted-foreground">{description}</div>
       </CardContent>
     </Card>
   )

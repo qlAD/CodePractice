@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/lib/auth-context'
-import { Code2, BookOpen, BarChart3, Loader2 } from 'lucide-react'
+import { Code2, Eye, EyeOff, Loader2 } from 'lucide-react'
 
 export default function LoginPage() {
   const [studentId, setStudentId] = useState('')
@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [keepLoggedIn, setKeepLoggedIn] = useState(false)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const { login } = useAuth()
   const router = useRouter()
 
@@ -41,147 +42,113 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* 左侧 - 品牌展示 */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-card border-r border-border">
-        <div>
-          <div className="flex items-center gap-3 mb-12">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <Code2 className="w-6 h-6 text-primary-foreground" />
+    <div className="login-page-bg relative flex min-h-screen flex-col">
+      <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6">
+        <div className="relative w-full max-w-[440px]">
+          <div className="mb-8 text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-card">
+              <Code2 className="h-7 w-7" aria-hidden />
             </div>
-            <span className="text-xl font-semibold text-foreground">CodePractice</span>
+            <h1 className="text-heading text-xl font-bold leading-tight sm:text-2xl">
+              多语言程序设计在线练习平台
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">CodePractice · 学生登录</p>
           </div>
-          
-          <h1 className="text-4xl font-bold text-foreground mb-4 text-balance">
-            多语言程序设计在线练习平台
-          </h1>
-          <p className="text-lg text-muted-foreground mb-12 text-pretty leading-relaxed">
-            支持 Java、C/C++、Python 三种语言的在线练习，包含单选题、程序填空题、程序改错题、程序设计题四种题型。
-          </p>
-          
-          <div className="space-y-6">
-            <FeatureItem 
-              icon={<BookOpen className="w-5 h-5" />}
-              title="丰富题库"
-              description="覆盖三种语言的核心知识点"
-            />
-            <FeatureItem 
-              icon={<Code2 className="w-5 h-5" />}
-              title="在线编程"
-              description="支持语法高亮和代码运行"
-            />
-            <FeatureItem 
-              icon={<BarChart3 className="w-5 h-5" />}
-              title="学习分析"
-              description="详细的答题数据统计与分析"
-            />
-          </div>
-        </div>
-        
-        <p className="text-sm text-muted-foreground">
-          请使用学号和密码登录
-        </p>
-      </div>
-      
-      {/* 右侧 - 登录表单 */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <Card className="w-full max-w-md bg-card border-border">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center gap-3 mb-4 lg:hidden">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                <Code2 className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-semibold text-foreground">CodePractice</span>
-            </div>
-            <CardTitle className="text-2xl font-bold text-foreground">学生登录</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              使用学号和密码登录系统
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="studentId" className="text-foreground">学号</Label>
-                <Input
-                  id="studentId"
-                  type="text"
-                  placeholder="请输入学号"
-                  value={studentId}
-                  onChange={(e) => setStudentId(e.target.value)}
-                  required
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-foreground">密码</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="请输入密码"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-                />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="keepLoggedIn"
-                    checked={keepLoggedIn}
-                    onCheckedChange={(checked) => setKeepLoggedIn(checked === true)}
-                  />
-                  <Label htmlFor="keepLoggedIn" className="text-sm text-muted-foreground cursor-pointer">
-                    保持登录
-                  </Label>
-                </div>
-                <Button variant="link" className="px-0 text-primary hover:text-primary/80" type="button" onClick={() => setError('请联系管理员（qlAD）或专任教师修改')}>
-                  忘记密码？
-                </Button>
-              </div>
-              
-              {error && (
-                <div className="p-3 rounded-md bg-destructive/10 text-destructive text-sm">
-                  {error}
-                </div>
-              )}
-              
-              <Button
-                type="submit"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    登录中...
-                  </>
-                ) : (
-                  '登 录'
-                )}
-              </Button>
-            </form>
-            
-            
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  )
-}
 
-function FeatureItem({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
-  return (
-    <div className="flex items-start gap-4">
-      <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
-        {icon}
+          <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
+            <CardHeader className="space-y-1 pb-4">
+              <CardTitle>登录</CardTitle>
+              <CardDescription>使用学号与密码进入系统</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="studentId" className="text-foreground">
+                    学号
+                  </Label>
+                  <Input
+                    id="studentId"
+                    type="text"
+                    placeholder="请输入学号"
+                    value={studentId}
+                    onChange={(e) => setStudentId(e.target.value)}
+                    required
+                    className="h-12 bg-background text-base"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-foreground">
+                    密码
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="请输入密码"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="h-12 bg-background pr-11 text-base"
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+                      onClick={() => setShowPassword((v) => !v)}
+                      aria-label={showPassword ? '隐藏密码' : '显示密码'}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="keepLoggedIn"
+                      checked={keepLoggedIn}
+                      onCheckedChange={(checked) => setKeepLoggedIn(checked === true)}
+                    />
+                    <Label htmlFor="keepLoggedIn" className="cursor-pointer text-sm text-muted-foreground">
+                      保持登录
+                    </Label>
+                  </div>
+                  <Button
+                    variant="link"
+                    className="h-auto px-0 text-primary"
+                    type="button"
+                    onClick={() => setError('请联系管理员（乔林）或专任教师进行修改')}
+                  >
+                    忘记密码？
+                  </Button>
+                </div>
+
+                {error && (
+                  <div className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+                    {error}
+                  </div>
+                )}
+
+                <Button type="submit" className="h-11 w-full text-base font-medium" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      登录中…
+                    </>
+                  ) : (
+                    '登 录'
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-      <div>
-        <h3 className="font-medium text-foreground">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
+
+      <footer className="relative border-t border-border bg-card py-5 text-center text-xs text-muted-foreground">
+        <p>© {new Date().getFullYear()} 多语言程序设计在线练习平台</p>
+        <p className="mt-1">大连东软信息学院 · 教学使用</p>
+      </footer>
     </div>
   )
 }

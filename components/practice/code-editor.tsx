@@ -19,8 +19,6 @@ interface CodeEditorProps {
 }
 
 const TAB = '    '
-const editorClass =
-  'min-h-0 min-w-0 flex-1 resize-none border-0 bg-transparent py-3 pr-3 font-mono text-[14px] leading-[1.5] text-[#d4d4d4] outline-none focus:ring-0 focus-visible:ring-0'
 
 export function CodeEditor({
   value,
@@ -90,19 +88,35 @@ export function CodeEditor({
     [readOnly, value, onChange]
   )
 
+  const editorClass =
+    'min-h-0 min-w-0 flex-1 resize-none border-0 bg-transparent py-3 pr-3 font-mono text-[13px] leading-[1.55] outline-none focus:ring-0 focus-visible:ring-0'
+
   return (
     <div
-      className="flex flex-col overflow-hidden rounded-lg border border-border bg-[#1a1a2e]"
-      style={{ height }}
+      className="flex flex-col overflow-hidden rounded-lg border border-border shadow-card"
+      style={{
+        height,
+        backgroundColor: 'var(--code-surface)',
+      }}
     >
-      <div className="flex shrink-0 items-center justify-end border-b border-white/10 px-2 py-1">
-        <span className="text-xs text-[#858585]">{languageLabel[language]}</span>
+      <div
+        className="flex shrink-0 items-center justify-end border-b px-2 py-1.5"
+        style={{ borderColor: 'var(--code-bar)' }}
+      >
+        <span className="text-xs" style={{ color: 'var(--code-linenumber)' }}>
+          {languageLabel[language]}
+        </span>
       </div>
       <div className="flex min-h-0 flex-1 overflow-hidden">
         <div
           ref={gutterRef}
-          className="shrink-0 select-none overflow-y-auto overflow-x-hidden border-r border-white/10 bg-[#16162a] py-3 pl-2 pr-2 text-right font-mono text-[14px] leading-[1.5] text-[#858585] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          style={{ minWidth: `${Math.max(2.25, String(lineCount).length * 0.65 + 1)}rem` }}
+          className="shrink-0 select-none overflow-y-auto overflow-x-hidden py-3 pl-2 pr-2 text-right font-mono text-[13px] leading-[1.55] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          style={{
+            minWidth: `${Math.max(2.25, String(lineCount).length * 0.65 + 1)}rem`,
+            backgroundColor: 'var(--code-gutter)',
+            color: 'var(--code-linenumber)',
+            borderRight: '1px solid var(--code-bar)',
+          }}
           aria-hidden
         >
           <pre className="m-0 whitespace-pre font-mono">{gutterLines}</pre>
@@ -110,6 +124,7 @@ export function CodeEditor({
         <textarea
           ref={taRef}
           className={cn(editorClass, readOnly && 'cursor-default opacity-90')}
+          style={{ color: 'var(--code-text)' }}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onScroll={syncScroll}

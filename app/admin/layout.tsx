@@ -21,8 +21,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-accent" />
+      <div className="app-shell flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     )
   }
@@ -37,10 +37,10 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="app-shell">
       <AdminSidebar />
-      <main className="lg:pl-64">
-        <div className="min-h-screen">
+      <main className="min-h-screen lg:pl-64">
+        <div className="min-h-screen min-w-0 w-full border-0 bg-card pt-16 lg:border-l lg:border-border lg:pt-0">
           {children}
         </div>
       </main>

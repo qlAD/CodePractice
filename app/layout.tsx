@@ -1,8 +1,21 @@
 import React from "react"
 import type { Metadata } from 'next'
+import { Noto_Sans_SC, JetBrains_Mono } from 'next/font/google'
 import { AuthProvider } from '@/lib/auth-context'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
+
+const fontSans = Noto_Sans_SC({
+  subsets: ['latin'],
+  variable: '--font-sans-body',
+  weight: ['400', '500', '600', '700'],
+})
+
+const fontMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono-app',
+  weight: ['400', '500', '600'],
+})
 
 export const metadata: Metadata = {
   title: 'CodePractice - 多语言程序设计在线练习平台',
@@ -32,7 +45,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html
+      lang="zh-CN"
+      suppressHydrationWarning
+      className={`${fontSans.variable} ${fontMono.variable}`}
+    >
       <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"

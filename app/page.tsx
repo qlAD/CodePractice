@@ -20,10 +20,10 @@ export default function Home() {
   }, [user, isLoading, router])
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
+    <div className="app-shell flex items-center justify-center">
+      <div className="flex flex-col items-center gap-3">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">加载中...</p>
+        <p className="text-sm text-muted-foreground">加载中…</p>
       </div>
     </div>
   )

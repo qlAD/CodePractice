@@ -35,7 +35,7 @@ export default function TeacherLoginPage() {
 
     try {
       const result = await login(username, password)
-      
+
       if (result.success) {
         if (result.needsPasswordChange) {
           router.push('/admin/change-password?first=true')
@@ -46,7 +46,7 @@ export default function TeacherLoginPage() {
         setError(result.error || '用户名或密码错误')
         setIsSubmitting(false)
       }
-    } catch (error) {
+    } catch {
       setError('登录失败，请稍后重试')
       setIsSubmitting(false)
     }
@@ -54,33 +54,33 @@ export default function TeacherLoginPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="app-shell flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center">
-            <div className="w-16 h-16 mx-auto rounded-xl bg-accent/20 flex items-center justify-center mb-4">
-              <Settings className="w-8 h-8 text-accent" />
+    <div className="login-page-bg relative flex min-h-screen flex-col">
+      <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6">
+        <div className="relative w-full max-w-[440px]">
+          <div className="mb-8 text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-card">
+              <Settings className="h-7 w-7" aria-hidden />
             </div>
-            <h1 className="text-2xl font-bold text-foreground">教师管理端</h1>
-            <p className="text-muted-foreground mt-2">CodePractice 后台管理系统</p>
+            <h1 className="text-heading text-xl font-bold sm:text-2xl">教师管理端</h1>
+            <p className="mt-2 text-sm text-muted-foreground">CodePractice · 后台登录</p>
           </div>
 
-          <Card className="border-border bg-card">
-            <CardHeader>
-              <CardTitle className="text-lg">教师登录</CardTitle>
+          <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
+            <CardHeader className="space-y-1 pb-4">
+              <CardTitle>登录</CardTitle>
               <CardDescription>请使用管理员分配的账号登录</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 {error && (
-                  <Alert variant="destructive">
+                  <Alert variant="destructive" className="border-destructive/40">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
@@ -94,7 +94,7 @@ export default function TeacherLoginPage() {
                     placeholder="请输入用户名"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="bg-input border-border"
+                    className="h-12 text-base"
                     autoComplete="username"
                   />
                 </div>
@@ -108,52 +108,50 @@ export default function TeacherLoginPage() {
                       placeholder="请输入密码"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="bg-input border-border pr-10"
+                      className="h-12 bg-background pr-10 text-base"
                       autoComplete="current-password"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon"
-                      className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                      className="absolute right-0 top-0 h-12 w-10 hover:bg-transparent"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="w-4 h-4 text-muted-foreground" />
+                        <EyeOff className="h-4 w-4 text-muted-foreground" />
                       ) : (
-                        <Eye className="w-4 h-4 text-muted-foreground" />
+                        <Eye className="h-4 w-4 text-muted-foreground" />
                       )}
                     </Button>
                   </div>
                 </div>
 
-                <Button
-                  type="submit"
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                  disabled={isSubmitting}
-                >
+                <Button type="submit" className="h-11 w-full text-base font-medium" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      登录中...
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      登录中…
                     </>
                   ) : (
                     '登录'
                   )}
                 </Button>
               </form>
-
-              
             </CardContent>
           </Card>
 
-          <div className="text-center">
-            <Link href="/login" className="text-sm text-muted-foreground hover:text-primary">
+          <div className="mt-6 text-center">
+            <Link href="/login" className="text-sm text-muted-foreground transition-colors hover:text-primary">
               学生端登录
             </Link>
           </div>
         </div>
       </div>
+
+      <footer className="relative border-t border-border bg-card py-5 text-center text-xs text-muted-foreground">
+        <p>© {new Date().getFullYear()} 多语言程序设计在线练习平台 · 管理端</p>
+      </footer>
     </div>
   )
 }

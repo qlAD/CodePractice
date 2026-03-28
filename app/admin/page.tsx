@@ -128,8 +128,8 @@ export default function AdminDashboardPage() {
                   共 {overview.papers} 份试卷
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
-                <FileQuestion className="w-6 h-6 text-accent" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+                <FileQuestion className="h-6 w-6 text-primary" />
               </div>
             </div>
           </CardContent>

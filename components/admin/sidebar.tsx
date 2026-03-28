@@ -143,7 +143,7 @@ function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o
                 <p className="text-sm text-muted-foreground">
                   {message}
                   {countdown > 0 && message.includes('密码修改成功') && (
-                    <span className="ml-2 font-medium text-accent">({countdown})</span>
+                    <span className="ml-2 font-medium text-primary">({countdown})</span>
                   )}
                 </p>
               )}
@@ -169,16 +169,29 @@ export function AdminSidebar() {
     return hasPermission(item.permission)
   })
 
-  const SidebarContent = () => (
+  const SidebarContent = ({ showMobileClose }: { showMobileClose?: boolean }) => (
     <>
-      <div className="flex items-center gap-3 px-4 py-6 border-b border-sidebar-border">
-        <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-          <Settings className="w-6 h-6 text-accent-foreground" />
+      <div className="flex items-center gap-3 border-b border-sidebar-border bg-sidebar px-4 py-5">
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-sm">
+            <Settings className="h-5 w-5" />
+          </div>
+          <div className="min-w-0 flex flex-col">
+            <span className="truncate text-base font-semibold text-heading">CodePractice</span>
+            <span className="text-xs text-muted-foreground">教师管理端</span>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <span className="text-lg font-semibold text-sidebar-foreground">CodePractice</span>
-          <span className="text-xs text-muted-foreground">教师管理端</span>
-        </div>
+        {showMobileClose && (
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-11 w-11 shrink-0 shadow-card ring-1 ring-border/80 lg:hidden"
+            onClick={() => setMobileOpen(false)}
+            aria-label="关闭菜单"
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        )}
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-1">
@@ -191,10 +204,10 @@ export function AdminSidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-150',
                 isActive
-                  ? 'bg-accent/20 text-accent'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
+                  ? 'bg-sidebar-accent font-semibold text-sidebar-primary'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent/80'
               )}
             >
               <item.icon className="w-5 h-5" />
@@ -209,8 +222,8 @@ export function AdminSidebar() {
           className="flex items-center gap-3 px-3 py-2 mb-2 cursor-pointer rounded-lg transition-colors hover:bg-sidebar-accent/50"
           onClick={() => setProfileOpen(true)}
         >
-          <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
-            <Users className="w-4 h-4 text-accent" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
+            <Users className="h-4 w-4 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-sidebar-foreground truncate">
@@ -236,15 +249,17 @@ export function AdminSidebar() {
 
   return (
     <>
-      {/* Mobile menu button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="fixed top-4 left-4 z-50 lg:hidden"
-        onClick={() => setMobileOpen(!mobileOpen)}
-      >
-        {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-      </Button>
+      {!mobileOpen && (
+        <Button
+          variant="secondary"
+          size="icon"
+          className="fixed left-3 top-3 z-50 h-11 w-11 shadow-card ring-1 ring-border/80 lg:hidden"
+          onClick={() => setMobileOpen(true)}
+          aria-label="打开菜单"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+      )}
 
       {/* Mobile overlay */}
       {mobileOpen && (
@@ -257,17 +272,17 @@ export function AdminSidebar() {
       {/* Mobile sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 w-64 bg-sidebar border-r border-sidebar-border transform transition-transform duration-200 ease-in-out lg:hidden',
+          'fixed inset-y-0 left-0 z-40 w-64 border-r border-sidebar-border bg-sidebar shadow-card transform transition-transform duration-200 ease-in-out lg:hidden',
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
-        <div className="flex flex-col h-full">
-          <SidebarContent />
+        <div className="flex h-full flex-col">
+          <SidebarContent showMobileClose />
         </div>
       </aside>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-sidebar border-r border-sidebar-border">
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-sidebar-border lg:bg-sidebar">
         <SidebarContent />
       </aside>
 
