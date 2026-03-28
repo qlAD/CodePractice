@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Barlow_Semi_Condensed, IBM_Plex_Sans, Noto_Sans_SC, JetBrains_Mono } from 'next/font/google'
 import { AuthProvider } from '@/lib/auth-context'
 import { ThemeProvider } from '@/components/theme-provider'
+import { PageWatermark } from '@/components/page-watermark'
 import './globals.css'
 
 const fontDisplay = Barlow_Semi_Condensed({
@@ -70,7 +71,10 @@ export default function RootLayout({
           disableTransitionOnChange
           storageKey="codepractice-theme"
         >
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            {children}
+            <PageWatermark />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
