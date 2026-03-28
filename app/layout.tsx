@@ -2,7 +2,6 @@ import React from "react"
 import type { Metadata } from 'next'
 import { AuthProvider } from '@/lib/auth-context'
 import { ThemeProvider } from '@/components/theme-provider'
-import { GlobalThemeToggle } from '@/components/global-theme-toggle'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -45,7 +44,6 @@ export default function RootLayout({
           <AuthProvider>
             {children}
           </AuthProvider>
-          <GlobalThemeToggle />
         </ThemeProvider>
       </body>
     </html>

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/lib/auth-context'
+import { ThemeModeButtons } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
 import {
   Code2,
@@ -80,6 +81,7 @@ export function Sidebar() {
             </p>
           </div>
         </div>
+        <ThemeModeButtons className="mb-2" />
         <Button
           variant="ghost"
           className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
