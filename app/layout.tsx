@@ -1,6 +1,8 @@
 import React from "react"
 import type { Metadata } from 'next'
 import { AuthProvider } from '@/lib/auth-context'
+import { ThemeProvider } from '@/components/theme-provider'
+import { GlobalThemeToggle } from '@/components/global-theme-toggle'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -31,11 +33,20 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN">
-      <body className={`font-sans antialiased`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+    <html lang="zh-CN" suppressHydrationWarning>
+      <body className="font-sans antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="codepractice-theme"
+        >
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+          <GlobalThemeToggle />
+        </ThemeProvider>
       </body>
     </html>
   )
