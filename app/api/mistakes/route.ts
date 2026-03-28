@@ -19,7 +19,7 @@ interface WrongAnswerWithQuestion {
     options: string | null
     answer: string
     analysis: string | null
-    chapter_id: number | null
+    paper_id: number | null
     score: number
   }
 }
@@ -58,7 +58,7 @@ export async function GET(request: Request) {
         wa.wrong_count, wa.review_count, wa.status, 
         wa.last_wrong_at, wa.last_review_at,
         q.id as q_id, q.language, q.type, q.content, 
-        q.options, q.answer, q.paper_id AS chapter_id, q.score,
+        q.options, q.answer, q.paper_id, q.score,
         q.code_template
       FROM wrong_answers wa
       JOIN questions q ON wa.question_id = q.id
@@ -104,7 +104,7 @@ export async function GET(request: Request) {
       content: string
       options: string | null
       answer: string
-      chapter_id: number | null
+      paper_id: number | null
       score: number
       code_template: string | null
     }>(sql, params)
@@ -137,7 +137,7 @@ export async function GET(request: Request) {
           content: row.content,
           options: parsedOptions,
           answer: row.answer,
-          chapter_id: row.chapter_id,
+          paper_id: row.paper_id,
           score: row.score,
           code_template: row.code_template,
         },

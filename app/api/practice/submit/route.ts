@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db, type DBQuestion } from '@/lib/db'
+import { normalizePracticeModeForDb } from '@/lib/practice-mode'
 
 // Levenshtein distance function to calculate string similarity
 function levenshteinDistance(a: string, b: string): number {
@@ -132,7 +133,7 @@ function extractErrorFixAnswers(userCode: string): string[] {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { student_id, mode, language, question_type, paper_id, chapter_id, answers, question_ids } = body
+    const { student_id, mode, language, question_type, paper_id, answers, question_ids } = body
 
     if (!student_id || !answers || !question_ids) {
       return NextResponse.json(
@@ -174,24 +175,20 @@ export async function POST(request: Request) {
       })
     })
 
-    // 创建练习记录（所有模式都保存）
-    const practiceModeMap: Record<string, string> = {
-      language: 'by_language',
-      type: 'by_type',
-      chapter: 'by_paper',
-      paper: 'by_paper',
-      exam: 'exam'
-    }
-    
-    // Ensure question_type is string (handle array if needed)
     const questionTypeStr = Array.isArray(question_type) ? question_type.join(',') : question_type;
+
+    const firstPaperId =
+      paper_id != null && paper_id !== ''
+        ? Number(String(paper_id).split(',')[0]?.trim())
+        : NaN
+    const resolvedPaperId = Number.isFinite(firstPaperId) ? firstPaperId : null
 
     const practiceResult = await db.insert('practice_records', {
       student_id: studentDbId,
-      practice_mode: practiceModeMap[mode] || 'by_language',
+      practice_mode: normalizePracticeModeForDb(mode),
       language: language || null,
       question_type: questionTypeStr || null,
-      paper_id: (paper_id || chapter_id) ? Number(paper_id || chapter_id) : null,
+      paper_id: resolvedPaperId,
       total_questions: question_ids.length,
       status: 'completed',
     })

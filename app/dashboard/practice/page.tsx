@@ -10,7 +10,8 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 
-import type { Language, QuestionType, Chapter } from '@/lib/types'
+import type { Language, QuestionType, Paper } from '@/lib/types'
+import { canonicalizePracticeModeParam, type PracticeMode } from '@/lib/practice-mode'
 import {
   Code2,
   Target,
@@ -44,17 +45,31 @@ export default function PracticePage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const modeParam = searchParams.get('mode')
-  const initialMode =
-    modeParam && ['language', 'type', 'paper', 'exam'].includes(modeParam) ? modeParam : 'paper'
+  const initialMode: PracticeMode = (() => {
+    if (!modeParam) return 'by_paper'
+    const c = canonicalizePracticeModeParam(modeParam)
+    if (c !== null) return c
+    return 'by_paper'
+  })()
 
-  const [activeTab, setActiveTab] = useState(initialMode)
+  const [activeTab, setActiveTab] = useState<PracticeMode>(initialMode)
   const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(null)
   const [selectedTypes, setSelectedTypes] = useState<QuestionType[]>([])
   const [selectedPapers, setSelectedPapers] = useState<string[]>([])
   const [examLanguage, setExamLanguage] = useState<Language | null>(null)
-  const [papers, setPapers] = useState<Chapter[]>([])
+  const [papers, setPapers] = useState<Paper[]>([])
   const [isLoadingPapers, setIsLoadingPapers] = useState(false)
   const [questionCounts, setQuestionCounts] = useState<QuestionCounts | null>(null)
+
+  useEffect(() => {
+    if (!modeParam) return
+    const c = canonicalizePracticeModeParam(modeParam)
+    if (c !== null && modeParam !== c) {
+      const url = new URL(window.location.href)
+      url.searchParams.set('mode', c)
+      router.replace(url.toString())
+    }
+  }, [modeParam, router])
 
   // Fetch question counts on mount
   useEffect(() => {
@@ -75,7 +90,7 @@ export default function PracticePage() {
   // Fetch papers when language is selected for paper practice
   useEffect(() => {
     const fetchPapers = async () => {
-      if (!selectedLanguage && activeTab === 'paper') return
+      if (!selectedLanguage && activeTab === 'by_paper') return
       
       setIsLoadingPapers(true)
       try {
@@ -94,7 +109,7 @@ export default function PracticePage() {
       }
     }
 
-    if (activeTab === 'paper') {
+    if (activeTab === 'by_paper') {
       fetchPapers()
     }
   }, [selectedLanguage, activeTab])
@@ -115,23 +130,23 @@ export default function PracticePage() {
     )
   }
 
-  const startPractice = (mode: string) => {
+  const startPractice = (mode: PracticeMode) => {
     const params = new URLSearchParams()
     params.set('mode', mode)
 
-    if (mode === 'language' && selectedLanguage) {
+    if (mode === 'by_language' && selectedLanguage) {
       params.set('language', selectedLanguage)
-    } else if (mode === 'type' && selectedLanguage && selectedTypes.length > 0) {
+    } else if (mode === 'by_type' && selectedLanguage && selectedTypes.length > 0) {
       params.set('language', selectedLanguage)
       selectedTypes.forEach(type => {
         params.append('type', type)
       })
-    } else if (mode === 'paper' && selectedLanguage && selectedPapers.length > 0) {
+    } else if (mode === 'by_paper' && selectedLanguage && selectedPapers.length > 0) {
       params.set('language', selectedLanguage)
       selectedPapers.forEach(paper => {
         params.append('paper', paper)
       })
-    } else if (mode === 'exam' && examLanguage) {
+    } else if (mode === 'by_exam' && examLanguage) {
       params.set('language', examLanguage)
     }
 
@@ -150,35 +165,35 @@ export default function PracticePage() {
       </div>
 
       <Tabs value={activeTab} onValueChange={(value) => {
-        setActiveTab(value)
+        setActiveTab(value as PracticeMode)
         const url = new URL(window.location.href)
         url.searchParams.set('mode', value)
         router.replace(url.toString())
       }} className="space-y-6">
         <TabsList className="grid h-auto grid-cols-2 gap-2 rounded-[var(--radius)] bg-muted/50 p-2 lg:grid-cols-4">
           <TabsTrigger
-            value="language"
+            value="by_language"
             className="rounded-[var(--radius-sm)] border border-transparent bg-card py-3 text-secondary-foreground shadow-sm transition-ui duration-200 data-[state=active]:border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
           >
             <Code2 className="w-4 h-4 mr-2" />
             按语言练习
           </TabsTrigger>
           <TabsTrigger
-            value="type"
+            value="by_type"
             className="rounded-[var(--radius-sm)] border border-transparent bg-card py-3 text-secondary-foreground shadow-sm transition-ui duration-200 data-[state=active]:border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
           >
             <Target className="w-4 h-4 mr-2" />
             按题型练习
           </TabsTrigger>
           <TabsTrigger
-            value="paper"
+            value="by_paper"
             className="rounded-[var(--radius-sm)] border border-transparent bg-card py-3 text-secondary-foreground shadow-sm transition-ui duration-200 data-[state=active]:border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
           >
             <BookOpen className="w-4 h-4 mr-2" />
 按试卷练习
           </TabsTrigger>
           <TabsTrigger
-            value="exam"
+            value="by_exam"
             className="rounded-[var(--radius-sm)] border border-transparent bg-card py-3 text-secondary-foreground shadow-sm transition-ui duration-200 data-[state=active]:border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
           >
             <FileCode className="w-4 h-4 mr-2" />
@@ -187,7 +202,7 @@ export default function PracticePage() {
         </TabsList>
 
         {/* Language Practice */}
-        <TabsContent value="language" className="space-y-6">
+        <TabsContent value="by_language" className="space-y-6">
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground">选择编程语言</CardTitle>
@@ -225,7 +240,7 @@ export default function PracticePage() {
 
               <div className="mt-6 flex justify-end">
                 <Button
-                  onClick={() => startPractice('language')}
+                  onClick={() => startPractice('by_language')}
                   disabled={!selectedLanguage}
                   className="bg-primary text-primary-foreground"
                 >
@@ -238,15 +253,15 @@ export default function PracticePage() {
         </TabsContent>
 
         {/* Type Practice */}
-        <TabsContent value="type" className="space-y-6">
+        <TabsContent value="by_type" className="space-y-6">
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground">按题型练习</CardTitle>
               <CardDescription>先选择语言，再选择一种或多种题型进行练习</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label>选择语言</Label>
+              <div className="flex flex-col">
+                <Label className="mb-2">选择语言</Label>
                 <Select value={selectedLanguage || ''} onValueChange={(v) => {
                   setSelectedLanguage(v as Language)
                   setSelectedTypes([])
@@ -265,8 +280,8 @@ export default function PracticePage() {
               </div>
 
               {selectedLanguage && (
-                <div className="space-y-2">
-                  <Label>选择题型</Label>
+                <div className="flex flex-col">
+                  <Label className="mb-2">选择题型</Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {(Object.keys(questionTypeConfig) as QuestionType[]).map((type) => {
                       const config = questionTypeConfig[type]
@@ -303,7 +318,7 @@ export default function PracticePage() {
 
               <div className="flex justify-end">
                 <Button
-                  onClick={() => startPractice('type')}
+                  onClick={() => startPractice('by_type')}
                   disabled={!selectedLanguage || selectedTypes.length === 0}
                   className="bg-primary text-primary-foreground"
                 >
@@ -316,15 +331,15 @@ export default function PracticePage() {
         </TabsContent>
 
         {/* Paper Practice */}
-        <TabsContent value="paper" className="space-y-6">
+        <TabsContent value="by_paper" className="space-y-6">
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground">选择试卷</CardTitle>
               <CardDescription>先选择语言，再选择具体试卷进行针对性练习</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label>选择语言</Label>
+              <div className="flex flex-col">
+                <Label className="mb-2">选择语言</Label>
                 <Select value={selectedLanguage || ''} onValueChange={(v) => {
                   setSelectedLanguage(v as Language)
                   setSelectedPapers([])
@@ -343,8 +358,8 @@ export default function PracticePage() {
               </div>
 
               {selectedLanguage && (
-                <div className="space-y-2">
-                  <Label>选择试卷</Label>
+                <div className="flex flex-col">
+                  <Label className="mb-2">选择试卷</Label>
                   {isLoadingPapers ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                       {[1, 2, 3].map((i) => (
@@ -383,7 +398,7 @@ export default function PracticePage() {
 
               <div className="flex justify-end">
                 <Button
-                  onClick={() => startPractice('paper')}
+                  onClick={() => startPractice('by_paper')}
                   disabled={!selectedLanguage || selectedPapers.length === 0}
                   className="bg-primary text-primary-foreground"
                 >
@@ -396,15 +411,15 @@ export default function PracticePage() {
         </TabsContent>
 
         {/* Exam Mode */}
-        <TabsContent value="exam" className="space-y-6">
+        <TabsContent value="by_exam" className="space-y-6">
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground">模拟考试</CardTitle>
               <CardDescription>模拟真实考试环境，限时完成</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label>选择考试语言</Label>
+              <div className="flex flex-col">
+                <Label className="mb-2">选择考试语言</Label>
                 <Select value={examLanguage || ''} onValueChange={(v) => setExamLanguage(v as Language)}>
                   <SelectTrigger className="w-full md:w-64 bg-input border-border">
                     <SelectValue placeholder="请选择考试语言" />
@@ -455,7 +470,7 @@ export default function PracticePage() {
 
               <div className="flex justify-end">
                 <Button
-                  onClick={() => startPractice('exam')}
+                  onClick={() => startPractice('by_exam')}
                   disabled={!examLanguage}
                   className="bg-primary text-primary-foreground"
                 >

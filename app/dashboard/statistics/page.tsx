@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { Language, QuestionType, StudentStats } from '@/lib/types'
+import { canonicalizeStatsTabParam, normalizeStatsTab } from '@/lib/practice-mode'
 import {
   BarChart3,
   TrendingUp,
@@ -40,8 +41,19 @@ export default function StatsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedPeriod, setSelectedPeriod] = useState('all')
   const searchParams = useSearchParams()
-  const tab = searchParams.get('tab') || 'language'
+  const tabParam = searchParams.get('tab')
+  const tab = normalizeStatsTab(tabParam)
   const router = useRouter()
+
+  useEffect(() => {
+    if (!tabParam) return
+    const c = canonicalizeStatsTabParam(tabParam)
+    if (c !== null && tabParam !== c) {
+      const url = new URL(window.location.href)
+      url.searchParams.set('tab', c)
+      router.replace(url.toString())
+    }
+  }, [tabParam, router])
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -85,7 +97,7 @@ export default function StatsPage() {
       error_fix: { total: 0, correct: 0, rate: 0 },
       programming: { total: 0, correct: 0, rate: 0 },
     },
-    by_chapter: {},
+    by_paper: {},
     recent_sessions: [],
   }
 
@@ -129,14 +141,14 @@ export default function StatsPage() {
         router.replace(url.toString())
       }}>
         <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-[var(--radius)] bg-muted/50 p-2">
-          <TabsTrigger value="language" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
+          <TabsTrigger value="by_language" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
             按语言
           </TabsTrigger>
-          <TabsTrigger value="type" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
+          <TabsTrigger value="by_type" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
             按题型
           </TabsTrigger>
-          <TabsTrigger value="chapter" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
-            按章节
+          <TabsTrigger value="by_paper" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
+            按试卷
           </TabsTrigger>
           <TabsTrigger value="history" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
             练习记录
@@ -144,7 +156,7 @@ export default function StatsPage() {
         </TabsList>
 
         {/* By language */}
-        <TabsContent value="language" className="space-y-6">
+        <TabsContent value="by_language" className="space-y-6">
           <div className="grid lg:grid-cols-3 gap-6">
             {(Object.keys(displayStats.by_language) as Language[]).map((lang) => {
               const data = displayStats.by_language[lang]
@@ -188,7 +200,7 @@ export default function StatsPage() {
         </TabsContent>
 
         {/* By type */}
-        <TabsContent value="type" className="space-y-6">
+        <TabsContent value="by_type" className="space-y-6">
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground">各题型掌握情况</CardTitle>
@@ -263,22 +275,21 @@ export default function StatsPage() {
           </div>
         </TabsContent>
 
-        {/* By chapter */}
-        <TabsContent value="chapter" className="space-y-6">
-          {Object.keys(displayStats.by_chapter).length === 0 ? (
+        <TabsContent value="by_paper" className="space-y-6">
+          {Object.keys(displayStats.by_paper).length === 0 ? (
             <Card className="bg-card border-border">
               <CardHeader>
-                <CardTitle className="text-foreground">章节掌握情况</CardTitle>
-                <CardDescription>按知识点章节统计你的学习进度</CardDescription>
+                <CardTitle className="text-foreground">试卷掌握情况</CardTitle>
+                <CardDescription>按试卷统计你的学习进度</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-center py-8 text-muted-foreground">
-                  暂无章节练习数据
+                  暂无试卷练习数据
                 </div>
               </CardContent>
             </Card>
           ) : (
-            Object.entries(displayStats.by_chapter).map(([language, chapters]) => {
+            Object.entries(displayStats.by_paper).map(([language, papersByLang]) => {
               const config = languageConfig[language as Language];
               if (!config) return null;
               
@@ -290,18 +301,18 @@ export default function StatsPage() {
                         <span className="text-xl">{config.icon}</span>
                       </div>
                       <div>
-                        <CardTitle className="text-foreground">{config.name}章节掌握情况</CardTitle>
-                        <CardDescription>按知识点章节统计你的学习进度</CardDescription>
+                        <CardTitle className="text-foreground">{config.name} 试卷掌握情况</CardTitle>
+                        <CardDescription>按试卷统计你的学习进度</CardDescription>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {Object.entries(chapters).map(([chapterName, data]) => (
-                      <div key={chapterName} className="flex items-center gap-4 p-4 rounded-lg bg-secondary/30">
+                    {Object.entries(papersByLang).map(([paperName, data]) => (
+                      <div key={paperName} className="flex items-center gap-4 p-4 rounded-lg bg-secondary/30">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="font-medium text-foreground">
-                              {chapterName}
+                              {paperName}
                             </span>
                           </div>
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -348,10 +359,17 @@ export default function StatsPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-medium text-foreground">
-                          {session.mode === 'exam' ? '模拟考试' :
-                           session.mode === 'language' && session.language && languageConfig[session.language] ? `${languageConfig[session.language].name}练习` :
-                           session.mode === 'type' ? '题型练习' :
-                           '练习'}
+                          {session.mode === 'by_exam'
+                            ? '模拟考试'
+                            : session.mode === 'by_language'
+                              ? session.language && languageConfig[session.language]
+                                ? `${languageConfig[session.language].name}练习`
+                                : '练习'
+                              : session.mode === 'by_type'
+                                ? '题型练习'
+                                : session.mode === 'by_paper'
+                                  ? '按试卷练习'
+                                  : '练习'}
                         </span>
                         {session.language && languageConfig[session.language] && (
                           <span className="text-xs px-2 py-0.5 rounded bg-secondary text-muted-foreground">

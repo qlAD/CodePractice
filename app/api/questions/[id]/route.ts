@@ -9,7 +9,7 @@ export async function GET(
   try {
     const { id } = await params
     const question = await db.queryOne<DBQuestion>(
-      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id, p.name as chapter_name FROM questions q LEFT JOIN papers p ON q.paper_id = p.id WHERE q.id = ?',
+      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id FROM questions q LEFT JOIN papers p ON q.paper_id = p.id WHERE q.id = ?',
       [id]
     )
 

@@ -56,6 +56,7 @@ import {
   FolderPlus,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 import type { Language, QuestionType } from '@/lib/types'
 import { ImportDialog } from '@/components/admin/import-dialog'
 import * as XLSX from 'xlsx'
@@ -73,7 +74,6 @@ interface Question {
   paper_id: number | null
   papers_id?: string | null
   paper_name?: string
-  chapter_name?: string
   content: string
   options?: string[]
   code_template?: string
@@ -104,6 +104,12 @@ const languageLabels: Record<Language, string> = {
   java: 'Java',
   cpp: 'C/C++',
   python: 'Python',
+}
+
+const languageBadgeClass: Record<Language, string> = {
+  java: 'border-0 bg-java text-white',
+  cpp: 'border-0 bg-cpp text-white',
+  python: 'border-0 bg-python text-white',
 }
 
 export default function QuestionsPage() {
@@ -639,7 +645,7 @@ export default function QuestionsPage() {
               <Card key={lang} className="bg-card border-border">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <Badge variant="outline" className={`bg-${lang}`}>{languageLabels[lang]}</Badge>
+                    <Badge className={cn('text-xs font-medium', languageBadgeClass[lang])}>{languageLabels[lang]}</Badge>
                     <span className="text-muted-foreground text-sm font-normal">({langPapers.length} 套试卷)</span>
                   </CardTitle>
                 </CardHeader>
@@ -1032,8 +1038,8 @@ export default function QuestionsPage() {
                         <TableCell>{typeLabels[question.type]}</TableCell>
                         <TableCell className="text-muted-foreground">
                           {question.papers_id
-                            ? `[${question.papers_id}] ${question.paper_name || question.chapter_name || ''}`
-                            : question.paper_name || question.chapter_name || '-'}
+                            ? `[${question.papers_id}] ${question.paper_name || ''}`
+                            : question.paper_name || '-'}
                         </TableCell>
                         <TableCell className="max-w-xs truncate" title={question.content}>
                           {question.content.substring(0, 50)}{question.content.length > 50 ? '...' : ''}

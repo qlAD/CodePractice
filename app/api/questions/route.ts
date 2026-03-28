@@ -8,13 +8,13 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const language = searchParams.get('language')
     const type = searchParams.get('type')
-    const paper_id = searchParams.get('paper_id') || searchParams.get('chapter_id')
+    const paper_id = searchParams.get('paper_id')
     const limitParam = searchParams.get('limit')
     const limit = limitParam !== null ? Number(limitParam) : 100
     const offset = Number(searchParams.get('offset')) || 0
 
     let sql =
-      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id, p.name as chapter_name FROM questions q LEFT JOIN papers p ON q.paper_id = p.id WHERE 1=1'
+      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id FROM questions q LEFT JOIN papers p ON q.paper_id = p.id WHERE 1=1'
     const params: unknown[] = []
 
     if (language && language !== 'all') {
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
     }
 
     const countSql = sql.replace(
-      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id, p.name as chapter_name',
+      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id',
       'SELECT COUNT(*) as total'
     )
     const countResult = await db.queryOne<{ total: number }>(countSql, params)
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
         ? body.paper_id
         : body.papers_id !== undefined && body.papers_id !== null && body.papers_id !== ''
           ? body.papers_id
-          : body.chapter_id
+          : undefined
 
     let resolvedPaperId: number | null = null
     if (rawPaper !== undefined && rawPaper !== null && rawPaper !== '') {
@@ -145,7 +145,7 @@ export async function PUT(request: Request) {
             ? q.paper_id
             : q.papers_id !== undefined && q.papers_id !== null && q.papers_id !== ''
               ? q.papers_id
-              : q.chapter_id
+              : undefined
 
         let resolvedPaperId: number | null = null
         if (rawPaper !== undefined && rawPaper !== null && rawPaper !== '') {

@@ -46,14 +46,14 @@ export async function GET() {
       'SELECT COUNT(*) as count FROM papers'
     )
 
-    // 今日练习次数（只统计模拟考试）
+    const practiceCountModes = 'practice_mode IN ("by_exam", "by_paper")'
+
     const todayPractice = await db.queryOne<{ count: number }>(
-      'SELECT COUNT(*) as count FROM practice_records WHERE DATE(started_at) = CURDATE() AND practice_mode = "exam"'
+      `SELECT COUNT(*) as count FROM practice_records WHERE DATE(started_at) = CURDATE() AND ${practiceCountModes}`
     )
 
-    // 本周练习次数（只统计模拟考试）
     const weekPractice = await db.queryOne<{ count: number }>(
-      'SELECT COUNT(*) as count FROM practice_records WHERE YEARWEEK(started_at, 1) = YEARWEEK(CURDATE(), 1) AND practice_mode = "exam"'
+      `SELECT COUNT(*) as count FROM practice_records WHERE YEARWEEK(started_at, 1) = YEARWEEK(CURDATE(), 1) AND ${practiceCountModes}`
     )
 
     // 按语言统计题目数量
@@ -66,20 +66,18 @@ export async function GET() {
       'SELECT type, COUNT(*) as count FROM questions GROUP BY type'
     )
 
-    // 最近7天的练习趋势（只统计模拟考试）
     const practicesTrend = await db.query<{ date: string; count: number }>(
       `SELECT DATE(started_at) as date, COUNT(*) as count 
        FROM practice_records 
-       WHERE started_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND practice_mode = "exam"
+       WHERE started_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND ${practiceCountModes}
        GROUP BY DATE(started_at)
        ORDER BY date`
     )
 
-    // 最近活跃的学生（只统计模拟考试）
     const recentStudents = await db.query<{ id: number; name: string; student_id: string; practice_count: number; last_practice_at: string | null }>(
       `SELECT s.id, s.name, s.student_id, COUNT(p.id) as practice_count, MAX(p.started_at) as last_practice_at
        FROM students s
-       LEFT JOIN practice_records p ON s.id = p.student_id AND p.started_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND p.practice_mode = "exam"
+       LEFT JOIN practice_records p ON s.id = p.student_id AND p.started_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND ${practiceCountModes}
        GROUP BY s.id
        ORDER BY practice_count DESC
        LIMIT 10`

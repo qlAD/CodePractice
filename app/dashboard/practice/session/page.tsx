@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import { QuestionDisplay } from '@/components/practice/question-display'
 import type { Question, Language, QuestionType } from '@/lib/types'
+import { canonicalizePracticeModeParam, normalizePracticeModeForSession } from '@/lib/practice-mode'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/lib/auth-context'
 import {
@@ -45,7 +46,19 @@ export default function PracticeSessionPage() {
   const searchParams = useSearchParams()
   const { user } = useAuth()
 
-  const mode = searchParams.get('mode') || 'language'
+  const rawMode = searchParams.get('mode') || 'by_language'
+  const mode = normalizePracticeModeForSession(rawMode)
+
+  useEffect(() => {
+    const m = searchParams.get('mode')
+    if (!m) return
+    const c = canonicalizePracticeModeParam(m)
+    if (c !== null && m !== c) {
+      const url = new URL(window.location.href)
+      url.searchParams.set('mode', c)
+      router.replace(url.toString())
+    }
+  }, [searchParams, router])
   const language = searchParams.get('language') as Language | null
   const papers = React.useMemo(() => {
     return searchParams.getAll('paper')
@@ -152,9 +165,9 @@ export default function PracticeSessionPage() {
           // 常规练习模式
           const params = new URLSearchParams()
           params.set('mode', mode)
-          if (mode === 'exam') {
+          if (mode === 'by_exam') {
             params.set('count', '40')
-          } else if (mode !== 'paper') {
+          } else if (mode !== 'by_paper') {
             params.set('count', '10')
           }
 
@@ -200,7 +213,7 @@ export default function PracticeSessionPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [showSubmitDialog, setShowSubmitDialog] = useState(false)
   const [showExitDialog, setShowExitDialog] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(mode === 'exam' ? 60 * 60 : 0) // 60 minutes for exam
+  const [timeLeft, setTimeLeft] = useState(mode === 'by_exam' ? 60 * 60 : 0)
 
   const currentQuestion = practiceQuestions[currentIndex]
   const answeredCount = Object.keys(answers).length
@@ -287,7 +300,7 @@ export default function PracticeSessionPage() {
 
   // Timer for exam mode
   useEffect(() => {
-    if (mode !== 'exam' || isSubmitted || isSubmitting) return
+    if (mode !== 'by_exam' || isSubmitted || isSubmitting) return
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -365,12 +378,12 @@ export default function PracticeSessionPage() {
           </Button>
           <div>
             <h1 className="text-xl font-bold text-foreground">
-              {mode === 'exam' ? '模拟考试' : mode === 'wrong_answers' ? '错题练习' : '练习模式'}
+              {mode === 'by_exam' ? '模拟考试' : mode === 'wrong_answers' ? '错题练习' : '练习模式'}
             </h1>
             <p className="text-sm text-muted-foreground">
               {mode === 'wrong_answers' ? `复习错题，巩固薄弱环节${language ? ` - ${language.toUpperCase()}` : ''}${filterType ? ` - ${filterType}` : ''}` : 
-                mode === 'exam' && language ? `${language.toUpperCase()} 模拟考试` :
-                mode === 'paper' && language && papers.length > 0 ? `${language.toUpperCase()} 共 ${papers.length} 套试卷` :
+                mode === 'by_exam' && language ? `${language.toUpperCase()} 模拟考试` :
+                mode === 'by_paper' && language && papers.length > 0 ? `${language.toUpperCase()} 共 ${papers.length} 套试卷` :
                 papers.length > 0 && language ? `${language.toUpperCase()} 共 ${papers.length} 套试卷` :
                 types.length > 0 && language ? `${language.toUpperCase()} 共 ${types.length} 种题型` :
                 language ? `${language.toUpperCase()}` : ''
@@ -380,7 +393,7 @@ export default function PracticeSessionPage() {
         </div>
 
         <div className="flex items-center gap-4">
-          {mode === 'exam' && !isSubmitted && (
+          {mode === 'by_exam' && !isSubmitted && (
             <div className="flex items-center gap-2 text-foreground">
               <Clock className="w-5 h-5 text-primary" />
               <span className={cn(

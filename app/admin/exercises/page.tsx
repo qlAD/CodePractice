@@ -25,8 +25,8 @@ interface PracticeRecord {
   student_id: string
   language: string | null
   question_type: string | null
-  chapter_id: number | null
-  chapter_name: string | null
+  paper_id: number | null
+  paper_name: string | null
   mode: string
   total_count: number
   correct_count: number
@@ -44,8 +44,8 @@ const languageNames: Record<string, string> = {
 const modeNames: Record<string, string> = {
   by_language: '按语言',
   by_type: '按题型',
-  by_chapter: '按章节',
-  exam: '模拟考试',
+  by_paper: '按试卷',
+  by_exam: '模拟考试',
 }
 
 const questionTypeNames: Record<string, string> = {
@@ -119,11 +119,11 @@ export default function PracticeManagementPage() {
       return `按题型（${typeNames.join('、') || '-'}）`
     }
 
-    if (record.mode === 'by_chapter') {
-      return `按章节（${record.chapter_name || '-'}）`
+    if (record.mode === 'by_paper') {
+      return record.paper_name ? `按试卷（${record.paper_name}）` : '按试卷'
     }
 
-    if (record.mode === 'exam') {
+    if (record.mode === 'by_exam') {
       const details: string[] = []
 
       if (record.language) {
@@ -141,8 +141,8 @@ export default function PracticeManagementPage() {
         }
       }
 
-      if (record.chapter_name) {
-        details.push(`章节：${record.chapter_name}`)
+      if (record.paper_name) {
+        details.push(`试卷：${record.paper_name}`)
       }
 
       return details.length > 0 ? `模拟考试（${details.join('，')}）` : '模拟考试'

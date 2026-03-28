@@ -106,7 +106,7 @@ CREATE TABLE questions (
 CREATE TABLE practice_records (
   id INT PRIMARY KEY AUTO_INCREMENT,
   student_id INT NOT NULL COMMENT '学生ID',
-  practice_mode ENUM('by_language', 'by_type', 'by_paper', 'exam') NOT NULL COMMENT '练习模式',
+  practice_mode ENUM('by_language', 'by_type', 'by_paper', 'by_exam') NOT NULL COMMENT '练习模式',
   language ENUM('java', 'cpp', 'python') COMMENT '语言',
   question_type VARCHAR(128) COMMENT '题型',
   paper_id INT COMMENT '试卷ID',

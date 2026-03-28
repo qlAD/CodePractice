@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { db, type DBChapter } from '@/lib/db'
+import { db, type DBPaper } from '@/lib/db'
 
 export async function GET(request: Request) {
   try {
@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
     sql += ' ORDER BY language, sort_order'
 
-    const papers = await db.query<DBChapter>(sql, params)
+    const papers = await db.query<DBPaper>(sql, params)
 
     return NextResponse.json({
       success: true,

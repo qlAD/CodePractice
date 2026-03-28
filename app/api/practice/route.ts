@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db, type DBQuestion, type DBPracticeRecord, type DBAnswerRecord } from '@/lib/db'
+import { canonicalizePracticeModeParam, normalizePracticeModeForDb } from '@/lib/practice-mode'
 import { safeJsonParse } from '@/lib/utils'
 
 const USE_REAL_DB = process.env.MYSQL_HOST && process.env.MYSQL_DATABASE
@@ -8,14 +9,11 @@ const USE_REAL_DB = process.env.MYSQL_HOST && process.env.MYSQL_DATABASE
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
-    const mode = searchParams.get('mode') // by_language, by_type, by_chapter, exam
+    const modeRaw = searchParams.get('mode')
+    const mode = modeRaw ? canonicalizePracticeModeParam(modeRaw) ?? modeRaw : null
     const language = searchParams.get('language')
     const types = searchParams.getAll('type')
     const paperIds = [...searchParams.getAll('paper_id')]
-    const chapterLegacy = searchParams.get('chapter_id')
-    if (chapterLegacy && !paperIds.includes(chapterLegacy)) {
-      paperIds.push(chapterLegacy)
-    }
     const hasPaperFilter = paperIds.length > 0
     const count = Number(searchParams.get('count')) || 10
 
@@ -23,7 +21,7 @@ export async function GET(request: Request) {
       let questions: DBQuestion[] = []
 
       // 考试模式：按题型分配题目数量
-      if (mode === 'exam') {
+      if (mode === 'by_exam') {
         const examConfig = [
           { type: 'single_choice', count: 30 },
           { type: 'fill_blank', count: 3 },
@@ -130,15 +128,17 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { student_id, mode, language, question_type, paper_id, chapter_id, question_count } = body
+    const { student_id, mode, language, question_type, paper_id, question_count } = body
+
+    const practiceMode = normalizePracticeModeForDb(mode as string)
 
     if (USE_REAL_DB) {
       const result = await db.insert('practice_records', {
         student_id,
-        practice_mode: mode,
+        practice_mode: practiceMode,
         language: language || null,
         question_type: question_type || null,
-        paper_id: paper_id || chapter_id || null,
+        paper_id: paper_id || null,
         total_questions: question_count,
         status: 'in_progress',
       })

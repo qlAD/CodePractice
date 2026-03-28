@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react"
 
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
-import type { DBChapter } from '@/lib/db'
+import type { DBPaper } from '@/lib/db'
 import type { StudentStats } from '@/lib/types'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -39,7 +39,7 @@ export default function DashboardPage() {
   const { user } = useAuth()
   const [stats, setStats] = useState<StudentStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [papers, setPapers] = useState<DBChapter[]>([])
+  const [papers, setPapers] = useState<DBPaper[]>([])
   const [papersLoading, setPapersLoading] = useState(true)
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function DashboardPage() {
       error_fix: { total: 0, correct: 0, rate: 0 },
       programming: { total: 0, correct: 0, rate: 0 },
     },
-    by_chapter: {},
+    by_paper: {},
     recent_sessions: [],
   }
 
@@ -122,7 +122,7 @@ export default function DashboardPage() {
             继续你的编程练习；左侧导航可进入题库、统计与错题本。
           </p>
         </div>
-        <Link href="/dashboard/practice?mode=paper" className="shrink-0 sm:self-center">
+        <Link href="/dashboard/practice?mode=by_paper" className="shrink-0 sm:self-center">
           <Button size="lg" className="h-11 gap-2 px-8">
             开始练习
             <ArrowRight className="h-4 w-4" />
@@ -241,7 +241,7 @@ export default function DashboardPage() {
                 return (
                   <Link
                     key={p.id}
-                    href={`/dashboard/practice/session?mode=paper&language=${p.language}&paper=${p.id}`}
+                    href={`/dashboard/practice/session?mode=by_paper&language=${p.language}&paper=${p.id}`}
                     className="flex items-center justify-between gap-4 px-4 py-3 bg-secondary/30 hover:bg-secondary/60 transition-colors"
                   >
                     <span className="flex items-center gap-2 min-w-0">
@@ -289,10 +289,23 @@ export default function DashboardPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-medium text-foreground">
-                        {session.mode === 'exam' ? '模拟考试' :
-                         session.mode === 'language' && session.language ? `${languageConfig[session.language]?.name || session.language}练习` :
-                         session.mode === 'type' && session.type ? `${questionTypeConfig[session.type]?.name || session.type}练习` :
-                         '练习'}
+                        {session.mode === 'by_exam'
+                          ? '模拟考试'
+                          : session.mode === 'by_language'
+                            ? session.language
+                              ? `${languageConfig[session.language]?.name || session.language}练习`
+                              : '练习'
+                            : session.mode === 'by_type'
+                              ? (() => {
+                                  const t = session.type?.split(',')[0]?.trim()
+                                  if (t && questionTypeConfig[t as keyof typeof questionTypeConfig]) {
+                                    return `${questionTypeConfig[t as keyof typeof questionTypeConfig].name}练习`
+                                  }
+                                  return t ? `${t}练习` : '题型练习'
+                                })()
+                              : session.mode === 'by_paper'
+                                ? '按试卷练习'
+                                : '练习'}
                       </span>
                       {session.language && languageConfig[session.language] && (
                         <span className="text-xs px-2 py-0.5 rounded bg-secondary text-muted-foreground">

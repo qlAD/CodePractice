@@ -29,7 +29,7 @@ export interface Question {
   id: number
   language: Language
   type: QuestionType
-  chapter: string
+  paper_id?: number | null
   content: string
   code_template?: string
   options?: string[] // For single choice questions
@@ -45,8 +45,7 @@ export interface PracticeSession {
   student_id: number
   language?: Language
   type?: QuestionType
-  chapter?: string
-  mode: 'language' | 'type' | 'chapter' | 'exam'
+  mode: 'by_language' | 'by_type' | 'by_paper' | 'by_exam'
   started_at: string
   finished_at?: string
   total_questions: number
@@ -83,16 +82,16 @@ export interface StudentStats {
   accuracy_rate: number
   by_language: Record<Language, { total: number; correct: number; rate: number }>
   by_type: Record<QuestionType, { total: number; correct: number; rate: number }>
-  by_chapter: Record<string, Record<string, { total: number; correct: number; rate: number }>>
+  by_paper: Record<string, Record<string, { total: number; correct: number; rate: number }>>
   recent_sessions: PracticeSession[]
 }
 
-// Chapter configuration
-export interface Chapter {
-  id: string
+export interface Paper {
+  id: number
   name: string
   language: Language
-  order: number
+  sort_order?: number
+  description?: string | null
   papers_id?: string | null
 }
 

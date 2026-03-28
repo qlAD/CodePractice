@@ -118,18 +118,17 @@ export async function GET(request: Request) {
       }
     })
 
-    // 按试卷统计（兼容前端 by_chapter 字段结构）
-    const chapterStats = await db.query<{
+    const paperStats = await db.query<{
       language: string
-      chapter_id: string
-      chapter_name: string
+      paper_id: string
+      paper_name: string
       total: number
       correct: number
     }>(
       `SELECT 
         q.language,
-        p.id as chapter_id,
-        p.name as chapter_name,
+        p.id as paper_id,
+        p.name as paper_name,
         COUNT(*) as total,
         SUM(CASE WHEN ar.is_correct = 1 THEN 1 ELSE 0 END) as correct
       FROM answer_records ar
@@ -141,14 +140,14 @@ export async function GET(request: Request) {
       [studentDbId]
     )
 
-    const by_chapter: Record<string, Record<string, { total: number; correct: number; rate: number }>> = {}
+    const by_paper: Record<string, Record<string, { total: number; correct: number; rate: number }>> = {}
 
-    chapterStats.forEach(stat => {
-      if (stat.language && stat.chapter_name) {
-        if (!by_chapter[stat.language]) {
-          by_chapter[stat.language] = {}
+    paperStats.forEach(stat => {
+      if (stat.language && stat.paper_name) {
+        if (!by_paper[stat.language]) {
+          by_paper[stat.language] = {}
         }
-        by_chapter[stat.language][stat.chapter_name] = {
+        by_paper[stat.language][stat.paper_name] = {
           total: stat.total,
           correct: stat.correct,
           rate: stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0,
@@ -185,7 +184,7 @@ export async function GET(request: Request) {
 
     const recent_sessions = recentSessions.map(session => ({
       id: session.id,
-      mode: session.mode || 'language',
+      mode: session.mode || 'by_language',
       language: session.language,
       type: session.question_type,
       total_questions: session.total_questions,
@@ -202,7 +201,7 @@ export async function GET(request: Request) {
         accuracy_rate,
         by_language,
         by_type,
-        by_chapter,
+        by_paper,
         recent_sessions,
       },
     })

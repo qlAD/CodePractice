@@ -280,7 +280,7 @@ export default function AdminDashboardPage() {
             </Link>
             <Link href="/admin/questions">
               <Button variant="outline" className="w-full h-auto py-4 flex flex-col gap-2 bg-transparent">
-                <BookOpen className="w-6 h-6 text-accent" />
+                <BookOpen className="w-6 h-6 text-primary" />
                 <span>添加题目</span>
               </Button>
             </Link>

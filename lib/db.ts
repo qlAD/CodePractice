@@ -124,7 +124,7 @@ export interface DBQuestion {
   updated_at: Date
 }
 
-export interface DBChapter {
+export interface DBPaper {
   id: number
   papers_id: string | null
   language: 'java' | 'cpp' | 'python'
@@ -140,10 +140,10 @@ export interface DBPracticeRecord {
   id: number
   student_id: number
   practice_config_id: number | null
-  practice_mode: 'by_language' | 'by_type' | 'by_chapter' | 'exam'
+  practice_mode: 'by_language' | 'by_type' | 'by_paper' | 'by_exam'
   language: 'java' | 'cpp' | 'python' | null
   question_type: string | null
-  chapter_id: number | null
+  paper_id: number | null
   total_questions: number
   correct_count: number
   wrong_count: number
