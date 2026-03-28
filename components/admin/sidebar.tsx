@@ -28,6 +28,7 @@ import {
   UserCog,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import type { TeacherAuthUser } from '@/lib/types'
 
 const navigation = [
   { name: '控制台', href: '/admin', icon: LayoutDashboard, permission: null },
@@ -169,20 +170,26 @@ function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o
   )
 }
 
-export function AdminSidebar() {
-  const pathname = usePathname()
-  const { user, logout, hasPermission } = useTeacherAuth()
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [profileOpen, setProfileOpen] = useState(false)
+type AdminNavItem = (typeof navigation)[number]
 
-  const filteredNavigation = navigation.filter(item => {
-    if (!item.permission) return true
-    return hasPermission(item.permission)
-  })
-
-  const mobileBarTitle = navTitleFromPath(pathname, filteredNavigation)
-
-  const SidebarContent = ({ showMobileClose }: { showMobileClose?: boolean }) => (
+function AdminSidebarBody({
+  pathname,
+  items,
+  user,
+  showMobileClose,
+  onCloseMobile,
+  onOpenProfile,
+  onLogout,
+}: {
+  pathname: string
+  items: AdminNavItem[]
+  user: TeacherAuthUser | null
+  showMobileClose?: boolean
+  onCloseMobile: () => void
+  onOpenProfile: () => void
+  onLogout: () => void
+}) {
+  return (
     <>
       <div className="flex items-center gap-3 border-b border-sidebar-border bg-sidebar px-4 py-5">
         <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -203,7 +210,7 @@ export function AdminSidebar() {
             variant="secondary"
             size="icon"
             className="h-11 w-11 shrink-0 shadow-card ring-1 ring-border/80 lg:hidden"
-            onClick={() => setMobileOpen(false)}
+            onClick={onCloseMobile}
             aria-label="关闭菜单"
           >
             <X className="h-5 w-5" />
@@ -212,14 +219,14 @@ export function AdminSidebar() {
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {filteredNavigation.map((item) => {
+        {items.map((item) => {
           const isActive = pathname === item.href || 
             (item.href !== '/admin' && pathname.startsWith(item.href))
           return (
             <Link
               key={item.name}
               href={item.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={onCloseMobile}
               className={cn(
                 'flex items-center gap-3 rounded-[var(--radius-sm)] border-l-2 border-transparent py-2.5 pl-2.5 pr-3 text-sm font-medium transition-ui duration-200',
                 isActive
@@ -237,7 +244,7 @@ export function AdminSidebar() {
       <div className="px-3 py-4 border-t border-sidebar-border">
         <div
           className="flex items-center gap-3 px-3 py-2 mb-2 cursor-pointer rounded-lg transition-colors hover:bg-sidebar-accent/50"
-          onClick={() => setProfileOpen(true)}
+          onClick={onOpenProfile}
         >
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
             <Users className="h-4 w-4 text-primary" />
@@ -255,7 +262,7 @@ export function AdminSidebar() {
         <Button
           variant="ghost"
           className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-          onClick={logout}
+          onClick={onLogout}
         >
           <LogOut className="w-5 h-5" />
           退出登录
@@ -263,6 +270,20 @@ export function AdminSidebar() {
       </div>
     </>
   )
+}
+
+export function AdminSidebar() {
+  const pathname = usePathname()
+  const { user, logout, hasPermission } = useTeacherAuth()
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+
+  const filteredNavigation = navigation.filter(item => {
+    if (!item.permission) return true
+    return hasPermission(item.permission)
+  })
+
+  const mobileBarTitle = navTitleFromPath(pathname, filteredNavigation)
 
   return (
     <>
@@ -308,13 +329,28 @@ export function AdminSidebar() {
         )}
       >
         <div className="flex h-full flex-col">
-          <SidebarContent showMobileClose />
+          <AdminSidebarBody
+            pathname={pathname}
+            items={filteredNavigation}
+            user={user}
+            showMobileClose
+            onCloseMobile={() => setMobileOpen(false)}
+            onOpenProfile={() => setProfileOpen(true)}
+            onLogout={logout}
+          />
         </div>
       </aside>
 
       {/* Desktop sidebar */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-sidebar-border lg:bg-sidebar lg:backdrop-blur-xl">
-        <SidebarContent />
+        <AdminSidebarBody
+          pathname={pathname}
+          items={filteredNavigation}
+          user={user}
+          onCloseMobile={() => setMobileOpen(false)}
+          onOpenProfile={() => setProfileOpen(true)}
+          onLogout={logout}
+        />
       </aside>
 
       <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />

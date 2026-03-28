@@ -18,6 +18,7 @@ import {
   X,
 } from 'lucide-react'
 import { useState } from 'react'
+import type { AuthUser } from '@/lib/types'
 
 const navigation = [
   { name: '学习中心', href: '/dashboard', icon: LayoutDashboard },
@@ -35,13 +36,20 @@ function currentNavTitle(pathname: string) {
   return hit?.name ?? '学习中心'
 }
 
-export function Sidebar() {
-  const pathname = usePathname()
-  const { user, logout } = useAuth()
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const mobileBarTitle = currentNavTitle(pathname)
-
-  const SidebarContent = ({ showMobileClose }: { showMobileClose?: boolean }) => (
+function DashboardSidebarBody({
+  pathname,
+  user,
+  showMobileClose,
+  onCloseMobile,
+  onLogout,
+}: {
+  pathname: string
+  user: AuthUser | null
+  showMobileClose?: boolean
+  onCloseMobile: () => void
+  onLogout: () => void
+}) {
+  return (
     <>
       <div className="flex items-center gap-3 border-b border-sidebar-border bg-sidebar px-4 py-5">
         <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -62,7 +70,7 @@ export function Sidebar() {
             variant="secondary"
             size="icon"
             className="h-11 w-11 shrink-0 shadow-card ring-1 ring-border/80 lg:hidden"
-            onClick={() => setMobileOpen(false)}
+            onClick={onCloseMobile}
             aria-label="关闭菜单"
           >
             <X className="h-5 w-5" />
@@ -78,7 +86,7 @@ export function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={onCloseMobile}
               className={cn(
                 'flex items-center gap-3 rounded-[var(--radius-sm)] border-l-2 border-transparent py-2.5 pl-2.5 pr-3 text-sm font-medium transition-ui duration-200',
                 isActive
@@ -111,7 +119,7 @@ export function Sidebar() {
         <Button
           variant="ghost"
           className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-          onClick={logout}
+          onClick={onLogout}
         >
           <LogOut className="w-5 h-5" />
           退出登录
@@ -119,6 +127,13 @@ export function Sidebar() {
       </div>
     </>
   )
+}
+
+export function Sidebar() {
+  const pathname = usePathname()
+  const { user, logout } = useAuth()
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const mobileBarTitle = currentNavTitle(pathname)
 
   return (
     <>
@@ -164,13 +179,24 @@ export function Sidebar() {
         )}
       >
         <div className="flex h-full flex-col">
-          <SidebarContent showMobileClose />
+          <DashboardSidebarBody
+            pathname={pathname}
+            user={user}
+            showMobileClose
+            onCloseMobile={() => setMobileOpen(false)}
+            onLogout={logout}
+          />
         </div>
       </aside>
 
       {/* Desktop sidebar */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-sidebar-border lg:bg-sidebar lg:backdrop-blur-xl">
-        <SidebarContent />
+        <DashboardSidebarBody
+          pathname={pathname}
+          user={user}
+          onCloseMobile={() => setMobileOpen(false)}
+          onLogout={logout}
+        />
       </aside>
     </>
   )
