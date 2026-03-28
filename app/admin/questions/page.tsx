@@ -56,7 +56,7 @@ import {
   FolderPlus,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import type { Language, QuestionType, Difficulty } from '@/lib/types'
+import type { Language, QuestionType } from '@/lib/types'
 import { ImportDialog } from '@/components/admin/import-dialog'
 import * as XLSX from 'xlsx'
 import {
@@ -70,9 +70,10 @@ interface Question {
   id: number
   language: Language
   type: QuestionType
-  chapter_id: number | null
+  paper_id: number | null
+  papers_id?: string | null
+  paper_name?: string
   chapter_name?: string
-  difficulty: Difficulty
   content: string
   options?: string[]
   code_template?: string
@@ -82,13 +83,14 @@ interface Question {
   created_at: string
 }
 
-interface Chapter {
+interface Paper {
   id: number
+  papers_id: string | null
   language: Language
   name: string
   description?: string
   sort_order: number
-  status: string
+  question_count?: number
 }
 
 const typeLabels: Record<QuestionType, string> = {
@@ -96,12 +98,6 @@ const typeLabels: Record<QuestionType, string> = {
   fill_blank: '填空题',
   error_fix: '改错题',
   programming: '编程题',
-}
-
-const difficultyLabels: Record<Difficulty, string> = {
-  easy: '简单',
-  medium: '中等',
-  hard: '困难',
 }
 
 const languageLabels: Record<Language, string> = {
@@ -112,37 +108,36 @@ const languageLabels: Record<Language, string> = {
 
 export default function QuestionsPage() {
   const [questions, setQuestions] = useState<Question[]>([])
-  const [chapters, setChapters] = useState<Chapter[]>([])
+  const [papers, setPapers] = useState<Paper[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all')
+  const [selectedPaper, setSelectedPaper] = useState<string>('all')
   const [selectedType, setSelectedType] = useState<string>('all')
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all')
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [viewingQuestion, setViewingQuestion] = useState<Question | null>(null)
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   
-  // Chapter management
-  const [isChapterDialogOpen, setIsChapterDialogOpen] = useState(false)
-  const [editingChapter, setEditingChapter] = useState<Chapter | null>(null)
-  const [newChapter, setNewChapter] = useState({
+  const [isPaperDialogOpen, setIsPaperDialogOpen] = useState(false)
+  const [editingPaper, setEditingPaper] = useState<Paper | null>(null)
+  const [newPaper, setNewPaper] = useState({
     language: 'java' as Language,
+    papers_id: '',
     name: '',
     description: '',
     sort_order: 1,
   })
   
-  // New chapter inline creation
-  const [isCreatingNewChapter, setIsCreatingNewChapter] = useState(false)
-  const [inlineNewChapterName, setInlineNewChapterName] = useState('')
+  const [isCreatingNewPaper, setIsCreatingNewPaper] = useState(false)
+  const [inlineNewPaperName, setInlineNewPaperName] = useState('')
+  const [inlineNewPaperPapersId, setInlineNewPaperPapersId] = useState('')
   
   const [newQuestion, setNewQuestion] = useState({
     language: 'java' as Language,
     type: 'single_choice' as QuestionType,
-    chapter_id: '',
-    difficulty: 'easy' as Difficulty,
+    paper_id: '',
     content: '',
     code_template: '',
     options: ['', '', '', ''],
@@ -155,8 +150,8 @@ export default function QuestionsPage() {
     try {
       const params = new URLSearchParams()
       if (selectedLanguage !== 'all') params.set('language', selectedLanguage)
+      if (selectedPaper !== 'all') params.set('paper_id', selectedPaper)
       if (selectedType !== 'all') params.set('type', selectedType)
-      if (selectedDifficulty !== 'all') params.set('difficulty', selectedDifficulty)
       params.set('limit', '100')
       
       const res = await fetch(`/api/questions?${params}`)
@@ -169,23 +164,23 @@ export default function QuestionsPage() {
     } finally {
       setLoading(false)
     }
-  }, [selectedLanguage, selectedType, selectedDifficulty])
+  }, [selectedLanguage, selectedPaper, selectedType])
 
-  const fetchChapters = async () => {
+  const fetchPapers = async () => {
     try {
-      const res = await fetch('/api/chapters')
+      const res = await fetch('/api/papers')
       const data = await res.json()
       if (data.success) {
-        setChapters(data.data)
+        setPapers(data.data)
       }
     } catch (error) {
-      console.error('Failed to fetch chapters:', error)
+      console.error('Failed to fetch papers:', error)
     }
   }
 
   useEffect(() => {
     fetchQuestions()
-    fetchChapters()
+    fetchPapers()
   }, [fetchQuestions])
 
   const filteredQuestions = questions.filter(q => {
@@ -193,50 +188,68 @@ export default function QuestionsPage() {
     return matchesSearch
   })
 
-  const languageChapters = chapters.filter(c => c.language === newQuestion.language)
+  const languagePapers = papers.filter(c => c.language === newQuestion.language)
   
-  // Create new chapter inline
-  const handleCreateChapterInline = async () => {
-    if (!inlineNewChapterName.trim()) return
+  const handleCreatePaperInline = async () => {
+    if (!inlineNewPaperName.trim() || !inlineNewPaperPapersId.trim()) return
     
     try {
-      const maxOrder = languageChapters.reduce((max, ch) => Math.max(max, ch.sort_order), 0)
-      const res = await fetch('/api/chapters', {
+      const maxOrder = languagePapers.reduce((max, ch) => Math.max(max, ch.sort_order), 0)
+      const res = await fetch('/api/papers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           language: newQuestion.language,
-          name: inlineNewChapterName.trim(),
+          papers_id: inlineNewPaperPapersId.trim(),
+          name: inlineNewPaperName.trim(),
           description: '',
           sort_order: maxOrder + 1,
         }),
       })
       const data = await res.json()
       if (data.success) {
-        await fetchChapters()
-        // Select the new chapter
-        setNewQuestion({ ...newQuestion, chapter_id: data.data.id.toString() })
-        setInlineNewChapterName('')
-        setIsCreatingNewChapter(false)
+        await fetchPapers()
+        setNewQuestion({ ...newQuestion, paper_id: data.data.id.toString() })
+        setInlineNewPaperName('')
+        setInlineNewPaperPapersId('')
+        setIsCreatingNewPaper(false)
       } else {
-        alert(data.error || '创建章节失败')
+        alert(data.error || '创建试卷失败')
       }
     } catch (error) {
-      console.error('Failed to create chapter:', error)
-      alert('创建章节失败')
+      console.error('Failed to create paper:', error)
+      alert('创建试卷失败')
     }
   }
 
-  const isQuestionDuplicate = (question: any): boolean => {
-    const chapterId = question.chapter_id ? Number(question.chapter_id) : null
-    const options = question.type === 'single_choice' ? question.options.filter((o: string) => o).sort().join(',') : null
+  const isQuestionDuplicate = (question: {
+    language: Language
+    type: QuestionType
+    paper_id?: string | number | null
+    content: string
+    options?: string[]
+    code_template?: string
+  }): boolean => {
+    const raw =
+      question.paper_id !== undefined && question.paper_id !== null && question.paper_id !== ''
+        ? String(question.paper_id).trim()
+        : ''
+    let pid: number | null = null
+    if (raw) {
+      if (/^\d+$/.test(raw)) {
+        pid = Number(raw)
+      } else {
+        const p = papers.find(x => x.papers_id === raw && x.language === question.language)
+        pid = p?.id ?? null
+      }
+    }
+    const options = question.type === 'single_choice' ? (question.options ?? []).filter((o: string) => o).sort().join(',') : null
     const codeTemplate = ['fill_blank', 'error_fix', 'programming'].includes(question.type) ? question.code_template : null
     
     return questions.some(q => 
       q.language === question.language &&
       q.type === question.type &&
-      q.chapter_id === chapterId &&
-      q.difficulty === question.difficulty &&
+      q.paper_id === pid &&
       q.content === question.content &&
       JSON.stringify(q.options?.sort()) === JSON.stringify(options?.split(',').sort()) &&
       q.code_template === codeTemplate
@@ -258,7 +271,7 @@ export default function QuestionsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...newQuestion,
-          chapter_id: newQuestion.chapter_id ? Number(newQuestion.chapter_id) : null,
+          paper_id: newQuestion.paper_id?.trim() || null,
           options: newQuestion.type === 'single_choice' ? newQuestion.options.filter(o => o) : null,
           code_template: ['fill_blank', 'error_fix', 'programming'].includes(newQuestion.type) ? newQuestion.code_template : null,
         }),
@@ -268,8 +281,7 @@ export default function QuestionsPage() {
         setNewQuestion({
           language: 'java',
           type: 'single_choice',
-          chapter_id: '',
-          difficulty: 'easy',
+          paper_id: '',
           content: '',
           code_template: '',
           options: ['', '', '', ''],
@@ -300,8 +312,7 @@ export default function QuestionsPage() {
         body: JSON.stringify({
           language: editingQuestion.language,
           type: editingQuestion.type,
-          chapter_id: editingQuestion.chapter_id || null,
-          difficulty: editingQuestion.difficulty,
+          paper_id: editingQuestion.paper_id ?? null,
           content: editingQuestion.content,
           options: editingQuestion.type === 'single_choice' ? editingQuestion.options : null,
           code_template: editingQuestion.code_template,
@@ -342,75 +353,79 @@ export default function QuestionsPage() {
     }
   }
   
-  // Chapter CRUD
-  const handleAddChapter = async () => {
-    if (!newChapter.name.trim()) return
+  const handleAddPaper = async () => {
+    if (!newPaper.name.trim() || !newPaper.papers_id.trim()) return
     
     setIsSubmitting(true)
     try {
-      const res = await fetch('/api/chapters', {
+      const res = await fetch('/api/papers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newChapter),
+        body: JSON.stringify(newPaper),
       })
       const data = await res.json()
       if (data.success) {
-        setNewChapter({ language: 'java', name: '', description: '', sort_order: 1 })
-        setIsChapterDialogOpen(false)
-        fetchChapters()
+        setNewPaper({ language: 'java', papers_id: '', name: '', description: '', sort_order: 1 })
+        setIsPaperDialogOpen(false)
+        fetchPapers()
       } else {
         alert(data.error || '添加失败')
       }
     } catch (error) {
-      console.error('Failed to add chapter:', error)
+      console.error('Failed to add paper:', error)
       alert('添加失败')
     } finally {
       setIsSubmitting(false)
     }
   }
   
-  const handleUpdateChapter = async () => {
-    if (!editingChapter) return
+  const handleUpdatePaper = async () => {
+    if (!editingPaper) return
+    if (!(editingPaper.papers_id || '').trim()) {
+      alert('请填写试卷编号')
+      return
+    }
     
     setIsSubmitting(true)
     try {
-      const res = await fetch(`/api/chapters/${editingChapter.id}`, {
+      const res = await fetch(`/api/papers/${editingPaper.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: editingChapter.name,
-          description: editingChapter.description,
-          sort_order: editingChapter.sort_order,
+          papers_id: (editingPaper.papers_id || '').trim(),
+          name: editingPaper.name,
+          description: editingPaper.description,
+          sort_order: editingPaper.sort_order,
         }),
       })
       const data = await res.json()
       if (data.success) {
-        setEditingChapter(null)
-        fetchChapters()
+        setEditingPaper(null)
+        fetchPapers()
       } else {
         alert(data.error || '更新失败')
       }
     } catch (error) {
-      console.error('Failed to update chapter:', error)
+      console.error('Failed to update paper:', error)
       alert('更新失败')
     } finally {
       setIsSubmitting(false)
     }
   }
   
-  const handleDeleteChapter = async (id: number) => {
-    if (!confirm('确定要删除该章节吗？删除后该章节下的题目将不再关联任何章节。')) return
+  const handleDeletePaper = async (id: number) => {
+    if (!confirm('确定要删除该试卷吗？须先清空或移走卷内题目。')) return
     
     try {
-      const res = await fetch(`/api/chapters/${id}`, { method: 'DELETE' })
+      const res = await fetch(`/api/papers/${id}`, { method: 'DELETE' })
       const data = await res.json()
       if (data.success) {
-        fetchChapters()
+        fetchPapers()
       } else {
         alert(data.error || '删除失败')
       }
     } catch (error) {
-      console.error('Failed to delete chapter:', error)
+      console.error('Failed to delete paper:', error)
       alert('删除失败')
     }
   }
@@ -424,8 +439,7 @@ export default function QuestionsPage() {
       const importQuestion = {
         language: q.language,
         type: q.type,
-        chapter_id: q.chapter_id?.toString() || '',
-        difficulty: q.difficulty,
+        paper_id: q.paper_id?.toString() || '',
         content: q.content,
         options: q.options ? JSON.parse(q.options) : ['', '', '', ''],
         code_template: q.code_template || '',
@@ -445,8 +459,7 @@ export default function QuestionsPage() {
           body: JSON.stringify({
             language: q.language,
             type: q.type,
-            chapter_id: q.chapter_id || null,
-            difficulty: q.difficulty,
+            paper_id: q.paper_id?.trim() || null,
             content: q.content,
             options: q.options ? JSON.parse(q.options) : null,
             code_template: q.code_template,
@@ -480,22 +493,21 @@ export default function QuestionsPage() {
     try {
       const params = new URLSearchParams()
       if (selectedLanguage !== 'all') params.set('language', selectedLanguage)
+      if (selectedPaper !== 'all') params.set('paper_id', selectedPaper)
       if (selectedType !== 'all') params.set('type', selectedType)
-      if (selectedDifficulty !== 'all') params.set('difficulty', selectedDifficulty)
       params.set('limit', '0')
       
       const res = await fetch(`/api/questions?${params}`)
       const data = await res.json()
       if (data.success && Array.isArray(data.data)) {
-        const allQuestions = data.data
+        const allQuestions = data.data as Question[]
         const ws = XLSX.utils.aoa_to_sheet([
-          ['题目ID', '语言', '题型', '章节', '难度', '题目内容', '选项', '代码模板', '答案', '解析', '分值', '创建时间'],
-          ...allQuestions.map(q => [
+          ['题目ID', '语言', '题型', '试卷编号', '题目内容', '选项', '代码模板', '答案', '解析', '分值', '创建时间'],
+          ...allQuestions.map((q: Question) => [
             q.id,
             languageLabels[q.language],
             typeLabels[q.type],
-            q.chapter_name || '',
-            difficultyLabels[q.difficulty],
+            q.papers_id || '',
             q.content,
             q.options ? q.options.join('|') : '',
             q.code_template || '',
@@ -535,17 +547,155 @@ export default function QuestionsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">题库管理</h1>
-          <p className="text-muted-foreground mt-1">管理各语言的练习题目和章节</p>
+          <p className="text-muted-foreground mt-1">管理试卷与各卷题目</p>
         </div>
       </div>
 
-      <Tabs defaultValue="questions" className="space-y-6">
+      <Tabs defaultValue="papers" className="space-y-6">
         <TabsList className="bg-secondary">
+          <TabsTrigger value="papers">试卷管理</TabsTrigger>
           <TabsTrigger value="questions">题目管理</TabsTrigger>
-          <TabsTrigger value="chapters">章节管理</TabsTrigger>
         </TabsList>
         
-        {/* Questions Tab */}
+        <TabsContent value="papers" className="space-y-6">
+          <div className="flex items-center gap-2 justify-end">
+            <Dialog open={isPaperDialogOpen} onOpenChange={setIsPaperDialogOpen}>
+              <DialogTrigger asChild>
+                <Button size="sm" className="bg-primary hover:bg-primary/90">
+                  <Plus className="w-4 h-4 mr-2" />
+                  添加试卷
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-card border-border">
+                <DialogHeader>
+                  <DialogTitle>添加试卷</DialogTitle>
+                  <DialogDescription>为指定语言创建新试卷</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <Label>语言</Label>
+                    <Select value={newPaper.language} onValueChange={(v: Language) => setNewPaper({ ...newPaper, language: v })}>
+                      <SelectTrigger className="bg-input border-border">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="java">Java</SelectItem>
+                        <SelectItem value="cpp">C/C++</SelectItem>
+                        <SelectItem value="python">Python</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>试卷编号 *</Label>
+                    <Input
+                      placeholder="如 66，导入 Excel 用此列"
+                      value={newPaper.papers_id}
+                      onChange={(e) => setNewPaper({ ...newPaper, papers_id: e.target.value })}
+                      className="bg-input border-border font-mono"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>试卷名称 *</Label>
+                    <Input
+                      placeholder="例如：Java 基础模拟卷"
+                      value={newPaper.name}
+                      onChange={(e) => setNewPaper({ ...newPaper, name: e.target.value })}
+                      className="bg-input border-border"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>描述</Label>
+                    <Textarea
+                      placeholder="试卷说明（可选）"
+                      value={newPaper.description}
+                      onChange={(e) => setNewPaper({ ...newPaper, description: e.target.value })}
+                      className="bg-input border-border"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>排序</Label>
+                    <Input
+                      type="number"
+                      value={newPaper.sort_order}
+                      onChange={(e) => setNewPaper({ ...newPaper, sort_order: Number(e.target.value) })}
+                      className="bg-input border-border w-24"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setIsPaperDialogOpen(false)}>取消</Button>
+                  <Button onClick={handleAddPaper} disabled={isSubmitting} className="bg-primary hover:bg-primary/90">
+                    {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    确定添加
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+          
+          {(['java', 'cpp', 'python'] as Language[]).map((lang) => {
+            const langPapers = papers.filter(c => c.language === lang).sort((a, b) => a.sort_order - b.sort_order)
+            return (
+              <Card key={lang} className="bg-card border-border">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Badge variant="outline" className={`bg-${lang}`}>{languageLabels[lang]}</Badge>
+                    <span className="text-muted-foreground text-sm font-normal">({langPapers.length} 套试卷)</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {langPapers.length === 0 ? (
+                    <p className="text-muted-foreground text-sm">暂无试卷，点击上方按钮添加</p>
+                  ) : (
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-border hover:bg-transparent">
+                          <TableHead className="text-muted-foreground w-16">排序</TableHead>
+                          <TableHead className="text-muted-foreground">试卷编号</TableHead>
+                          <TableHead className="text-muted-foreground">试卷名称</TableHead>
+                          <TableHead className="text-muted-foreground">描述</TableHead>
+                          <TableHead className="text-muted-foreground w-24">题目数</TableHead>
+                          <TableHead className="text-muted-foreground w-10"></TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {langPapers.map((paper) => (
+                          <TableRow key={paper.id} className="border-border">
+                            <TableCell>{paper.sort_order}</TableCell>
+                            <TableCell className="font-mono text-sm">{paper.papers_id || '—'}</TableCell>
+                            <TableCell className="font-medium">{paper.name}</TableCell>
+                            <TableCell className="text-muted-foreground">{paper.description || '-'}</TableCell>
+                            <TableCell>{paper.question_count ?? questions.filter(q => q.paper_id === paper.id).length}</TableCell>
+                            <TableCell>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                                    <MoreHorizontal className="w-4 h-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="bg-popover border-border">
+                                  <DropdownMenuItem onClick={() => setEditingPaper(paper)}>
+                                    <Edit className="w-4 h-4 mr-2" />
+                                    编辑
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleDeletePaper(paper.id)} className="text-destructive">
+                                    <Trash2 className="w-4 h-4 mr-2" />
+                                    删除
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </CardContent>
+              </Card>
+            )
+          })}
+        </TabsContent>
+
         <TabsContent value="questions" className="space-y-6">
           <div className="flex items-center gap-2 justify-end">
             <ImportDialog<ParsedQuestion>
@@ -564,7 +714,7 @@ export default function QuestionsPage() {
               previewColumns={[
                 { key: 'type', label: '题型' },
                 { key: 'language', label: '语言' },
-                { key: 'difficulty', label: '难度' },
+                { key: 'paper_id', label: '试卷编号' },
                 { key: 'content', label: '内容' },
               ]}
             />
@@ -588,7 +738,7 @@ export default function QuestionsPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>语言</Label>
-                      <Select value={newQuestion.language} onValueChange={(v: Language) => setNewQuestion({ ...newQuestion, language: v, chapter_id: '' })}>
+                      <Select value={newQuestion.language} onValueChange={(v: Language) => setNewQuestion({ ...newQuestion, language: v, paper_id: '' })}>
                         <SelectTrigger className="bg-input border-border">
                           <SelectValue />
                         </SelectTrigger>
@@ -615,60 +765,55 @@ export default function QuestionsPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>章节</Label>
-                      {isCreatingNewChapter ? (
-                        <div className="flex gap-2">
+              <div className="space-y-2">
+                  <Label>所属试卷</Label>
+                  {isCreatingNewPaper ? (
+                        <div className="space-y-2">
                           <Input
-                            placeholder="输入新章节名称"
-                            value={inlineNewChapterName}
-                            onChange={(e) => setInlineNewChapterName(e.target.value)}
-                            className="bg-input border-border"
+                            placeholder="试卷编号 papers_id"
+                            value={inlineNewPaperPapersId}
+                            onChange={(e) => setInlineNewPaperPapersId(e.target.value)}
+                            className="bg-input border-border font-mono text-sm"
                           />
-                          <Button size="sm" onClick={handleCreateChapterInline}>
-                            创建
-                          </Button>
-                          <Button size="sm" variant="outline" onClick={() => { setIsCreatingNewChapter(false); setInlineNewChapterName('') }}>
-                            取消
-                          </Button>
+                          <div className="flex gap-2">
+                            <Input
+                              placeholder="试卷名称"
+                              value={inlineNewPaperName}
+                              onChange={(e) => setInlineNewPaperName(e.target.value)}
+                              className="bg-input border-border flex-1"
+                            />
+                            <Button size="sm" onClick={handleCreatePaperInline}>
+                              创建
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={() => { setIsCreatingNewPaper(false); setInlineNewPaperName(''); setInlineNewPaperPapersId('') }}>
+                              取消
+                            </Button>
+                          </div>
                         </div>
                       ) : (
                         <div className="flex gap-2">
-                          <Select value={newQuestion.chapter_id} onValueChange={(v) => setNewQuestion({ ...newQuestion, chapter_id: v })}>
+                          <Select value={newQuestion.paper_id} onValueChange={(v) => setNewQuestion({ ...newQuestion, paper_id: v })}>
                             <SelectTrigger className="bg-input border-border flex-1">
-                              <SelectValue placeholder="选择章节" />
+                              <SelectValue placeholder="选择试卷" />
                             </SelectTrigger>
                             <SelectContent>
-                              {languageChapters.length === 0 ? (
-                                <div className="p-2 text-sm text-muted-foreground text-center">暂无章节，请先创建</div>
+                              {languagePapers.length === 0 ? (
+                                <div className="p-2 text-sm text-muted-foreground text-center">暂无试卷，请先创建</div>
                               ) : (
-                                languageChapters.map((ch) => (
-                                  <SelectItem key={ch.id} value={ch.id.toString()}>{ch.name}</SelectItem>
+                                languagePapers.map((ch) => (
+                                  <SelectItem key={ch.id} value={ch.id.toString()}>
+                                    {ch.papers_id ? `[${ch.papers_id}] ` : ''}{ch.name}
+                                  </SelectItem>
                                 ))
                               )}
                             </SelectContent>
                           </Select>
-                          <Button size="icon" variant="outline" onClick={() => setIsCreatingNewChapter(true)} title="创建新章节">
+                          <Button size="icon" variant="outline" onClick={() => setIsCreatingNewPaper(true)} title="新建试卷">
                             <FolderPlus className="w-4 h-4" />
                           </Button>
                         </div>
                       )}
                     </div>
-                    <div className="space-y-2">
-                      <Label>难度</Label>
-                      <Select value={newQuestion.difficulty} onValueChange={(v: Difficulty) => setNewQuestion({ ...newQuestion, difficulty: v })}>
-                        <SelectTrigger className="bg-input border-border">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="easy">简单</SelectItem>
-                          <SelectItem value="medium">中等</SelectItem>
-                          <SelectItem value="hard">困难</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
 
                   <div className="space-y-2">
                     <Label>分值</Label>
@@ -802,7 +947,7 @@ export default function QuestionsPage() {
                     className="pl-9 bg-input border-border"
                   />
                 </div>
-                <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                <Select value={selectedLanguage} onValueChange={(v) => { setSelectedLanguage(v); setSelectedPaper('all') }}>
                   <SelectTrigger className="w-full sm:w-32 bg-input border-border">
                     <SelectValue />
                   </SelectTrigger>
@@ -811,6 +956,22 @@ export default function QuestionsPage() {
                     <SelectItem value="java">Java</SelectItem>
                     <SelectItem value="cpp">C/C++</SelectItem>
                     <SelectItem value="python">Python</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={selectedPaper} onValueChange={setSelectedPaper}>
+                  <SelectTrigger className="w-full sm:w-40 bg-input border-border">
+                    <SelectValue placeholder="试卷" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">全部试卷</SelectItem>
+                    {papers
+                      .filter(p => selectedLanguage === 'all' || p.language === selectedLanguage)
+                      .sort((a, b) => a.sort_order - b.sort_order)
+                      .map(p => (
+                        <SelectItem key={p.id} value={String(p.id)}>
+                          {p.papers_id ? `[${p.papers_id}] ` : ''}{p.name}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
                 <Select value={selectedType} onValueChange={setSelectedType}>
@@ -823,17 +984,6 @@ export default function QuestionsPage() {
                     <SelectItem value="fill_blank">填空题</SelectItem>
                     <SelectItem value="error_fix">改错题</SelectItem>
                     <SelectItem value="programming">编程题</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                  <SelectTrigger className="w-full sm:w-32 bg-input border-border">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">全部难度</SelectItem>
-                    <SelectItem value="easy">简单</SelectItem>
-                    <SelectItem value="medium">中等</SelectItem>
-                    <SelectItem value="hard">困难</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -864,8 +1014,7 @@ export default function QuestionsPage() {
                       <TableHead className="text-muted-foreground">ID</TableHead>
                       <TableHead className="text-muted-foreground">语言</TableHead>
                       <TableHead className="text-muted-foreground">题型</TableHead>
-                      <TableHead className="text-muted-foreground">章节</TableHead>
-                      <TableHead className="text-muted-foreground">难度</TableHead>
+                      <TableHead className="text-muted-foreground">试卷</TableHead>
                       <TableHead className="text-muted-foreground max-w-xs">题目内容</TableHead>
                       <TableHead className="text-muted-foreground">分值</TableHead>
                       <TableHead className="text-muted-foreground w-10"></TableHead>
@@ -882,12 +1031,9 @@ export default function QuestionsPage() {
                         </TableCell>
                         <TableCell>{typeLabels[question.type]}</TableCell>
                         <TableCell className="text-muted-foreground">
-                          {question.chapter_name || '-'}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={question.difficulty === 'easy' ? 'default' : question.difficulty === 'medium' ? 'secondary' : 'destructive'}>
-                            {difficultyLabels[question.difficulty]}
-                          </Badge>
+                          {question.papers_id
+                            ? `[${question.papers_id}] ${question.paper_name || question.chapter_name || ''}`
+                            : question.paper_name || question.chapter_name || '-'}
                         </TableCell>
                         <TableCell className="max-w-xs truncate" title={question.content}>
                           {question.content.substring(0, 50)}{question.content.length > 50 ? '...' : ''}
@@ -927,136 +1073,6 @@ export default function QuestionsPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
-        {/* Chapters Tab */}
-        <TabsContent value="chapters" className="space-y-6">
-          <div className="flex items-center gap-2 justify-end">
-            <Dialog open={isChapterDialogOpen} onOpenChange={setIsChapterDialogOpen}>
-              <DialogTrigger asChild>
-                <Button size="sm" className="bg-primary hover:bg-primary/90">
-                  <Plus className="w-4 h-4 mr-2" />
-                  添加章节
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="bg-card border-border">
-                <DialogHeader>
-                  <DialogTitle>添加章节</DialogTitle>
-                  <DialogDescription>为指定语言创建新章节</DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label>语言</Label>
-                    <Select value={newChapter.language} onValueChange={(v: Language) => setNewChapter({ ...newChapter, language: v })}>
-                      <SelectTrigger className="bg-input border-border">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="java">Java</SelectItem>
-                        <SelectItem value="cpp">C/C++</SelectItem>
-                        <SelectItem value="python">Python</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>章节名称 *</Label>
-                    <Input
-                      placeholder="例如：Java基础语法"
-                      value={newChapter.name}
-                      onChange={(e) => setNewChapter({ ...newChapter, name: e.target.value })}
-                      className="bg-input border-border"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>描述</Label>
-                    <Textarea
-                      placeholder="章节描述（可选）"
-                      value={newChapter.description}
-                      onChange={(e) => setNewChapter({ ...newChapter, description: e.target.value })}
-                      className="bg-input border-border"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>排序</Label>
-                    <Input
-                      type="number"
-                      value={newChapter.sort_order}
-                      onChange={(e) => setNewChapter({ ...newChapter, sort_order: Number(e.target.value) })}
-                      className="bg-input border-border w-24"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setIsChapterDialogOpen(false)}>取消</Button>
-                  <Button onClick={handleAddChapter} disabled={isSubmitting} className="bg-primary hover:bg-primary/90">
-                    {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                    确定添加
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
-          
-          {/* Chapters by Language */}
-          {(['java', 'cpp', 'python'] as Language[]).map((lang) => {
-            const langChapters = chapters.filter(c => c.language === lang).sort((a, b) => a.sort_order - b.sort_order)
-            return (
-              <Card key={lang} className="bg-card border-border">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Badge variant="outline" className={`bg-${lang}`}>{languageLabels[lang]}</Badge>
-                    <span className="text-muted-foreground text-sm font-normal">({langChapters.length} 个章节)</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {langChapters.length === 0 ? (
-                    <p className="text-muted-foreground text-sm">暂无章节，点击上方按钮添加</p>
-                  ) : (
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="border-border hover:bg-transparent">
-                          <TableHead className="text-muted-foreground w-16">排序</TableHead>
-                          <TableHead className="text-muted-foreground">章节名称</TableHead>
-                          <TableHead className="text-muted-foreground">描述</TableHead>
-                          <TableHead className="text-muted-foreground w-24">题目数</TableHead>
-                          <TableHead className="text-muted-foreground w-10"></TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {langChapters.map((chapter) => (
-                          <TableRow key={chapter.id} className="border-border">
-                            <TableCell>{chapter.sort_order}</TableCell>
-                            <TableCell className="font-medium">{chapter.name}</TableCell>
-                            <TableCell className="text-muted-foreground">{chapter.description || '-'}</TableCell>
-                            <TableCell>{questions.filter(q => q.chapter_id === chapter.id).length}</TableCell>
-                            <TableCell>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                                    <MoreHorizontal className="w-4 h-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-popover border-border">
-                                  <DropdownMenuItem onClick={() => setEditingChapter(chapter)}>
-                                    <Edit className="w-4 h-4 mr-2" />
-                                    编辑
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleDeleteChapter(chapter.id)} className="text-destructive">
-                                    <Trash2 className="w-4 h-4 mr-2" />
-                                    删除
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  )}
-                </CardContent>
-              </Card>
-            )
-          })}
-        </TabsContent>
       </Tabs>
 
       {/* View Question Dialog */}
@@ -1070,9 +1086,6 @@ export default function QuestionsPage() {
               <div className="flex gap-2 flex-wrap">
                 <Badge variant="outline">{languageLabels[viewingQuestion.language]}</Badge>
                 <Badge variant="outline">{typeLabels[viewingQuestion.type]}</Badge>
-                <Badge variant={viewingQuestion.difficulty === 'easy' ? 'default' : viewingQuestion.difficulty === 'medium' ? 'secondary' : 'destructive'}>
-                  {difficultyLabels[viewingQuestion.difficulty]}
-                </Badge>
                 <Badge variant="outline">分值: {viewingQuestion.score}</Badge>
               </div>
               <div>
@@ -1120,7 +1133,7 @@ export default function QuestionsPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>语言</Label>
-                  <Select value={editingQuestion.language} onValueChange={(v: Language) => setEditingQuestion({ ...editingQuestion, language: v, chapter_id: null })}>
+                  <Select value={editingQuestion.language} onValueChange={(v: Language) => setEditingQuestion({ ...editingQuestion, language: v, paper_id: null })}>
                     <SelectTrigger className="bg-input border-border">
                       <SelectValue />
                     </SelectTrigger>
@@ -1147,38 +1160,25 @@ export default function QuestionsPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>章节</Label>
-                  <Select value={editingQuestion.chapter_id?.toString() || ''} onValueChange={(v) => setEditingQuestion({ ...editingQuestion, chapter_id: v ? Number(v) : null })}>
+              <div className="space-y-2">
+                  <Label>所属试卷</Label>
+                  <Select value={editingQuestion.paper_id != null ? String(editingQuestion.paper_id) : ''} onValueChange={(v) => setEditingQuestion({ ...editingQuestion, paper_id: v ? Number(v) : null })}>
                     <SelectTrigger className="bg-input border-border">
-                      <SelectValue placeholder="选择章节" />
+                      <SelectValue placeholder="选择试卷" />
                     </SelectTrigger>
                     <SelectContent>
-                      {chapters.filter(c => c.language === editingQuestion.language).length === 0 ? (
-                        <div className="p-2 text-sm text-muted-foreground text-center">暂无章节，请先创建</div>
+                      {papers.filter(c => c.language === editingQuestion.language).length === 0 ? (
+                        <div className="p-2 text-sm text-muted-foreground text-center">暂无试卷，请先创建</div>
                       ) : (
-                        chapters.filter(c => c.language === editingQuestion.language).map((ch) => (
-                          <SelectItem key={ch.id} value={ch.id.toString()}>{ch.name}</SelectItem>
+                        papers.filter(c => c.language === editingQuestion.language).map((ch) => (
+                          <SelectItem key={ch.id} value={ch.id.toString()}>
+                            {ch.papers_id ? `[${ch.papers_id}] ` : ''}{ch.name}
+                          </SelectItem>
                         ))
                       )}
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2">
-                  <Label>难度</Label>
-                  <Select value={editingQuestion.difficulty} onValueChange={(v: Difficulty) => setEditingQuestion({ ...editingQuestion, difficulty: v })}>
-                    <SelectTrigger className="bg-input border-border">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="easy">简单</SelectItem>
-                      <SelectItem value="medium">中等</SelectItem>
-                      <SelectItem value="hard">困难</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
 
               <div className="space-y-2">
                 <Label>分值</Label>
@@ -1269,27 +1269,34 @@ export default function QuestionsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Chapter Dialog */}
-      <Dialog open={!!editingChapter} onOpenChange={() => setEditingChapter(null)}>
+      <Dialog open={!!editingPaper} onOpenChange={() => setEditingPaper(null)}>
         <DialogContent className="bg-card border-border">
           <DialogHeader>
-            <DialogTitle>编辑章节</DialogTitle>
+            <DialogTitle>编辑试卷</DialogTitle>
           </DialogHeader>
-          {editingChapter && (
+          {editingPaper && (
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label>章节名称</Label>
+                <Label>试卷编号 papers_id *</Label>
                 <Input
-                  value={editingChapter.name}
-                  onChange={(e) => setEditingChapter({ ...editingChapter, name: e.target.value })}
+                  value={editingPaper.papers_id || ''}
+                  onChange={(e) => setEditingPaper({ ...editingPaper, papers_id: e.target.value })}
+                  className="bg-input border-border font-mono"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>试卷名称</Label>
+                <Input
+                  value={editingPaper.name}
+                  onChange={(e) => setEditingPaper({ ...editingPaper, name: e.target.value })}
                   className="bg-input border-border"
                 />
               </div>
               <div className="space-y-2">
                 <Label>描述</Label>
                 <Textarea
-                  value={editingChapter.description || ''}
-                  onChange={(e) => setEditingChapter({ ...editingChapter, description: e.target.value })}
+                  value={editingPaper.description || ''}
+                  onChange={(e) => setEditingPaper({ ...editingPaper, description: e.target.value })}
                   className="bg-input border-border"
                 />
               </div>
@@ -1297,16 +1304,16 @@ export default function QuestionsPage() {
                 <Label>排序</Label>
                 <Input
                   type="number"
-                  value={editingChapter.sort_order}
-                  onChange={(e) => setEditingChapter({ ...editingChapter, sort_order: Number(e.target.value) })}
+                  value={editingPaper.sort_order}
+                  onChange={(e) => setEditingPaper({ ...editingPaper, sort_order: Number(e.target.value) })}
                   className="bg-input border-border w-24"
                 />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingChapter(null)}>取消</Button>
-            <Button onClick={handleUpdateChapter} disabled={isSubmitting} className="bg-primary hover:bg-primary/90">
+            <Button variant="outline" onClick={() => setEditingPaper(null)}>取消</Button>
+            <Button onClick={handleUpdatePaper} disabled={isSubmitting} className="bg-primary hover:bg-primary/90">
               {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
               保存修改
             </Button>

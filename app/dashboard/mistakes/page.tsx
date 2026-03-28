@@ -57,12 +57,6 @@ const typeLabels = {
   programming: '程序设计',
 }
 
-const difficultyConfig = {
-  easy: { label: '简单', color: 'bg-success/20 text-success' },
-  medium: { label: '中等', color: 'bg-warning/20 text-warning' },
-  hard: { label: '困难', color: 'bg-destructive/20 text-destructive' },
-}
-
 interface WrongAnswerWithQuestion extends WrongAnswer {
   question: Question
 }
@@ -300,9 +294,6 @@ export default function WrongAnswersPage() {
                       </Badge>
                       <Badge variant="outline" className="text-xs">
                         {typeLabels[wa.question.type]}
-                      </Badge>
-                      <Badge className={cn('text-xs', difficultyConfig[wa.question.difficulty].color)}>
-                        {difficultyConfig[wa.question.difficulty].label}
                       </Badge>
                       <span className="text-xs text-muted-foreground">
                         {languageConfig[wa.question.language].name}

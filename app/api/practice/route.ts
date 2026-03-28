@@ -11,7 +11,12 @@ export async function GET(request: Request) {
     const mode = searchParams.get('mode') // by_language, by_type, by_chapter, exam
     const language = searchParams.get('language')
     const types = searchParams.getAll('type')
-    const chapter_id = searchParams.get('chapter_id')
+    const paperIds = [...searchParams.getAll('paper_id')]
+    const chapterLegacy = searchParams.get('chapter_id')
+    if (chapterLegacy && !paperIds.includes(chapterLegacy)) {
+      paperIds.push(chapterLegacy)
+    }
+    const hasPaperFilter = paperIds.length > 0
     const count = Number(searchParams.get('count')) || 10
 
     if (USE_REAL_DB) {
@@ -38,9 +43,9 @@ export async function GET(request: Request) {
           }
           sql += ' AND type = ?'
           params.push(type)
-          if (chapter_id) {
-            sql += ' AND chapter_id = ?'
-            params.push(chapter_id)
+          if (hasPaperFilter) {
+            sql += ' AND paper_id IN (' + paperIds.map(() => '?').join(',') + ')'
+            params.push(...paperIds)
           }
 
           sql += ' ORDER BY RAND() LIMIT ?'
@@ -65,9 +70,13 @@ export async function GET(request: Request) {
           params.push(...types)
           hasWhere = true
         }
-        if (chapter_id) {
-          sql += (hasWhere ? ' AND ' : ' WHERE ') + 'chapter_id = ?'
-          params.push(chapter_id)
+        if (hasPaperFilter) {
+          sql +=
+            (hasWhere ? ' AND ' : ' WHERE ') +
+            'paper_id IN (' +
+            paperIds.map(() => '?').join(',') +
+            ')'
+          params.push(...paperIds)
           hasWhere = true
         }
 
@@ -75,8 +84,12 @@ export async function GET(request: Request) {
           sql += ' WHERE 1=1'
         }
 
-        sql += ' ORDER BY RAND() LIMIT ?'
-        params.push(count)
+        if (hasPaperFilter) {
+          sql += ' ORDER BY paper_id ASC, id ASC'
+        } else {
+          sql += ' ORDER BY RAND() LIMIT ?'
+          params.push(count)
+        }
 
         questions = await db.query<DBQuestion>(sql, params)
       }
@@ -86,8 +99,7 @@ export async function GET(request: Request) {
         id: q.id,
         language: q.language,
         type: q.type,
-        chapter_id: q.chapter_id,
-        difficulty: q.difficulty,
+        paper_id: q.paper_id,
         content: q.content,
         options: safeJsonParse<string[]>(q.options),
         code_template: q.code_template,
@@ -118,7 +130,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { student_id, mode, language, question_type, chapter_id, question_count } = body
+    const { student_id, mode, language, question_type, paper_id, chapter_id, question_count } = body
 
     if (USE_REAL_DB) {
       const result = await db.insert('practice_records', {
@@ -126,7 +138,7 @@ export async function POST(request: Request) {
         practice_mode: mode,
         language: language || null,
         question_type: question_type || null,
-        chapter_id: chapter_id || null,
+        paper_id: paper_id || chapter_id || null,
         total_questions: question_count,
         status: 'in_progress',
       })

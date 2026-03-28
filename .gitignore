@@ -30,3 +30,10 @@ next-env.d.ts
 mysql_data/
 my-mysql-schema.sql
 my-docker-compose.yml
+
+# ai
+.claude
+AGENTS.md
+
+# docs
+docs/

@@ -63,27 +63,28 @@ CREATE TABLE teachers (
 -- 2. 题库相关表
 -- =====================================================
 
--- 章节表
-CREATE TABLE chapters (
+-- 试卷表
+CREATE TABLE papers (
   id INT PRIMARY KEY AUTO_INCREMENT,
+  papers_id VARCHAR(64) NULL COMMENT '试卷编号',
   language ENUM('java', 'cpp', 'python') NOT NULL COMMENT '编程语言',
-  name VARCHAR(100) NOT NULL COMMENT '章节名称',
-  description TEXT COMMENT '章节描述',
+  name VARCHAR(100) NOT NULL COMMENT '试卷名称',
+  description TEXT COMMENT '试卷描述',
   sort_order INT DEFAULT 0 COMMENT '排序',
   question_count INT DEFAULT 0 COMMENT '题目数量',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_language (language),
-  INDEX idx_sort (sort_order)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='章节表';
+  INDEX idx_sort (sort_order),
+  UNIQUE INDEX idx_papers_papers_id (papers_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='试卷表';
 
 -- 题目表
 CREATE TABLE questions (
   id INT PRIMARY KEY AUTO_INCREMENT,
   language ENUM('java', 'cpp', 'python') NOT NULL COMMENT '编程语言',
   type ENUM('single_choice', 'fill_blank', 'error_fix', 'programming') NOT NULL COMMENT '题型',
-  chapter_id INT COMMENT '章节ID',
-  difficulty ENUM('easy', 'medium', 'hard') DEFAULT 'medium' COMMENT '难度',
+  paper_id INT COMMENT '试卷ID',
   content TEXT NOT NULL COMMENT '题目内容',
   options JSON COMMENT '选项(选择题)',
   code_template TEXT COMMENT '代码模板(非选择题)',
@@ -91,11 +92,10 @@ CREATE TABLE questions (
   score INT DEFAULT 10 COMMENT '分值',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (chapter_id) REFERENCES chapters(id) ON DELETE SET NULL,
+  FOREIGN KEY (paper_id) REFERENCES papers(id) ON DELETE SET NULL,
   INDEX idx_language (language),
   INDEX idx_type (type),
-  INDEX idx_chapter (chapter_id),
-  INDEX idx_difficulty (difficulty)
+  INDEX idx_paper (paper_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='题目表';
 
 -- =====================================================
@@ -106,10 +106,10 @@ CREATE TABLE questions (
 CREATE TABLE practice_records (
   id INT PRIMARY KEY AUTO_INCREMENT,
   student_id INT NOT NULL COMMENT '学生ID',
-  practice_mode ENUM('by_language', 'by_type', 'by_chapter', 'exam') NOT NULL COMMENT '练习模式',
+  practice_mode ENUM('by_language', 'by_type', 'by_paper', 'exam') NOT NULL COMMENT '练习模式',
   language ENUM('java', 'cpp', 'python') COMMENT '语言',
   question_type ENUM('single_choice', 'fill_blank', 'error_fix', 'programming') COMMENT '题型',
-  chapter_id INT COMMENT '章节ID',
+  paper_id INT COMMENT '试卷ID',
   total_questions INT NOT NULL COMMENT '总题数',
   correct_count INT DEFAULT 0 COMMENT '正确数',
   wrong_count INT DEFAULT 0 COMMENT '错误数',
@@ -120,7 +120,7 @@ CREATE TABLE practice_records (
   started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   completed_at DATETIME COMMENT '完成时间',
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-  FOREIGN KEY (chapter_id) REFERENCES chapters(id) ON DELETE SET NULL,
+  FOREIGN KEY (paper_id) REFERENCES papers(id) ON DELETE SET NULL,
   INDEX idx_student (student_id),
   INDEX idx_status (status),
   INDEX idx_time (started_at)
@@ -200,6 +200,10 @@ CREATE TABLE system_settings (
   description VARCHAR(255) COMMENT '描述',
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统设置表';
+
+-- 插入管理员用户
+INSERT INTO teachers (teacher_id, password, name, department, role, status)
+VALUES ('admin', 'password', '管理员', '系统管理', 'admin', 'active');
 
 -- 提示信息
 SELECT '数据库初始化完成！' AS message;

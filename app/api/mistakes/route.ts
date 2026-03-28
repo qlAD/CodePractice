@@ -15,7 +15,6 @@ interface WrongAnswerWithQuestion {
     id: number
     language: string
     type: string
-    difficulty: string
     content: string
     options: string | null
     answer: string
@@ -58,8 +57,8 @@ export async function GET(request: Request) {
         wa.id, wa.student_id, wa.question_id, wa.wrong_answer, 
         wa.wrong_count, wa.review_count, wa.status, 
         wa.last_wrong_at, wa.last_review_at,
-        q.id as q_id, q.language, q.type, q.difficulty, q.content, 
-        q.options, q.answer, q.chapter_id, q.score,
+        q.id as q_id, q.language, q.type, q.content, 
+        q.options, q.answer, q.paper_id AS chapter_id, q.score,
         q.code_template
       FROM wrong_answers wa
       JOIN questions q ON wa.question_id = q.id
@@ -102,7 +101,6 @@ export async function GET(request: Request) {
       q_id: number
       language: string
       type: string
-      difficulty: string
       content: string
       options: string | null
       answer: string
@@ -136,7 +134,6 @@ export async function GET(request: Request) {
           id: row.q_id,
           language: row.language,
           type: row.type,
-          difficulty: row.difficulty,
           content: row.content,
           options: parsedOptions,
           answer: row.answer,

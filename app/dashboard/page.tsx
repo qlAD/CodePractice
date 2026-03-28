@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react"
 
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
+import type { DBChapter } from '@/lib/db'
 import type { StudentStats } from '@/lib/types'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -38,6 +39,28 @@ export default function DashboardPage() {
   const { user } = useAuth()
   const [stats, setStats] = useState<StudentStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [papers, setPapers] = useState<DBChapter[]>([])
+  const [papersLoading, setPapersLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const response = await fetch('/api/papers')
+        const data = await response.json()
+        if (!cancelled && data.success) {
+          setPapers(data.data ?? [])
+        }
+      } catch (error) {
+        console.error('Failed to fetch papers:', error)
+      } finally {
+        if (!cancelled) setPapersLoading(false)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -97,7 +120,7 @@ export default function DashboardPage() {
             继续你的编程练习之旅
           </p>
         </div>
-        <Link href="/dashboard/practice">
+        <Link href="/dashboard/practice?mode=paper">
           <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
             开始练习
             <ArrowRight className="ml-2 w-4 h-4" />
@@ -198,40 +221,37 @@ export default function DashboardPage() {
       <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle className="text-foreground">快速开始</CardTitle>
-          <CardDescription>选择一种方式开始练习</CardDescription>
+          <CardDescription>选择一份试卷开始练习</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <Link href="/dashboard/practice?mode=language">
-              <QuickStartCard
-                title="按语言练习"
-                description="选择 Java/C++/Python"
-                icon={<Code2 className="w-6 h-6" />}
-              />
-            </Link>
-            <Link href="/dashboard/practice?mode=type">
-              <QuickStartCard
-                title="按题型练习"
-                description="单选/填空/改错/设计"
-                icon={<Target className="w-6 h-6" />}
-              />
-            </Link>
-            <Link href="/dashboard/practice?mode=chapter">
-              <QuickStartCard
-                title="按章节练习"
-                description="针对性强化训练"
-                icon={<BookOpen className="w-6 h-6" />}
-              />
-            </Link>
-            <Link href="/dashboard/practice?mode=exam">
-              <QuickStartCard
-                title="模拟考试"
-                description="真实考试模拟"
-                icon={<FileCode className="w-6 h-6" />}
-                highlight
-              />
-            </Link>
-          </div>
+          {papersLoading ? (
+            <div className="space-y-3">
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-12 w-full rounded-lg" />
+              ))}
+            </div>
+          ) : papers.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4">暂无试卷</p>
+          ) : (
+            <div className="divide-y divide-border border border-border rounded-lg overflow-hidden">
+              {papers.map((p) => {
+                const lang = languageConfig[p.language]
+                return (
+                  <Link
+                    key={p.id}
+                    href={`/dashboard/practice/session?mode=paper&language=${p.language}&paper=${p.id}`}
+                    className="flex items-center justify-between gap-4 px-4 py-3 bg-secondary/30 hover:bg-secondary/60 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 min-w-0">
+                      <span className="text-lg shrink-0">{lang.icon}</span>
+                      <span className="font-medium text-foreground truncate">{p.name}</span>
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                  </Link>
+                )
+              })}
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -325,28 +345,6 @@ function StatsCard({
         <div className="text-xs text-muted-foreground mt-1">{description}</div>
       </CardContent>
     </Card>
-  )
-}
-
-function QuickStartCard({
-  title,
-  description,
-  icon,
-  highlight,
-}: {
-  title: string
-  description: string
-  icon: React.ReactNode
-  highlight?: boolean
-}) {
-  return (
-    <div className={`p-4 rounded-lg border transition-all hover:border-primary/50 cursor-pointer ${highlight ? 'bg-primary/10 border-primary/30' : 'bg-secondary/50 border-border'}`}>
-      <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 ${highlight ? 'bg-primary text-primary-foreground' : 'bg-secondary text-primary'}`}>
-        {icon}
-      </div>
-      <h3 className="font-medium text-foreground mb-1">{title}</h3>
-      <p className="text-xs text-muted-foreground">{description}</p>
-    </div>
   )
 }
 

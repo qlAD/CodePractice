@@ -9,7 +9,7 @@ export async function GET(
   try {
     const { id } = await params
     const question = await db.queryOne<DBQuestion>(
-      'SELECT q.*, c.name as chapter_name FROM questions q LEFT JOIN chapters c ON q.chapter_id = c.id WHERE q.id = ?',
+      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id, p.name as chapter_name FROM questions q LEFT JOIN papers p ON q.paper_id = p.id WHERE q.id = ?',
       [id]
     )
 
@@ -43,17 +43,16 @@ export async function PUT(
     const { id } = await params
     const body = await request.json()
 
-    // 获取原题目信息以更新章节计数
+    // 获取原题目信息以更新试卷计数
     const originalQuestion = await db.queryOne<DBQuestion>(
-      'SELECT chapter_id FROM questions WHERE id = ?',
+      'SELECT paper_id FROM questions WHERE id = ?',
       [id]
     )
 
     const updateData: Record<string, unknown> = {}
     if (body.language !== undefined) updateData.language = body.language
     if (body.type !== undefined) updateData.type = body.type
-    if (body.chapter_id !== undefined) updateData.chapter_id = body.chapter_id
-    if (body.difficulty !== undefined) updateData.difficulty = body.difficulty
+    if (body.paper_id !== undefined) updateData.paper_id = body.paper_id
     if (body.content !== undefined) updateData.content = body.content
     if (body.options !== undefined) updateData.options = JSON.stringify(body.options)
     if (body.code_template !== undefined) updateData.code_template = body.code_template
@@ -70,20 +69,20 @@ export async function PUT(
 
     await db.update('questions', updateData, 'id = ?', [id])
 
-    // 如果章节变更，更新章节计数
-    if (body.chapter_id !== undefined && originalQuestion?.chapter_id !== body.chapter_id) {
-      // 减少旧章节的题目数
-      if (originalQuestion?.chapter_id) {
+    // 如果试卷变更，更新试卷计数
+    if (body.paper_id !== undefined && originalQuestion?.paper_id !== body.paper_id) {
+      // 减少旧试卷的题目数
+      if (originalQuestion?.paper_id) {
         await db.query(
-          'UPDATE chapters SET question_count = question_count - 1 WHERE id = ? AND question_count > 0',
-          [originalQuestion.chapter_id]
+          'UPDATE papers SET question_count = question_count - 1 WHERE id = ? AND question_count > 0',
+          [originalQuestion.paper_id]
         )
       }
-      // 增加新章节的题目数
-      if (body.chapter_id) {
+      // 增加新试卷的题目数
+      if (body.paper_id) {
         await db.query(
-          'UPDATE chapters SET question_count = question_count + 1 WHERE id = ?',
-          [body.chapter_id]
+          'UPDATE papers SET question_count = question_count + 1 WHERE id = ?',
+          [body.paper_id]
         )
       }
     }
@@ -104,19 +103,19 @@ export async function DELETE(
   try {
     const { id } = await params
     
-    // 获取题目信息以更新章节计数
+    // 获取题目信息以更新试卷计数
     const question = await db.queryOne<DBQuestion>(
-      'SELECT chapter_id FROM questions WHERE id = ?',
+      'SELECT paper_id FROM questions WHERE id = ?',
       [id]
     )
     
     await db.delete('questions', 'id = ?', [id])
     
-    // 更新章节题目计数
-    if (question?.chapter_id) {
+    // 更新试卷题目计数
+    if (question?.paper_id) {
       await db.query(
-        'UPDATE chapters SET question_count = question_count - 1 WHERE id = ? AND question_count > 0',
-        [question.chapter_id]
+        'UPDATE papers SET question_count = question_count - 1 WHERE id = ? AND question_count > 0',
+        [question.paper_id]
       )
     }
     

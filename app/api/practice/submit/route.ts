@@ -132,7 +132,7 @@ function extractErrorFixAnswers(userCode: string): string[] {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { student_id, mode, language, question_type, chapter_id, answers, question_ids } = body
+    const { student_id, mode, language, question_type, paper_id, chapter_id, answers, question_ids } = body
 
     if (!student_id || !answers || !question_ids) {
       return NextResponse.json(
@@ -178,7 +178,8 @@ export async function POST(request: Request) {
     const practiceModeMap: Record<string, string> = {
       language: 'by_language',
       type: 'by_type',
-      chapter: 'by_chapter',
+      chapter: 'by_paper',
+      paper: 'by_paper',
       exam: 'exam'
     }
     
@@ -190,7 +191,7 @@ export async function POST(request: Request) {
       practice_mode: practiceModeMap[mode] || 'by_language',
       language: language || null,
       question_type: questionTypeStr || null,
-      chapter_id: chapter_id ? Number(chapter_id) : null,
+      paper_id: (paper_id || chapter_id) ? Number(paper_id || chapter_id) : null,
       total_questions: question_ids.length,
       status: 'completed',
     })

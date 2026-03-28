@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db, type DBQuestion } from '@/lib/db'
+import { resolveQuestionPaperId } from '@/lib/paper-resolve'
 import { safeJsonParse } from '@/lib/utils'
 
 export async function GET(request: Request) {
@@ -7,13 +8,13 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const language = searchParams.get('language')
     const type = searchParams.get('type')
-    const chapter_id = searchParams.get('chapter_id')
-    const difficulty = searchParams.get('difficulty')
+    const paper_id = searchParams.get('paper_id') || searchParams.get('chapter_id')
     const limitParam = searchParams.get('limit')
     const limit = limitParam !== null ? Number(limitParam) : 100
     const offset = Number(searchParams.get('offset')) || 0
 
-    let sql = 'SELECT q.*, c.name as chapter_name FROM questions q LEFT JOIN chapters c ON q.chapter_id = c.id WHERE 1=1'
+    let sql =
+      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id, p.name as chapter_name FROM questions q LEFT JOIN papers p ON q.paper_id = p.id WHERE 1=1'
     const params: unknown[] = []
 
     if (language && language !== 'all') {
@@ -24,16 +25,15 @@ export async function GET(request: Request) {
       sql += ' AND q.type = ?'
       params.push(type)
     }
-    if (chapter_id && chapter_id !== 'all') {
-      sql += ' AND q.chapter_id = ?'
-      params.push(chapter_id)
-    }
-    if (difficulty && difficulty !== 'all') {
-      sql += ' AND q.difficulty = ?'
-      params.push(difficulty)
+    if (paper_id && paper_id !== 'all') {
+      sql += ' AND q.paper_id = ?'
+      params.push(paper_id)
     }
 
-    const countSql = sql.replace('SELECT q.*, c.name as chapter_name', 'SELECT COUNT(*) as total')
+    const countSql = sql.replace(
+      'SELECT q.*, p.name as paper_name, p.papers_id as papers_id, p.name as chapter_name',
+      'SELECT COUNT(*) as total'
+    )
     const countResult = await db.queryOne<{ total: number }>(countSql, params)
     const total = countResult?.total || 0
 
@@ -44,7 +44,7 @@ export async function GET(request: Request) {
       params.push(limit, offset)
     }
 
-    const questions = await db.query<DBQuestion & { chapter_name: string }>(sql, params)
+    const questions = await db.query<DBQuestion & { paper_name: string }>(sql, params)
 
     const formattedQuestions = questions.map(q => ({
       ...q,
@@ -71,11 +71,26 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
 
+    const rawPaper =
+      body.paper_id !== undefined && body.paper_id !== null && body.paper_id !== ''
+        ? body.paper_id
+        : body.papers_id !== undefined && body.papers_id !== null && body.papers_id !== ''
+          ? body.papers_id
+          : body.chapter_id
+
+    let resolvedPaperId: number | null = null
+    if (rawPaper !== undefined && rawPaper !== null && rawPaper !== '') {
+      const r = await resolveQuestionPaperId(rawPaper, body.language)
+      if (r.error) {
+        return NextResponse.json({ success: false, error: r.error }, { status: 400 })
+      }
+      resolvedPaperId = r.id
+    }
+
     const result = await db.insert('questions', {
       language: body.language,
       type: body.type,
-      chapter_id: body.chapter_id || null,
-      difficulty: body.difficulty || 'medium',
+      paper_id: resolvedPaperId,
       content: body.content,
       options: body.options ? JSON.stringify(body.options) : null,
       code_template: body.code_template || null,
@@ -83,10 +98,11 @@ export async function POST(request: Request) {
       score: body.score || 10,
     })
 
-    if (body.chapter_id) {
+    const questionPaperId = resolvedPaperId
+    if (questionPaperId) {
       await db.query(
-        'UPDATE chapters SET question_count = question_count + 1 WHERE id = ?',
-        [body.chapter_id]
+        'UPDATE papers SET question_count = question_count + 1 WHERE id = ?',
+        [questionPaperId]
       )
     }
 
@@ -124,11 +140,28 @@ export async function PUT(request: Request) {
 
     for (const q of questions) {
       try {
+        const rawPaper =
+          q.paper_id !== undefined && q.paper_id !== null && q.paper_id !== ''
+            ? q.paper_id
+            : q.papers_id !== undefined && q.papers_id !== null && q.papers_id !== ''
+              ? q.papers_id
+              : q.chapter_id
+
+        let resolvedPaperId: number | null = null
+        if (rawPaper !== undefined && rawPaper !== null && rawPaper !== '') {
+          const r = await resolveQuestionPaperId(rawPaper, q.language)
+          if (r.error) {
+            results.failed++
+            results.errors.push(`${r.error}: ${q.content?.substring(0, 20)}...`)
+            continue
+          }
+          resolvedPaperId = r.id
+        }
+
         await db.insert('questions', {
           language: q.language,
           type: q.type,
-          chapter_id: q.chapter_id || null,
-          difficulty: q.difficulty || 'medium',
+          paper_id: resolvedPaperId,
           content: q.content,
           options: q.options ? JSON.stringify(q.options) : null,
           code_template: q.code_template || null,
@@ -136,10 +169,10 @@ export async function PUT(request: Request) {
           score: q.score || 10,
         })
 
-        if (q.chapter_id) {
+        if (resolvedPaperId) {
           await db.query(
-            'UPDATE chapters SET question_count = question_count + 1 WHERE id = ?',
-            [q.chapter_id]
+            'UPDATE papers SET question_count = question_count + 1 WHERE id = ?',
+            [resolvedPaperId]
           )
         }
 

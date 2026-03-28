@@ -118,7 +118,7 @@ export async function GET(request: Request) {
       }
     })
 
-    // 按章节统计
+    // 按试卷统计（兼容前端 by_chapter 字段结构）
     const chapterStats = await db.query<{
       language: string
       chapter_id: string
@@ -128,16 +128,16 @@ export async function GET(request: Request) {
     }>(
       `SELECT 
         q.language,
-        c.id as chapter_id,
-        c.name as chapter_name,
+        p.id as chapter_id,
+        p.name as chapter_name,
         COUNT(*) as total,
         SUM(CASE WHEN ar.is_correct = 1 THEN 1 ELSE 0 END) as correct
       FROM answer_records ar
       JOIN practice_records pr ON ar.practice_record_id = pr.id
       JOIN questions q ON ar.question_id = q.id
-      JOIN chapters c ON q.chapter_id = c.id
-      WHERE pr.student_id = ? AND q.chapter_id IS NOT NULL AND q.language IS NOT NULL
-      GROUP BY q.language, c.id, c.name`,
+      JOIN papers p ON q.paper_id = p.id
+      WHERE pr.student_id = ? AND q.paper_id IS NOT NULL AND q.language IS NOT NULL
+      GROUP BY q.language, p.id, p.name`,
       [studentDbId]
     )
 

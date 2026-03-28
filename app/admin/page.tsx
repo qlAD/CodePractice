@@ -23,7 +23,7 @@ interface DashboardStats {
     activeStudents: number
     teachers: number
     questions: number
-    chapters: number
+    papers: number
     todayPractices: number
     weekPractices: number
   }
@@ -74,7 +74,7 @@ export default function AdminDashboardPage() {
     )
   }
 
-  const overview = stats?.overview || { students: 0, activeStudents: 0, teachers: 0, questions: 0, chapters: 0, todayPractices: 0, weekPractices: 0 }
+  const overview = stats?.overview || { students: 0, activeStudents: 0, teachers: 0, questions: 0, papers: 0, todayPractices: 0, weekPractices: 0 }
   const questionsByLanguage = stats?.questionsByLanguage || []
   const recentStudents = stats?.recentStudents || []
   const totalQuestions = questionsByLanguage.reduce((sum, l) => sum + l.count, 0)
@@ -125,7 +125,7 @@ export default function AdminDashboardPage() {
                 <p className="text-sm text-muted-foreground">题库总量</p>
                 <p className="text-2xl font-bold text-foreground mt-1">{overview.questions}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  共 {overview.chapters} 个章节
+                  共 {overview.papers} 份试卷
                 </p>
               </div>
               <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">

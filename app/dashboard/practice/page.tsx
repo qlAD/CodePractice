@@ -43,15 +43,17 @@ interface QuestionCounts {
 export default function PracticePage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const initialMode = searchParams.get('mode') || 'language'
+  const modeParam = searchParams.get('mode')
+  const initialMode =
+    modeParam && ['language', 'type', 'paper', 'exam'].includes(modeParam) ? modeParam : 'paper'
 
   const [activeTab, setActiveTab] = useState(initialMode)
   const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(null)
   const [selectedTypes, setSelectedTypes] = useState<QuestionType[]>([])
-  const [selectedChapters, setSelectedChapters] = useState<string[]>([])
+  const [selectedPapers, setSelectedPapers] = useState<string[]>([])
   const [examLanguage, setExamLanguage] = useState<Language | null>(null)
-  const [chapters, setChapters] = useState<Chapter[]>([])
-  const [isLoadingChapters, setIsLoadingChapters] = useState(false)
+  const [papers, setPapers] = useState<Chapter[]>([])
+  const [isLoadingPapers, setIsLoadingPapers] = useState(false)
   const [questionCounts, setQuestionCounts] = useState<QuestionCounts | null>(null)
 
   // Fetch question counts on mount
@@ -70,30 +72,30 @@ export default function PracticePage() {
     fetchCounts()
   }, [])
 
-  // Fetch chapters when language is selected for chapter practice
+  // Fetch papers when language is selected for paper practice
   useEffect(() => {
-    const fetchChapters = async () => {
-      if (!selectedLanguage && activeTab === 'chapter') return
+    const fetchPapers = async () => {
+      if (!selectedLanguage && activeTab === 'paper') return
       
-      setIsLoadingChapters(true)
+      setIsLoadingPapers(true)
       try {
         const url = selectedLanguage 
-          ? `/api/chapters?language=${selectedLanguage}`
-          : '/api/chapters'
+          ? `/api/papers?language=${selectedLanguage}`
+          : '/api/papers'
         const response = await fetch(url)
         const data = await response.json()
         if (data.success) {
-          setChapters(data.data || [])
+          setPapers(data.data || [])
         }
       } catch (error) {
-        console.error('Failed to fetch chapters:', error)
+        console.error('Failed to fetch papers:', error)
       } finally {
-        setIsLoadingChapters(false)
+        setIsLoadingPapers(false)
       }
     }
 
-    if (activeTab === 'chapter') {
-      fetchChapters()
+    if (activeTab === 'paper') {
+      fetchPapers()
     }
   }, [selectedLanguage, activeTab])
 
@@ -105,11 +107,11 @@ export default function PracticePage() {
     )
   }
 
-  const handleChapterToggle = (chapterId: string) => {
-    setSelectedChapters(prev =>
-      prev.includes(chapterId)
-        ? prev.filter(c => c !== chapterId)
-        : [...prev, chapterId]
+  const handlePaperToggle = (paperId: string) => {
+    setSelectedPapers(prev =>
+      prev.includes(paperId)
+        ? prev.filter(c => c !== paperId)
+        : [...prev, paperId]
     )
   }
 
@@ -124,10 +126,10 @@ export default function PracticePage() {
       selectedTypes.forEach(type => {
         params.append('type', type)
       })
-    } else if (mode === 'chapter' && selectedLanguage && selectedChapters.length > 0) {
+    } else if (mode === 'paper' && selectedLanguage && selectedPapers.length > 0) {
       params.set('language', selectedLanguage)
-      selectedChapters.forEach(chapter => {
-        params.append('chapter', chapter)
+      selectedPapers.forEach(paper => {
+        params.append('paper', paper)
       })
     } else if (mode === 'exam' && examLanguage) {
       params.set('language', examLanguage)
@@ -136,15 +138,15 @@ export default function PracticePage() {
     router.push(`/dashboard/practice/session?${params.toString()}`)
   }
 
-  const filteredChapters = selectedLanguage
-    ? chapters.filter(c => c.language === selectedLanguage)
-    : chapters
+  const filteredPapers = selectedLanguage
+    ? papers.filter(c => c.language === selectedLanguage)
+    : papers
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground">题库练习</h1>
-        <p className="text-muted-foreground mt-1">选择一种练习模式开始学习</p>
+        <p className="text-muted-foreground mt-1">选择一份试卷开始练习，或通过标签切换其他方式</p>
       </div>
 
       <Tabs value={activeTab} onValueChange={(value) => {
@@ -169,11 +171,11 @@ export default function PracticePage() {
             按题型练习
           </TabsTrigger>
           <TabsTrigger
-            value="chapter"
+            value="paper"
             className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground bg-secondary text-secondary-foreground py-3"
           >
             <BookOpen className="w-4 h-4 mr-2" />
-            按章节练习
+按试卷练习
           </TabsTrigger>
           <TabsTrigger
             value="exam"
@@ -313,19 +315,19 @@ export default function PracticePage() {
           </Card>
         </TabsContent>
 
-        {/* Chapter Practice */}
-        <TabsContent value="chapter" className="space-y-6">
+        {/* Paper Practice */}
+        <TabsContent value="paper" className="space-y-6">
           <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-foreground">选择章节</CardTitle>
-              <CardDescription>先选择语言，再选择具体章节进行针对性练习</CardDescription>
+              <CardTitle className="text-foreground">选择试卷</CardTitle>
+              <CardDescription>先选择语言，再选择具体试卷进行针对性练习</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label>选择语言</Label>
                 <Select value={selectedLanguage || ''} onValueChange={(v) => {
                   setSelectedLanguage(v as Language)
-                  setSelectedChapters([])
+                  setSelectedPapers([])
                 }}>
                   <SelectTrigger className="w-full md:w-64 bg-input border-border">
                     <SelectValue placeholder="请选择编程语言" />
@@ -342,25 +344,25 @@ export default function PracticePage() {
 
               {selectedLanguage && (
                 <div className="space-y-2">
-                  <Label>选择章节</Label>
-                  {isLoadingChapters ? (
+                  <Label>选择试卷</Label>
+                  {isLoadingPapers ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                       {[1, 2, 3].map((i) => (
                         <Skeleton key={i} className="h-14 w-full" />
                       ))}
                     </div>
-                  ) : filteredChapters.length === 0 ? (
+                  ) : filteredPapers.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground border rounded-lg bg-secondary/30">
-                      该语言暂无章节，请先在管理端添加章节
+                      该语言暂无试卷，请先在管理端添加试卷
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {filteredChapters.map((chapter) => {
-                        const isSelected = selectedChapters.includes(String(chapter.id))
+                      {filteredPapers.map((paper) => {
+                        const isSelected = selectedPapers.includes(String(paper.id))
                         return (
                           <div
-                            key={chapter.id}
-                            onClick={() => handleChapterToggle(String(chapter.id))}
+                            key={paper.id}
+                            onClick={() => handlePaperToggle(String(paper.id))}
                             className={`p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 cursor-pointer ${
                               isSelected
                                 ? 'border-primary bg-primary/10'
@@ -368,7 +370,7 @@ export default function PracticePage() {
                             }`}
                           >
                             <div className="flex-1">
-                              <span className="font-medium text-foreground">{chapter.name}</span>
+                              <span className="font-medium text-foreground">{paper.name}</span>
                             </div>
                             <Checkbox checked={isSelected} className="shrink-0" />
                           </div>
@@ -381,11 +383,11 @@ export default function PracticePage() {
 
               <div className="flex justify-end">
                 <Button
-                  onClick={() => startPractice('chapter')}
-                  disabled={!selectedLanguage || selectedChapters.length === 0}
+                  onClick={() => startPractice('paper')}
+                  disabled={!selectedLanguage || selectedPapers.length === 0}
                   className="bg-primary text-primary-foreground"
                 >
-                  开始练习 ({selectedChapters.length} 个章节)
+                  开始练习 ({selectedPapers.length} 套试卷)
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </div>

@@ -47,10 +47,9 @@ export default function PracticeSessionPage() {
 
   const mode = searchParams.get('mode') || 'language'
   const language = searchParams.get('language') as Language | null
-  const chapters = React.useMemo(() => {
-    return searchParams.getAll('chapter')
+  const papers = React.useMemo(() => {
+    return searchParams.getAll('paper')
   }, [searchParams])
-  const chapter = chapters.length > 0 ? chapters[0] : null
   const fromWrongAnswers = searchParams.get('from') === 'wrong-answers'
   const questionId = searchParams.get('question_id')
   const filterStatus = searchParams.get('status')
@@ -153,7 +152,11 @@ export default function PracticeSessionPage() {
           // 常规练习模式
           const params = new URLSearchParams()
           params.set('mode', mode)
-          params.set('count', mode === 'exam' ? '40' : '10')
+          if (mode === 'exam') {
+            params.set('count', '40')
+          } else if (mode !== 'paper') {
+            params.set('count', '10')
+          }
 
           if (language) {
             params.set('language', language)
@@ -163,9 +166,9 @@ export default function PracticeSessionPage() {
               params.append('type', type)
             })
           }
-          if (chapters.length > 0) {
-            chapters.forEach(chapter => {
-              params.append('chapter_id', chapter)
+          if (papers.length > 0) {
+            papers.forEach(paper => {
+              params.append('paper_id', paper)
             })
           }
 
@@ -189,7 +192,7 @@ export default function PracticeSessionPage() {
     }
 
     fetchQuestions()
-  }, [mode, language, types, chapters, searchParams, filterStatus, filterType])
+  }, [mode, language, types, papers, searchParams, filterStatus, filterType])
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<number, string>>({})
@@ -246,7 +249,7 @@ export default function PracticeSessionPage() {
           language,
           question_type: types?.join(','),
           question_types: types,
-          chapter_id: chapters.join(','),
+          paper_id: papers.join(','),
           answers: Object.entries(answers).map(([questionId, answer]) => ({
             question_id: Number(questionId),
             answer,
@@ -368,8 +371,8 @@ export default function PracticeSessionPage() {
             <p className="text-sm text-muted-foreground">
               {mode === 'wrong_answers' ? `复习错题，巩固薄弱环节${language ? ` - ${language.toUpperCase()}` : ''}${filterType ? ` - ${filterType}` : ''}` : 
                 mode === 'exam' && language ? `${language.toUpperCase()} 模拟考试` :
-                mode === 'chapter' && language && chapters.length > 0 ? `${language.toUpperCase()} 共 ${chapters.length} 章节` :
-                chapters.length > 0 && language ? `${language.toUpperCase()} 共 ${chapters.length} 章节` :
+                mode === 'paper' && language && papers.length > 0 ? `${language.toUpperCase()} 共 ${papers.length} 套试卷` :
+                papers.length > 0 && language ? `${language.toUpperCase()} 共 ${papers.length} 套试卷` :
                 types.length > 0 && language ? `${language.toUpperCase()} 共 ${types.length} 种题型` :
                 language ? `${language.toUpperCase()}` : ''
               }

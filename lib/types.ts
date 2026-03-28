@@ -24,14 +24,12 @@ export interface Teacher {
 // Question types
 export type Language = 'java' | 'cpp' | 'python'
 export type QuestionType = 'single_choice' | 'fill_blank' | 'error_fix' | 'programming'
-export type Difficulty = 'easy' | 'medium' | 'hard'
 
 export interface Question {
   id: number
   language: Language
   type: QuestionType
   chapter: string
-  difficulty: Difficulty
   content: string
   code_template?: string
   options?: string[] // For single choice questions
@@ -95,6 +93,7 @@ export interface Chapter {
   name: string
   language: Language
   order: number
+  papers_id?: string | null
 }
 
 // Exam configuration

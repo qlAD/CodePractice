@@ -19,8 +19,8 @@ export interface ParsedTeacher {
 export interface ParsedQuestion {
   type: 'single_choice' | 'fill_blank' | 'error_fix' | 'programming'
   language: 'java' | 'cpp' | 'python'
-  chapter_id: string
-  difficulty: 'easy' | 'medium' | 'hard'
+  /** 试卷编号 papers_id 或数字主键 id */
+  paper_id: string
   content: string
   options?: string // JSON string for single choice
   code_template?: string
@@ -148,14 +148,14 @@ export async function parseQuestionExcel(file: File): Promise<ParseResult<Parsed
 
   const validTypes = ['single_choice', 'fill_blank', 'error_fix', 'programming']
   const validLanguages = ['java', 'cpp', 'python']
-  const validDifficulties = ['easy', 'medium', 'hard']
 
   for (let i = 1; i < rows.length; i++) {
     const row = rows[i]
     if (!row || row.length === 0 || !row[0]) continue
 
-    const [type, language, chapter_id, difficulty, content, options, code_template, answer,score] = 
-      row.map(cell => cell?.toString().trim() || '')
+    const [type, language, paper_id, content, options, code_template, answer, _analysis, score] = row.map(
+      cell => cell?.toString().trim() || ''
+    )
 
     // Validation
     if (!validTypes.includes(type)) {
@@ -164,10 +164,6 @@ export async function parseQuestionExcel(file: File): Promise<ParseResult<Parsed
     }
     if (!validLanguages.includes(language)) {
       errors.push({ row: i + 1, message: `语言无效: ${language}` })
-      continue
-    }
-    if (!validDifficulties.includes(difficulty)) {
-      errors.push({ row: i + 1, message: `难度无效: ${difficulty}` })
       continue
     }
     if (!content) {
@@ -182,8 +178,7 @@ export async function parseQuestionExcel(file: File): Promise<ParseResult<Parsed
     data.push({
       type: type as ParsedQuestion['type'],
       language: language as ParsedQuestion['language'],
-      chapter_id: chapter_id || '1',
-      difficulty: difficulty as ParsedQuestion['difficulty'],
+      paper_id: paper_id || '',
       content,
       options: type === 'single_choice' ? options : undefined,
       code_template: code_template || undefined,
@@ -225,10 +220,10 @@ export function generateTeacherTemplate(): Uint8Array {
 
 export function generateQuestionTemplate(): Uint8Array {
   const ws = XLSX.utils.aoa_to_sheet([
-    ['题型', '语言', '章节ID', '难度', '题目内容', '选项(JSON)', '代码模板', '答案', '解析', '分值'],
-    ['single_choice', 'java', '1', 'easy', 'Java中以下哪个不是基本数据类型？', '["int","String","boolean","char"]', '', 'B', 'String是引用类型', '10'],
-    ['fill_blank', 'python', '2', 'medium', '请补充代码，实现列表排序', '', 'list._____()', 'sort', '使用sort()方法原地排序', '15'],
-    ['programming', 'cpp', '3', 'hard', '编写一个函数计算斐波那契数列第n项', '', '#include <iostream>\n// 在此编写代码', 'int fib(int n) { ... }', '可以使用递归或动态规划', '20'],
+    ['题型', '语言', '试卷编号', '题目内容', '选项(JSON)', '代码模板', '答案', '解析', '分值'],
+    ['single_choice', 'java', 'JAVA_B1', 'Java中以下哪个不是基本数据类型？', '["int","String","boolean","char"]', '', 'B', 'String是引用类型', '10'],
+    ['fill_blank', 'python', 'PY_M1', '请补充代码，实现列表排序', '', 'list._____()', 'sort', '使用sort()方法原地排序', '15'],
+    ['programming', 'cpp', 'CPP_H1', '编写一个函数计算斐波那契数列第n项', '', '#include <iostream>\n// 在此编写代码', 'int fib(int n) { ... }', '可以使用递归或动态规划', '20'],
   ])
   const wb = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(wb, ws, '题库')

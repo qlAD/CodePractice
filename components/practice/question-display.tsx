@@ -37,12 +37,6 @@ interface QuestionDisplayProps {
   optionOrder?: number[]
 }
 
-const difficultyConfig = {
-  easy: { label: '简单', color: 'bg-success/20 text-success' },
-  medium: { label: '中等', color: 'bg-warning/20 text-warning' },
-  hard: { label: '困难', color: 'bg-destructive/20 text-destructive' },
-}
-
 const typeLabels = {
   single_choice: '单选题',
   fill_blank: '程序填空',
@@ -81,9 +75,6 @@ export function QuestionDisplay({
             </CardTitle>
             <Badge variant="outline" className="text-xs">
               {typeLabels[question.type]}
-            </Badge>
-            <Badge className={cn('text-xs', difficultyConfig[question.difficulty].color)}>
-              {difficultyConfig[question.difficulty].label}
             </Badge>
             <Badge variant="outline" className="text-xs">
               {question.score} 分

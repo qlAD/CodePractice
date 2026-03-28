@@ -3,44 +3,24 @@ import { db } from '@/lib/db'
 
 export async function GET() {
   try {
-    // 先更新学生的活跃状态
-    // 1. 获取所有学生ID
-    const allStudents = await db.query<{ id: number }>(
-      'SELECT id FROM students'
+    await db.query(
+      `UPDATE students s
+       LEFT JOIN (
+         SELECT DISTINCT student_id FROM practice_records
+         WHERE started_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+       ) a ON s.id = a.student_id
+       SET s.status = CASE
+         WHEN s.status = 'locked' THEN s.status
+         WHEN a.student_id IS NOT NULL THEN 'active'
+         ELSE 'inactive'
+       END`
     )
-    
-    // 2. 获取最近7天有练习记录的学生ID
-    const activeStudentIds = await db.query<{ student_id: number }>(
-      'SELECT DISTINCT student_id FROM practice_records WHERE started_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)'
+    await db.query(
+      `UPDATE teachers SET status = CASE
+         WHEN last_login IS NOT NULL AND last_login >= DATE_SUB(NOW(), INTERVAL 7 DAY) THEN 'active'
+         ELSE 'inactive'
+       END`
     )
-    
-    const activeIdsSet = new Set(activeStudentIds.map(record => record.student_id))
-    
-    // 3. 逐个更新学生状态
-    for (const student of allStudents) {
-      const newStatus = activeIdsSet.has(student.id) ? 'active' : 'inactive'
-      await db.update('students', { status: newStatus }, 'id = ?', [student.id])
-    }
-    
-    // 更新教师的活跃状态
-    // 1. 获取所有教师ID
-    const allTeachers = await db.query<{ id: number; last_login: string | null }>(
-      'SELECT id, last_login FROM teachers'
-    )
-    
-    // 2. 逐个更新教师状态
-    for (const teacher of allTeachers) {
-      let newStatus = 'inactive'
-      if (teacher.last_login) {
-        const lastLoginDate = new Date(teacher.last_login)
-        const sevenDaysAgo = new Date()
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-        if (lastLoginDate >= sevenDaysAgo) {
-          newStatus = 'active'
-        }
-      }
-      await db.update('teachers', { status: newStatus }, 'id = ?', [teacher.id])
-    }
 
     // 获取学生总数
     const studentCount = await db.queryOne<{ count: number }>(
@@ -62,9 +42,8 @@ export async function GET() {
       'SELECT COUNT(*) as count FROM questions'
     )
 
-    // 获取章节总数
-    const chapterCount = await db.queryOne<{ count: number }>(
-      'SELECT COUNT(*) as count FROM chapters'
+    const paperCount = await db.queryOne<{ count: number }>(
+      'SELECT COUNT(*) as count FROM papers'
     )
 
     // 今日练习次数（只统计模拟考试）
@@ -114,7 +93,7 @@ export async function GET() {
           activeStudents: activeStudentCount?.count || 0,
           teachers: teacherCount?.count || 0,
           questions: questionCount?.count || 0,
-          chapters: chapterCount?.count || 0,
+          papers: paperCount?.count || 0,
           todayPractices: todayPractice?.count || 0,
           weekPractices: weekPractice?.count || 0,
         },

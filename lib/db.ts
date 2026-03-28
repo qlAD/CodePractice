@@ -114,8 +114,7 @@ export interface DBQuestion {
   id: number
   language: 'java' | 'cpp' | 'python'
   type: 'single_choice' | 'fill_blank' | 'error_fix' | 'programming'
-  chapter_id: number | null
-  difficulty: 'easy' | 'medium' | 'hard'
+  paper_id: number | null
   content: string
   options: string | null
   code_template: string | null
@@ -127,6 +126,7 @@ export interface DBQuestion {
 
 export interface DBChapter {
   id: number
+  papers_id: string | null
   language: 'java' | 'cpp' | 'python'
   name: string
   description: string | null
