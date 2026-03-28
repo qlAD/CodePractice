@@ -108,7 +108,7 @@ CREATE TABLE practice_records (
   student_id INT NOT NULL COMMENT '学生ID',
   practice_mode ENUM('by_language', 'by_type', 'by_paper', 'exam') NOT NULL COMMENT '练习模式',
   language ENUM('java', 'cpp', 'python') COMMENT '语言',
-  question_type ENUM('single_choice', 'fill_blank', 'error_fix', 'programming') COMMENT '题型',
+  question_type VARCHAR(128) COMMENT '题型',
   paper_id INT COMMENT '试卷ID',
   total_questions INT NOT NULL COMMENT '总题数',
   correct_count INT DEFAULT 0 COMMENT '正确数',

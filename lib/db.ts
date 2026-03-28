@@ -142,12 +142,7 @@ export interface DBPracticeRecord {
   practice_config_id: number | null
   practice_mode: 'by_language' | 'by_type' | 'by_chapter' | 'exam'
   language: 'java' | 'cpp' | 'python' | null
-  question_type:
-    | 'single_choice'
-    | 'fill_blank'
-    | 'error_fix'
-    | 'programming'
-    | null
+  question_type: string | null
   chapter_id: number | null
   total_questions: number
   correct_count: number
