@@ -38,6 +38,17 @@ const navigation = [
   { name: '系统设置', href: '/admin/settings', icon: Cog, permission: 'system_management' as const },
 ]
 
+function navTitleFromPath(
+  pathname: string,
+  items: Array<{ name: string; href: string }>
+) {
+  const sorted = [...items].sort((a, b) => b.href.length - a.href.length)
+  const hit = sorted.find(
+    (item) => pathname === item.href || pathname.startsWith(`${item.href}/`)
+  )
+  return hit?.name ?? '控制台'
+}
+
 function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const { user, updatePassword } = useTeacherAuth()
   const router = useRouter()
@@ -169,16 +180,22 @@ export function AdminSidebar() {
     return hasPermission(item.permission)
   })
 
+  const mobileBarTitle = navTitleFromPath(pathname, filteredNavigation)
+
   const SidebarContent = ({ showMobileClose }: { showMobileClose?: boolean }) => (
     <>
       <div className="flex items-center gap-3 border-b border-sidebar-border bg-sidebar px-4 py-5">
         <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-sm">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-primary/25 bg-primary/15 text-primary shadow-sm">
             <Settings className="h-5 w-5" />
           </div>
           <div className="min-w-0 flex flex-col">
-            <span className="truncate text-base font-semibold text-heading">CodePractice</span>
-            <span className="text-xs text-muted-foreground">教师管理端</span>
+            <span className="font-display truncate text-base font-semibold tracking-wide text-heading">
+              CodePractice
+            </span>
+            <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+              教师管理端
+            </span>
           </div>
         </div>
         {showMobileClose && (
@@ -204,10 +221,10 @@ export function AdminSidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-150',
+                'flex items-center gap-3 rounded-[var(--radius-sm)] border-l-2 border-transparent py-2.5 pl-2.5 pr-3 text-sm font-medium transition-ui duration-200',
                 isActive
-                  ? 'bg-sidebar-accent font-semibold text-sidebar-primary'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent/80'
+                  ? 'border-primary bg-sidebar-accent font-semibold text-sidebar-primary'
+                  : 'text-sidebar-foreground hover:border-border hover:bg-sidebar-accent/50'
               )}
             >
               <item.icon className="w-5 h-5" />
@@ -250,15 +267,29 @@ export function AdminSidebar() {
   return (
     <>
       {!mobileOpen && (
-        <Button
-          variant="secondary"
-          size="icon"
-          className="fixed left-3 top-3 z-50 h-11 w-11 shadow-card ring-1 ring-border/80 lg:hidden"
-          onClick={() => setMobileOpen(true)}
-          aria-label="打开菜单"
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
+        <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-card/90 pt-[env(safe-area-inset-top,0px)] shadow-card backdrop-blur-md lg:hidden">
+          <div className="relative flex h-16 items-center gap-4 px-5">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-primary/0 via-primary/40 to-primary/0" />
+            <div className="flex min-w-0 flex-1 items-center gap-3.5">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-primary/25 bg-primary/15 text-primary shadow-sm">
+                <Settings className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-lg font-semibold leading-snug text-heading">{mobileBarTitle}</p>
+                <p className="truncate text-xs leading-snug text-muted-foreground">CodePractice · 管理端</p>
+              </div>
+            </div>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-11 w-11 shrink-0 shadow-sm ring-1 ring-border/80"
+              onClick={() => setMobileOpen(true)}
+              aria-label="打开菜单"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </div>
+        </header>
       )}
 
       {/* Mobile overlay */}
@@ -272,7 +303,7 @@ export function AdminSidebar() {
       {/* Mobile sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 w-64 border-r border-sidebar-border bg-sidebar shadow-card transform transition-transform duration-200 ease-in-out lg:hidden',
+          'fixed inset-y-0 left-0 z-40 w-[min(20rem,92vw)] border-r border-sidebar-border bg-sidebar backdrop-blur-xl shadow-card transform transition-transform duration-200 ease-in-out lg:hidden',
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
@@ -282,7 +313,7 @@ export function AdminSidebar() {
       </aside>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-sidebar-border lg:bg-sidebar">
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-sidebar-border lg:bg-sidebar lg:backdrop-blur-xl">
         <SidebarContent />
       </aside>
 

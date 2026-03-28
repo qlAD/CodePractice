@@ -176,7 +176,7 @@ export default function WrongAnswersPage() {
 
       {/* Stats overview */}
       <div className="grid grid-cols-3 gap-4">
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-destructive/20 flex items-center justify-center">
@@ -189,7 +189,7 @@ export default function WrongAnswersPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-warning/20 flex items-center justify-center">
@@ -202,7 +202,7 @@ export default function WrongAnswersPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-success/20 flex items-center justify-center">
@@ -218,7 +218,7 @@ export default function WrongAnswersPage() {
       </div>
 
       {/* Filters */}
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex flex-col sm:flex-row gap-4">
@@ -275,7 +275,7 @@ export default function WrongAnswersPage() {
       {/* Wrong answers list */}
       <div className="space-y-4">
         {filteredWrongAnswers.length === 0 ? (
-          <Card className="bg-card border-border">
+          <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
             <CardContent className="py-12 text-center">
               <CheckCircle2 className="w-12 h-12 text-success mx-auto mb-4" />
               <p className="text-foreground font-medium">没有符合条件的错题</p>

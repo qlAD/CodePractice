@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { CodeEditor } from './code-editor'
 import { cn } from '@/lib/utils'
-import { CodeRunner } from './code-runner'
 import {
   CheckCircle2,
   XCircle,
@@ -44,6 +43,18 @@ const typeLabels = {
   programming: '程序设计',
 }
 
+const languageLabels: Record<Language, string> = {
+  java: 'Java',
+  cpp: 'C/C++',
+  python: 'Python',
+}
+
+const languageBadgeClass: Record<Language, string> = {
+  java: 'border-0 bg-java text-white',
+  cpp: 'border-0 bg-cpp text-white',
+  python: 'border-0 bg-python text-white',
+}
+
 export function QuestionDisplay({
   question,
   questionNumber,
@@ -66,17 +77,20 @@ export function QuestionDisplay({
   const isCorrect = isCorrectProp !== undefined ? isCorrectProp : userAnswer === question.answer
 
   return (
-    <Card className="bg-card border-border">
-      <CardHeader className="pb-4">
+    <Card className="border-border/90 border-t-2 border-t-primary/45 bg-card shadow-card ring-1 ring-border/40">
+      <CardHeader className="border-b border-border/70 pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
             <CardTitle className="text-lg text-foreground">
               第 {questionNumber}/{totalQuestions} 题
             </CardTitle>
+            <Badge className={cn('text-xs font-medium', languageBadgeClass[question.language])}>
+              {languageLabels[question.language]}
+            </Badge>
             <Badge variant="outline" className="text-xs">
               {typeLabels[question.type]}
             </Badge>
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="secondary" className="text-xs text-text-secondary">
               {question.score} 分
             </Badge>
           </div>
@@ -118,8 +132,7 @@ export function QuestionDisplay({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Question content */}
+      <CardContent className="space-y-6 pt-6">
         <div className="text-foreground whitespace-pre-wrap">{question.content}</div>
 
         {/* Answer area based on question type */}
@@ -267,28 +280,23 @@ function FillBlankAnswer({
 }) {
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
+      <div>
         <Label className="text-foreground">请填写空白处的代码：</Label>
-        <CodeEditor
-          value={answer || codeTemplate}
-          onChange={onChange}
-          language={language}
-          readOnly={isSubmitted}
-          height="350px"
-        />
+        <div className="mt-2">
+          <CodeEditor
+            value={answer || codeTemplate}
+            onChange={onChange}
+            language={language}
+            readOnly={isSubmitted}
+            height="clamp(300px, 44vh, 520px)"
+          />
+        </div>
       </div>
-
-      {!isSubmitted && (
-        <CodeRunner
-          code={answer || codeTemplate}
-          language={language}
-        />
-      )}
 
       {(showAnswer || isSubmitted) && (
         <div className="space-y-2">
-          <Label className="text-success">参考答案：</Label>
-          <div className="rounded-lg overflow-hidden border border-success/30 p-4 bg-secondary/30 font-mono text-sm whitespace-pre-wrap text-foreground">
+          <Label className="mt-2 text-success">参考答案：</Label>
+          <div className="mt-2 overflow-hidden rounded-[var(--radius)] border border-success/30 bg-secondary/40 p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap text-foreground">
             {correctAnswer}
           </div>
         </div>
@@ -317,28 +325,23 @@ function FixErrorAnswer({
 }) {
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
+      <div>
         <Label className="text-foreground">请修改以下代码中的错误：</Label>
-        <CodeEditor
-          value={answer || codeTemplate}
-          onChange={onChange}
-          language={language}
-          readOnly={isSubmitted}
-          height="350px"
-        />
+        <div className="mt-2">
+          <CodeEditor
+            value={answer || codeTemplate}
+            onChange={onChange}
+            language={language}
+            readOnly={isSubmitted}
+            height="clamp(300px, 44vh, 520px)"
+          />
+        </div>
       </div>
-
-      {!isSubmitted && (
-        <CodeRunner
-          code={answer || codeTemplate}
-          language={language}
-        />
-      )}
 
       {(showAnswer || isSubmitted) && (
         <div className="space-y-2">
-          <Label className="text-success">参考答案：</Label>
-          <div className="rounded-lg overflow-hidden border border-success/30 p-4 bg-secondary/30 font-mono text-sm whitespace-pre-wrap text-foreground">
+          <Label className="mt-2 text-success">参考答案：</Label>
+          <div className="mt-2 overflow-hidden rounded-[var(--radius)] border border-success/30 bg-secondary/40 p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap text-foreground">
             {correctAnswer}
           </div>
         </div>
@@ -356,7 +359,6 @@ function ProgrammingAnswer({
   showAnswer,
   isSubmitted,
   language,
-  testCases,
   matchPercentage,
 }: {
   codeTemplate: string
@@ -366,29 +368,22 @@ function ProgrammingAnswer({
   showAnswer: boolean
   isSubmitted: boolean
   language: Language
-  testCases?: Array<{ input: string; expectedOutput: string }>
   matchPercentage?: number
 }) {
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
+      <div>
         <Label className="text-foreground">编写你的代码：</Label>
-        <CodeEditor
-          value={answer || codeTemplate}
-          onChange={onChange}
-          language={language}
-          readOnly={isSubmitted}
-          height="350px"
-        />
+        <div className="mt-2">
+          <CodeEditor
+            value={answer || codeTemplate}
+            onChange={onChange}
+            language={language}
+            readOnly={isSubmitted}
+            height="clamp(320px, 48vh, 560px)"
+          />
+        </div>
       </div>
-
-      {!isSubmitted && (
-        <CodeRunner
-          code={answer || codeTemplate}
-          language={language}
-          testCases={testCases}
-        />
-      )}
 
       {(showAnswer || isSubmitted) && (
         <div className="space-y-2">
@@ -403,14 +398,14 @@ function ProgrammingAnswer({
               </span>
             </div>
           )}
-          <Label className="text-success">参考答案：</Label>
-          <div className="rounded-lg overflow-hidden border border-success/30">
+          <Label className="mt-2 text-success">参考答案：</Label>
+          <div className="mt-2 rounded-lg overflow-hidden border border-success/30">
             <CodeEditor
               value={correctAnswer}
               onChange={() => {}}
               language={language}
               readOnly
-              height="250px"
+              height="clamp(220px, 32vh, 400px)"
             />
           </div>
         </div>

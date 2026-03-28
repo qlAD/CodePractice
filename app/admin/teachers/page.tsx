@@ -224,8 +224,8 @@ export default function TeachersPage() {
 
   if (!isAdmin) {
     return (
-      <div className="p-6 lg:p-8">
-        <Card className="bg-card border-border">
+      <div>
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardContent className="p-12 text-center">
             <Shield className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-foreground mb-2">权限不足</h2>
@@ -238,14 +238,14 @@ export default function TeachersPage() {
 
   if (loading) {
     return (
-      <div className="p-6 lg:p-8 flex items-center justify-center min-h-[50vh]">
+      <div className="flex items-center justify-center min-h-[50vh]">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     )
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">教师管理</h1>
@@ -337,7 +337,7 @@ export default function TeachersPage() {
         </div>
       </div>
 
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardContent className="p-4">
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -351,7 +351,7 @@ export default function TeachersPage() {
         </CardContent>
       </Card>
 
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <UserCog className="w-5 h-5 text-primary" />

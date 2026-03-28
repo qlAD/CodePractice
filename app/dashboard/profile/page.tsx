@@ -54,14 +54,14 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="mx-auto w-full max-w-[min(100%,48rem)] space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground">个人信息</h1>
         <p className="text-muted-foreground mt-1">查看和管理你的账号信息</p>
       </div>
 
       {/* User info card */}
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardHeader>
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
@@ -99,7 +99,7 @@ export default function ProfilePage() {
       </Card>
 
       {/* Password change card */}
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -132,7 +132,7 @@ export default function ProfilePage() {
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
                   required
-                  className="bg-input border-border"
+                  className="transition-ui"
                 />
               </div>
               <div className="space-y-2">
@@ -143,7 +143,7 @@ export default function ProfilePage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
-                  className="bg-input border-border"
+                  className="transition-ui"
                 />
                 <p className="text-xs text-muted-foreground">
                   密码长度不少于8位，建议包含字母、数字或特殊字符
@@ -157,7 +157,7 @@ export default function ProfilePage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="bg-input border-border"
+                  className="transition-ui"
                 />
               </div>
 

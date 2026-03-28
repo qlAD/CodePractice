@@ -131,14 +131,14 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="p-6 lg:p-8 flex items-center justify-center min-h-[50vh]">
+      <div className="flex items-center justify-center min-h-[50vh]">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     )
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">系统设置</h1>
@@ -155,7 +155,7 @@ export default function SettingsPage() {
         {/* System Config Tab */}
         {isAdmin && (
           <TabsContent value="system" className="space-y-6">
-            <Card className="bg-card border-border">
+            <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Settings className="w-5 h-5 text-primary" />
@@ -210,7 +210,7 @@ export default function SettingsPage() {
         {/* Logs Tab */}
         {isAdmin && (
           <TabsContent value="logs" className="space-y-6">
-            <Card className="bg-card border-border">
+            <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <FileText className="w-5 h-5 text-accent" />

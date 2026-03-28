@@ -68,7 +68,7 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <div className="p-6 lg:p-8 flex items-center justify-center min-h-[50vh]">
+      <div className="flex min-h-[50vh] items-center justify-center py-6 lg:py-8">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     )
@@ -91,17 +91,28 @@ export default function AdminDashboardPage() {
   }))
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold text-foreground">控制台</h1>
-        <p className="text-muted-foreground">
-          欢迎回来, {user?.name}! 今天是 {new Date().toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-        </p>
+    <div className="space-y-6">
+      <div className="grid gap-4 border-b border-border/60 pb-4 sm:grid-cols-[1fr_auto] sm:items-end">
+        <div className="min-w-0">
+          <p className="font-display text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
+            管理端
+          </p>
+          <h1 className="mt-1 font-display text-xl font-semibold tracking-wide text-heading sm:text-2xl">控制台</h1>
+          <p className="mt-1 max-w-lg text-sm leading-relaxed text-muted-foreground">
+            欢迎回来，{user?.name} ·{' '}
+            {new Date().toLocaleDateString('zh-CN', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </p>
+        </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-card border-border">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -118,7 +129,7 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -135,7 +146,7 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -150,7 +161,7 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -168,7 +179,7 @@ export default function AdminDashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Language Stats */}
-        <Card className="bg-card border-border lg:col-span-2">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-lg">语言练习统计</CardTitle>
             <CardDescription>各语言学习情况概览</CardDescription>
@@ -211,7 +222,7 @@ export default function AdminDashboardPage() {
         </Card>
 
         {/* Recent Activities */}
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <Activity className="w-5 h-5 text-primary" />
@@ -254,13 +265,13 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardHeader>
           <CardTitle className="text-lg">快捷操作</CardTitle>
           <CardDescription>常用管理功能</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
             <Link href="/admin/students">
               <Button variant="outline" className="w-full h-auto py-4 flex flex-col gap-2 bg-transparent">
                 <GraduationCap className="w-6 h-6 text-primary" />

@@ -30,7 +30,7 @@ export function ThemeModeButtons({ className }: { className?: string }) {
           disabled={!mounted}
           onClick={() => setTheme(value)}
           className={cn(
-            'rounded-md px-1.5 py-1.5 text-[11px] font-medium transition-colors',
+            'rounded-md px-1.5 py-1.5 text-[11px] font-medium transition-ui',
             current === value
               ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-sm'
               : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground'

@@ -1,13 +1,25 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Noto_Sans_SC, JetBrains_Mono } from 'next/font/google'
+import { Barlow_Semi_Condensed, IBM_Plex_Sans, Noto_Sans_SC, JetBrains_Mono } from 'next/font/google'
 import { AuthProvider } from '@/lib/auth-context'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
-const fontSans = Noto_Sans_SC({
+const fontDisplay = Barlow_Semi_Condensed({
   subsets: ['latin'],
-  variable: '--font-sans-body',
+  variable: '--font-barlow',
+  weight: ['500', '600', '700'],
+})
+
+const fontSansLatin = IBM_Plex_Sans({
+  subsets: ['latin'],
+  variable: '--font-ibm',
+  weight: ['400', '500', '600'],
+})
+
+const fontSansCjk = Noto_Sans_SC({
+  subsets: ['latin'],
+  variable: '--font-noto',
   weight: ['400', '500', '600', '700'],
 })
 
@@ -48,19 +60,17 @@ export default function RootLayout({
     <html
       lang="zh-CN"
       suppressHydrationWarning
-      className={`${fontSans.variable} ${fontMono.variable}`}
+      className={`${fontDisplay.variable} ${fontSansLatin.variable} ${fontSansCjk.variable} ${fontMono.variable}`}
     >
       <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
           storageKey="codepractice-theme"
         >
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
       </body>
     </html>

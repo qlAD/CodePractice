@@ -61,18 +61,30 @@ export default function TeacherLoginPage() {
   }
 
   return (
-    <div className="login-page-bg relative flex min-h-screen flex-col">
-      <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6">
-        <div className="relative w-full max-w-[440px]">
-          <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-card">
-              <Settings className="h-7 w-7" aria-hidden />
+    <div className="login-page-bg flex min-h-screen flex-col">
+      <div className="grid flex-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,440px)]">
+        <aside className="relative hidden flex-col justify-end border-border/70 p-10 lg:flex lg:border-r">
+          <p className="font-display text-3xl font-semibold tracking-wide text-heading">教务控制台</p>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+            题库、练习、师生与系统配置 · 与课堂练习数据同一套设计语言
+          </p>
+          <div className="mt-12 h-px max-w-[200px] bg-gradient-to-r from-primary/50 to-transparent" />
+        </aside>
+        <div className="relative flex flex-col justify-center px-4 py-10 sm:px-8 lg:px-12">
+          <div className="relative mx-auto w-full max-w-[400px]">
+            <div className="mb-8 lg:text-left">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[var(--radius-sm)] border border-primary/30 bg-primary/15 text-primary shadow-card lg:mx-0 mx-auto">
+                <Settings className="h-7 w-7" aria-hidden />
+              </div>
+              <h1 className="text-center font-display text-xl font-semibold tracking-wide text-heading sm:text-2xl lg:text-left">
+                管理端登录
+              </h1>
+              <p className="mt-2 text-center text-sm text-muted-foreground lg:text-left">
+                教师 / 管理员账号
+              </p>
             </div>
-            <h1 className="text-heading text-xl font-bold sm:text-2xl">教师管理端</h1>
-            <p className="mt-2 text-sm text-muted-foreground">CodePractice · 后台登录</p>
-          </div>
 
-          <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
+            <Card className="border-border/90 shadow-card transition-card hover:shadow-card-hover">
             <CardHeader className="space-y-1 pb-4">
               <CardTitle>登录</CardTitle>
               <CardDescription>请使用管理员分配的账号登录</CardDescription>
@@ -141,15 +153,16 @@ export default function TeacherLoginPage() {
             </CardContent>
           </Card>
 
-          <div className="mt-6 text-center">
-            <Link href="/login" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-              学生端登录
-            </Link>
+            <div className="mt-6 text-center lg:text-left">
+              <Link href="/login" className="text-sm text-muted-foreground transition-ui hover:text-primary">
+                学生端登录
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
-      <footer className="relative border-t border-border bg-card py-5 text-center text-xs text-muted-foreground">
+      <footer className="relative border-t border-border bg-card/80 py-4 text-center text-xs text-muted-foreground backdrop-blur-sm">
         <p>© {new Date().getFullYear()} 多语言程序设计在线练习平台 · 管理端</p>
       </footer>
     </div>

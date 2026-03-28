@@ -42,23 +42,33 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="login-page-bg relative flex min-h-screen flex-col">
-      <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6">
-        <div className="relative w-full max-w-[440px]">
-          <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-card">
+    <div className="login-page-bg flex min-h-screen flex-col">
+      <div className="grid flex-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,440px)]">
+        <aside className="relative hidden flex-col justify-end border-border/70 p-10 lg:flex lg:border-r">
+          <p className="font-display text-3xl font-semibold tracking-wide text-heading">CodePractice</p>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+            多语言程序设计在线练习 · 题库与判题一体化工作台
+          </p>
+          <div className="mt-12 h-px max-w-[200px] bg-gradient-to-r from-primary/50 to-transparent" />
+        </aside>
+        <div className="relative flex flex-col justify-center px-4 py-10 sm:px-8 lg:px-12">
+        <div className="relative mx-auto w-full max-w-[400px]">
+          <div className="mb-8 lg:text-left">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[var(--radius-sm)] border border-primary/30 bg-primary/15 text-primary shadow-card lg:mx-0 mx-auto">
               <Code2 className="h-7 w-7" aria-hidden />
             </div>
-            <h1 className="text-heading text-xl font-bold leading-tight sm:text-2xl">
-              多语言程序设计在线练习平台
+            <h1 className="text-center font-display text-xl font-semibold tracking-wide text-heading sm:text-2xl lg:text-left">
+              学生登录
             </h1>
-            <p className="mt-2 text-sm text-muted-foreground">CodePractice · 学生登录</p>
+            <p className="mt-2 text-center text-sm text-muted-foreground lg:text-left">
+              使用学号与密码进入练习系统
+            </p>
           </div>
 
-          <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
+          <Card className="border-border/90 shadow-card transition-card hover:shadow-card-hover">
             <CardHeader className="space-y-1 pb-4">
-              <CardTitle>登录</CardTitle>
-              <CardDescription>使用学号与密码进入系统</CardDescription>
+              <CardTitle>账号</CardTitle>
+              <CardDescription>学号与密码由教务或任课教师发放</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -143,9 +153,10 @@ export default function LoginPage() {
             </CardContent>
           </Card>
         </div>
+        </div>
       </div>
 
-      <footer className="relative border-t border-border bg-card py-5 text-center text-xs text-muted-foreground">
+      <footer className="relative border-t border-border bg-card/80 py-4 text-center text-xs text-muted-foreground backdrop-blur-sm">
         <p>© {new Date().getFullYear()} 多语言程序设计在线练习平台</p>
         <p className="mt-1">大连东软信息学院 · 教学使用</p>
       </footer>

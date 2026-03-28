@@ -128,11 +128,19 @@ export default function StatsPage() {
         url.searchParams.set('tab', value)
         router.replace(url.toString())
       }}>
-        <TabsList className="bg-secondary">
-          <TabsTrigger value="language">按语言</TabsTrigger>
-          <TabsTrigger value="type">按题型</TabsTrigger>
-          <TabsTrigger value="chapter">按章节</TabsTrigger>
-          <TabsTrigger value="history">练习记录</TabsTrigger>
+        <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-[var(--radius)] bg-muted/50 p-2">
+          <TabsTrigger value="language" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
+            按语言
+          </TabsTrigger>
+          <TabsTrigger value="type" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
+            按题型
+          </TabsTrigger>
+          <TabsTrigger value="chapter" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
+            按章节
+          </TabsTrigger>
+          <TabsTrigger value="history" className="rounded-[var(--radius-sm)] data-[state=active]:border data-[state=active]:border-primary/20">
+            练习记录
+          </TabsTrigger>
         </TabsList>
 
         {/* By language */}

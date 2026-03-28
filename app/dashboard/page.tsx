@@ -109,17 +109,21 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-6 rounded-lg border border-border bg-card p-6 shadow-card sm:flex-row sm:items-center sm:justify-between lg:p-8">
-        <div>
-          <p className="text-xs font-medium text-primary">学习中心</p>
-          <h1 className="mt-1 text-xl font-bold text-heading sm:text-2xl">
+    <div className="space-y-6">
+      <div className="grid gap-4 border-b border-border/60 pb-4 sm:grid-cols-[1fr_auto] sm:items-end">
+        <div className="min-w-0">
+          <p className="font-display text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
+            学习中心
+          </p>
+          <h1 className="mt-1 font-display text-xl font-semibold tracking-wide text-heading sm:text-2xl">
             欢迎回来，{user?.name}
           </h1>
-          <p className="mt-2 max-w-xl text-sm text-muted-foreground">继续你的编程练习之旅</p>
+          <p className="mt-1 max-w-lg text-sm leading-relaxed text-muted-foreground">
+            继续你的编程练习；左侧导航可进入题库、统计与错题本。
+          </p>
         </div>
-        <Link href="/dashboard/practice?mode=paper" className="shrink-0">
-          <Button size="lg" className="h-11 gap-2 px-6">
+        <Link href="/dashboard/practice?mode=paper" className="shrink-0 sm:self-center">
+          <Button size="lg" className="h-11 gap-2 px-8">
             开始练习
             <ArrowRight className="h-4 w-4" />
           </Button>
@@ -127,7 +131,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats overview */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
           title="总答题数"
           value={displayStats.total_questions}
@@ -158,7 +162,7 @@ export default function DashboardPage() {
       {/* Main content grid */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Language progress */}
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardHeader>
             <CardTitle className="text-foreground">各语言学习进度</CardTitle>
             <CardDescription>按编程语言统计答题情况</CardDescription>
@@ -186,7 +190,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Question type progress */}
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardHeader>
             <CardTitle className="text-foreground">各题型掌握情况</CardTitle>
             <CardDescription>按题目类型统计答题正确率</CardDescription>
@@ -216,7 +220,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick practice */}
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardHeader>
           <CardTitle className="text-foreground">快速开始</CardTitle>
           <CardDescription>选择一份试卷开始练习</CardDescription>
@@ -254,7 +258,7 @@ export default function DashboardPage() {
       </Card>
 
       {/* Recent practice sessions */}
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-foreground">最近练习记录</CardTitle>
@@ -333,17 +337,17 @@ function StatsCard({
     <Card
       className={`transition-card border-border hover:shadow-card-hover ${highlight ? 'border-primary/35 ring-1 ring-primary/20' : ''}`}
     >
-      <CardContent className="p-5">
-        <div className="mb-3 flex items-center gap-3">
-          <div
-            className={`flex h-10 w-10 items-center justify-center rounded-md ${highlight ? 'bg-primary/12 text-primary' : 'bg-muted text-muted-foreground'}`}
-          >
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm text-muted-foreground">{title}</p>
+            <p className={`text-2xl font-bold tabular-nums mt-1 ${highlight ? 'text-primary' : 'text-foreground'}`}>{value}</p>
+            <p className="text-xs text-muted-foreground mt-1">{description}</p>
+          </div>
+          <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${highlight ? 'bg-primary/10' : 'bg-muted'}`}>
             {icon}
           </div>
         </div>
-        <div className={`text-2xl font-bold tabular-nums ${highlight ? 'text-primary' : 'text-heading'}`}>{value}</div>
-        <div className="mt-1 text-xs font-medium text-muted-foreground">{title}</div>
-        <div className="mt-0.5 text-xs text-muted-foreground">{description}</div>
       </CardContent>
     </Card>
   )
@@ -360,7 +364,7 @@ function DashboardSkeleton() {
         <Skeleton className="h-10 w-28" />
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {[1, 2, 3, 4].map((i) => (
           <Card key={i} className="bg-card border-border">
             <CardContent className="p-4 lg:p-6">
@@ -373,7 +377,7 @@ function DashboardSkeleton() {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardHeader>
             <Skeleton className="h-6 w-32" />
             <Skeleton className="h-4 w-48" />
@@ -387,7 +391,7 @@ function DashboardSkeleton() {
             ))}
           </CardContent>
         </Card>
-        <Card className="bg-card border-border">
+        <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
           <CardHeader>
             <Skeleton className="h-6 w-32" />
             <Skeleton className="h-4 w-48" />

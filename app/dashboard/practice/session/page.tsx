@@ -353,9 +353,8 @@ export default function PracticeSessionPage() {
   const { score, correct, total } = calculateScore()
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 bg-background py-4 z-10">
+    <div className="mx-auto w-full max-w-[min(100%,1280px)] space-y-6">
+      <div className="flex flex-col gap-4 rounded-[var(--radius)] border border-border/90 bg-card px-4 py-4 shadow-card ring-1 ring-border/30 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
@@ -396,7 +395,8 @@ export default function PracticeSessionPage() {
           {!isSubmitted ? (
             <Button
               onClick={() => setShowSubmitDialog(true)}
-              className="bg-primary text-primary-foreground"
+              size="lg"
+              className="min-w-[7.5rem] font-semibold shadow-[var(--shadow-button)]"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

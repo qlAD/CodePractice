@@ -89,11 +89,11 @@ export function CodeEditor({
   )
 
   const editorClass =
-    'min-h-0 min-w-0 flex-1 resize-none border-0 bg-transparent py-3 pr-3 font-mono text-[13px] leading-[1.55] outline-none focus:ring-0 focus-visible:ring-0'
+    'min-h-0 min-w-0 flex-1 resize-none border-0 bg-transparent py-3 pr-3 font-mono text-[13px] leading-[1.6] outline-none focus:ring-0 focus-visible:ring-0 selection:bg-code-purple/25'
 
   return (
     <div
-      className="flex flex-col overflow-hidden rounded-lg border border-border shadow-card"
+      className="flex flex-col overflow-hidden rounded-[var(--radius)] border border-border/60 shadow-card ring-1 ring-primary/10 transition-shadow duration-200 hover:shadow-card-hover"
       style={{
         height,
         backgroundColor: 'var(--code-surface)',
@@ -103,14 +103,14 @@ export function CodeEditor({
         className="flex shrink-0 items-center justify-end border-b px-2 py-1.5"
         style={{ borderColor: 'var(--code-bar)' }}
       >
-        <span className="text-xs" style={{ color: 'var(--code-linenumber)' }}>
+        <span className="rounded-[4px] bg-code-cyan/15 px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-code-cyan">
           {languageLabel[language]}
         </span>
       </div>
       <div className="flex min-h-0 flex-1 overflow-hidden">
         <div
           ref={gutterRef}
-          className="shrink-0 select-none overflow-y-auto overflow-x-hidden py-3 pl-2 pr-2 text-right font-mono text-[13px] leading-[1.55] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="shrink-0 select-none overflow-y-auto overflow-x-hidden py-3 pl-2 pr-2 text-right font-mono text-[13px] leading-[1.6] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           style={{
             minWidth: `${Math.max(2.25, String(lineCount).length * 0.65 + 1)}rem`,
             backgroundColor: 'var(--code-gutter)',

@@ -313,7 +313,7 @@ export default function StudentsPage() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">学生管理</h1>
@@ -416,7 +416,7 @@ export default function StudentsPage() {
       </div>
 
       {/* Advanced Filters */}
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardContent className="p-4">
           <div className="space-y-4">
             {/* Search Box */}
@@ -499,7 +499,7 @@ export default function StudentsPage() {
       </Card>
 
       {/* Students Table */}
-      <Card className="bg-card border-border">
+      <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <GraduationCap className="w-5 h-5 text-primary" />
@@ -579,8 +579,8 @@ export default function StudentsPage() {
           )}
         </CardContent>
         {!loading && students.length > 0 && (
-          <CardContent className="border-t border-border">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <CardContent className="border-t border-border py-3">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 min-h-[2.5rem]">
               <div className="text-muted-foreground text-sm">
                 共 {pagination.total} 条记录
               </div>

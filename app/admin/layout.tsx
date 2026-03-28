@@ -40,8 +40,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     <div className="app-shell">
       <AdminSidebar />
       <main className="min-h-screen lg:pl-64">
-        <div className="min-h-screen min-w-0 w-full border-0 bg-card pt-16 lg:border-l lg:border-border lg:pt-0">
-          {children}
+        <div className="main-canvas min-h-screen min-w-0 w-full border-0 px-4 py-5 pt-[calc(4rem+env(safe-area-inset-top,0px)+1rem)] sm:px-6 lg:border-l lg:border-border lg:p-8 lg:pt-8">
+          <div className="page-enter">{children}</div>
         </div>
       </main>
     </div>

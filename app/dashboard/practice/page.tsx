@@ -155,31 +155,31 @@ export default function PracticePage() {
         url.searchParams.set('mode', value)
         router.replace(url.toString())
       }} className="space-y-6">
-        <TabsList className="grid grid-cols-2 lg:grid-cols-4 h-auto gap-2 bg-transparent p-0">
+        <TabsList className="grid h-auto grid-cols-2 gap-2 rounded-[var(--radius)] bg-muted/50 p-2 lg:grid-cols-4">
           <TabsTrigger
             value="language"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground bg-secondary text-secondary-foreground py-3"
+            className="rounded-[var(--radius-sm)] border border-transparent bg-card py-3 text-secondary-foreground shadow-sm transition-ui duration-200 data-[state=active]:border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
           >
             <Code2 className="w-4 h-4 mr-2" />
             按语言练习
           </TabsTrigger>
           <TabsTrigger
             value="type"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground bg-secondary text-secondary-foreground py-3"
+            className="rounded-[var(--radius-sm)] border border-transparent bg-card py-3 text-secondary-foreground shadow-sm transition-ui duration-200 data-[state=active]:border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
           >
             <Target className="w-4 h-4 mr-2" />
             按题型练习
           </TabsTrigger>
           <TabsTrigger
             value="paper"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground bg-secondary text-secondary-foreground py-3"
+            className="rounded-[var(--radius-sm)] border border-transparent bg-card py-3 text-secondary-foreground shadow-sm transition-ui duration-200 data-[state=active]:border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
           >
             <BookOpen className="w-4 h-4 mr-2" />
 按试卷练习
           </TabsTrigger>
           <TabsTrigger
             value="exam"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground bg-secondary text-secondary-foreground py-3"
+            className="rounded-[var(--radius-sm)] border border-transparent bg-card py-3 text-secondary-foreground shadow-sm transition-ui duration-200 data-[state=active]:border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
           >
             <FileCode className="w-4 h-4 mr-2" />
             模拟考试

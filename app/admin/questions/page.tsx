@@ -543,7 +543,7 @@ export default function QuestionsPage() {
   const stats = getQuestionStats()
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">题库管理</h1>
@@ -908,25 +908,25 @@ export default function QuestionsPage() {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <Card className="bg-card border-border">
+            <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-foreground">{stats.total}</div>
                 <p className="text-sm text-muted-foreground">总题目数</p>
               </CardContent>
             </Card>
-            <Card className="bg-card border-border">
+            <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-java">{stats.byLanguage.java}</div>
                 <p className="text-sm text-muted-foreground">Java 题目</p>
               </CardContent>
             </Card>
-            <Card className="bg-card border-border">
+            <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-cpp">{stats.byLanguage.cpp}</div>
                 <p className="text-sm text-muted-foreground">C/C++ 题目</p>
               </CardContent>
             </Card>
-            <Card className="bg-card border-border">
+            <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-python">{stats.byLanguage.python}</div>
                 <p className="text-sm text-muted-foreground">Python 题目</p>
@@ -935,7 +935,7 @@ export default function QuestionsPage() {
           </div>
 
           {/* Filters */}
-          <Card className="bg-card border-border">
+          <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
             <CardContent className="p-4">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative flex-1">
@@ -991,7 +991,7 @@ export default function QuestionsPage() {
           </Card>
 
           {/* Questions Table */}
-          <Card className="bg-card border-border">
+          <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg">题目列表</CardTitle>
               <CardDescription>共筛选出 {filteredQuestions.length} 道题目</CardDescription>

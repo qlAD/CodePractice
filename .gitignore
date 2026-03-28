@@ -33,6 +33,7 @@ my-docker-compose.yml
 
 # ai
 .claude
+.cursor/
 AGENTS.md
 
 # docs
