@@ -1,7 +1,8 @@
 'use client'
 
-import { useRef, useCallback, useMemo } from 'react'
+import { useRef, useCallback, useMemo, useLayoutEffect } from 'react'
 import type { Language } from '@/lib/types'
+import { highlightCode } from '@/lib/code-highlight'
 import { cn } from '@/lib/utils'
 
 const languageLabel: Record<Language, string> = {
@@ -29,6 +30,9 @@ export function CodeEditor({
 }: CodeEditorProps) {
   const taRef = useRef<HTMLTextAreaElement>(null)
   const gutterRef = useRef<HTMLDivElement>(null)
+  const hlInnerRef = useRef<HTMLPreElement>(null)
+
+  const highlighted = useMemo(() => highlightCode(language, value), [language, value])
 
   const lineCount = useMemo(() => {
     if (!value) return 1
@@ -43,8 +47,16 @@ export function CodeEditor({
   const syncScroll = useCallback(() => {
     const ta = taRef.current
     const g = gutterRef.current
+    const hl = hlInnerRef.current
     if (ta && g) g.scrollTop = ta.scrollTop
+    if (ta && hl) {
+      hl.style.transform = `translate(${-ta.scrollLeft}px, ${-ta.scrollTop}px)`
+    }
   }, [])
+
+  useLayoutEffect(() => {
+    syncScroll()
+  }, [highlighted, syncScroll])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -89,7 +101,7 @@ export function CodeEditor({
   )
 
   const editorClass =
-    'min-h-0 min-w-0 flex-1 resize-none border-0 bg-transparent py-3 pr-3 font-mono text-[13px] leading-[1.6] outline-none focus:ring-0 focus-visible:ring-0 selection:bg-code-purple/25'
+    'box-border min-h-0 h-full w-full resize-none border-0 bg-transparent py-3 pl-3 pr-3 font-mono text-[13px] leading-[1.6] text-transparent outline-none focus:ring-0 focus-visible:ring-0 [caret-color:var(--code-text)] selection:bg-code-purple/25 [-webkit-text-fill-color:transparent]'
 
   return (
     <div
@@ -121,20 +133,28 @@ export function CodeEditor({
         >
           <pre className="m-0 whitespace-pre font-mono">{gutterLines}</pre>
         </div>
-        <textarea
-          ref={taRef}
-          className={cn(editorClass, readOnly && 'cursor-default opacity-90')}
-          style={{ color: 'var(--code-text)' }}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onScroll={syncScroll}
-          onKeyDown={handleKeyDown}
-          readOnly={readOnly}
-          spellCheck={false}
-          autoCapitalize="off"
-          autoCorrect="off"
-          wrap="off"
-        />
+        <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+            <pre
+              ref={hlInnerRef}
+              className="code-editor-syntax m-0 block w-max min-w-full whitespace-pre py-3 pl-3 pr-3 text-left font-mono text-[13px] leading-[1.6]"
+              dangerouslySetInnerHTML={{ __html: highlighted }}
+            />
+          </div>
+          <textarea
+            ref={taRef}
+            className={cn(editorClass, 'relative z-[1]', readOnly && 'cursor-default opacity-90')}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            onScroll={syncScroll}
+            onKeyDown={handleKeyDown}
+            readOnly={readOnly}
+            spellCheck={false}
+            autoCapitalize="off"
+            autoCorrect="off"
+            wrap="off"
+          />
+        </div>
       </div>
     </div>
   )

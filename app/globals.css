@@ -58,6 +58,14 @@
   --code-text: #1a1d24;
   --code-linenumber: #7a756c;
   --code-bar: rgba(18, 20, 26, 0.1);
+  --code-hl-keyword: #0f766e;
+  --code-hl-type: #6d28d9;
+  --code-hl-string: #a16207;
+  --code-hl-number: #c2410c;
+  --code-hl-comment: #78716c;
+  --code-hl-func: #1d4ed8;
+  --code-hl-meta: #7c3aed;
+  --code-hl-operator: #57534e;
   --bg-grid: linear-gradient(rgba(18, 20, 26, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(18, 20, 26, 0.04) 1px, transparent 1px);
   --bg-grid-size: 48px 48px;
@@ -117,6 +125,14 @@
   --code-text: #c8cdd8;
   --code-linenumber: #5c6370;
   --code-bar: rgba(255, 255, 255, 0.06);
+  --code-hl-keyword: #2dd4bf;
+  --code-hl-type: #a78bfa;
+  --code-hl-string: #fbbf24;
+  --code-hl-number: #fb923c;
+  --code-hl-comment: #64748b;
+  --code-hl-func: #60a5fa;
+  --code-hl-meta: #c4b5fd;
+  --code-hl-operator: #94a3b8;
   --bg-grid: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   --bg-grid-size: 40px 40px;
@@ -301,6 +317,55 @@
       animation-delay: 0.26s;
     }
   }
+}
+
+.code-editor-syntax {
+  color: var(--code-text);
+  tab-size: 4;
+}
+.code-editor-syntax .hljs-keyword,
+.code-editor-syntax .hljs-literal,
+.code-editor-syntax .hljs-selector-tag,
+.code-editor-syntax .hljs-section,
+.code-editor-syntax .hljs-addition {
+  color: var(--code-hl-keyword);
+}
+.code-editor-syntax .hljs-type,
+.code-editor-syntax .hljs-built_in {
+  color: var(--code-hl-type);
+}
+.code-editor-syntax .hljs-string,
+.code-editor-syntax .hljs-regexp,
+.code-editor-syntax .hljs-symbol,
+.code-editor-syntax .hljs-bullet {
+  color: var(--code-hl-string);
+}
+.code-editor-syntax .hljs-number {
+  color: var(--code-hl-number);
+}
+.code-editor-syntax .hljs-comment,
+.code-editor-syntax .hljs-quote,
+.code-editor-syntax .hljs-doctag {
+  color: var(--code-hl-comment);
+}
+.code-editor-syntax .hljs-title,
+.code-editor-syntax .hljs-function .hljs-title {
+  color: var(--code-hl-func);
+}
+.code-editor-syntax .hljs-meta,
+.code-editor-syntax .hljs-meta-keyword,
+.code-editor-syntax .hljs-tag {
+  color: var(--code-hl-meta);
+}
+.code-editor-syntax .hljs-operator,
+.code-editor-syntax .hljs-punctuation {
+  color: var(--code-hl-operator);
+}
+.code-editor-syntax .hljs-variable,
+.code-editor-syntax .hljs-params,
+.code-editor-syntax .hljs-property,
+.code-editor-syntax .hljs-attr {
+  color: var(--code-text);
 }
 
 @keyframes cp-enter {
