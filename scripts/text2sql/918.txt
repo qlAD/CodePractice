@@ -1,0 +1,286 @@
+试卷编号：918
+试卷总分：100.0分
+题型数：3个
+
+一、程序填空 共4题（共40.0分）
+
+第1题（10分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Circle类，此类中包括一个半径属性radius和一个计算周长的方法findLong。
+在main方法中创建Circle类的对象c，并计算半径为10的圆的周长。
+---------------------------------------------*/
+public class Circle {
+    double radius;
+    double findLong(){
+        return 2*3.14*radius;
+    }
+    public static void main(String[] args){
+    /**********SPACE**********/
+        【?】;
+        c.radius=10.0;
+    /**********SPACE**********/
+        System.out.println(【?】);
+    }
+}
+
+答案：
+=======(答案1)=======
+Circle c = new Circle()
+=======(答案2)=======
+c.findLong()
+
+
+第2题（10分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Dog类，此类中包括1个姓名属性name。在main方法中创建Dog类的对象d，并设置其姓名为"XiaoBai"。
+---------------------------------------------*/
+public class Dog {
+    String name;
+    public static void main(String[] args){
+    /**********SPACE**********/
+        【?】;
+    /**********SPACE**********/
+        【?】 = "XiaoBai";
+    }
+}
+
+答案：
+=======(答案1)=======
+Dog d = new Dog()
+=======(答案2)=======
+d.name
+
+
+第3题（10分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Telephone类，属性有电话品牌brand，还有2个构造方法，其中一个没有参数，一个带参数
+---------------------------------------------*/
+public class Telephone {
+    String brand;
+/**********SPACE**********/
+    【?】 {
+        brand="Iphone6";
+    }
+    Telephone(String brand){
+/**********SPACE**********/
+        【?】 = brand;
+    }
+}
+
+答案：
+=======(答案1)=======
+Telephone()
+=======(答案2)=======
+this.brand
+
+
+第4题（10分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Telephone类，属性有电话号码number，还有2个构造方法，其中一个没有参数，一个带参数。
+---------------------------------------------*/
+class Telephone {
+    String number;
+/**********SPACE**********/
+    【?】 {
+        number="041184835202";
+    }
+    Telephone(String number){
+/**********SPACE**********/
+        【?】 = number;
+    }
+}
+
+答案：
+=======(答案1)=======
+Telephone()
+=======(答案2)=======
+this.number
+
+
+二、程序改错 共2题（共20.0分）
+
+第1题（10分）
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：用循环语句实现打印1到100之间的自然数,包含1和100。
+---------------------------------------------*/
+class Test {
+    public static void main(String[] args) {
+        int i=1;
+        /**********FOUND**********/
+        while(i<100)
+        {
+            System.out.println(" "+i);
+            /**********FOUND**********/
+            i--;
+        }
+    }
+}
+
+答案：
+=======(答案1)=======
+while(i <= 100)
+=======(答案2)=======
+i++; 或者 i=i+1;
+
+
+第2题（10分）
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：下面是一个类的定义，请修改程序中的错误。
+---------------------------------------------*/
+class Student
+{
+    String name;
+    int age;
+    /**********FOUND**********/
+    Student(char s,int i)
+    {
+        name=s;
+        /**********FOUND**********/
+        age=this.i;
+    }
+}
+
+答案：
+=======(答案1)=======
+Student(String s,int i)
+=======(答案2)=======
+this.age = i;
+
+
+三、程序设计 共4题（共40.0分）
+
+第1题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：输入一组成绩，输入-1代表结束，查找最高成绩，并保存在变量max中，输出max，要求使用while循环实现。
+---------------------------------------------*/
+import java.util.Scanner;
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+import java.util.Scanner;
+public class Prog1{
+    public static void main(String[] args) {
+        int score, max = 0;
+        Scanner sc = new Scanner(System.in);
+        score = sc.nextInt();
+        while(score != -1){
+            if(score > max){
+                max = score;
+            }
+            score = sc.nextInt();
+        }
+        System.out.println(max);
+    }
+}
+
+
+第2题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：使用while循环语句实现计算并输出1-100的能被3整除的数的和，循环变量名为i，存放和的变量名为sum。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    public static void main(String[] args) {
+        int i = 1, sum = 0;
+        while(i <= 100){
+            if(i % 3 == 0){
+                sum = sum + i;
+            }
+            i++;
+        }
+        System.out.println("结果为" + sum);
+    }
+}
+
+
+第3题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：定义类，属性包括商品名称name（String）、商品编号id（String）和价格price（double）三个属性，有无参的构造方法，和计算折扣价格并输出的方法，方法头为public void computeDiscout(double percent)，其中形参代表打折的百分比。
+创建商品类的对象，对象名为g，调用计算折扣价格的方法，打印9折的折扣价。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    String name;
+    String id;
+    double price;
+    Prog1(){
+        name = "虾条";
+        id = "g009";
+        price = 3.5;
+    }
+    public void computeDiscout(double percent){
+        System.out.println(name + "原价为" + price + "元");
+        price = price * percent;
+        System.out.println(name + "折扣后的价格是" + price + "元");
+    }
+    public static void main(String[] args){
+        Prog1 g = new Prog1();
+        g.computeDiscout(0.9);
+    }
+}
+
+
+第4题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：定义一个名为Prog1的类，属性有平时成绩（pingshi），期末成绩（qimo），都为int类型；不带参数的构造方法，方法有计算并输出总成绩的方法calculateScore()，计算方式为：总成绩=平时成绩+期末成绩的1/2；
+在main方法中，创建Prog1对象s，然后调用calculateScore()方法来输出总成绩。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    int pingshi;
+    int qimo;
+    Prog1(){
+        pingshi = 45;
+        qimo = 56;
+    }
+    void calculateScore(){
+        double score = pingshi + qimo * 0.5;
+        System.out.println("分数为：" + score);
+    }
+    public static void main(String[] args){
+        Prog1 s = new Prog1();
+        s.calculateScore();
+    }
+}

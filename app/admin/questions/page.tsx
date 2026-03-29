@@ -114,12 +114,21 @@ const languageBadgeClass: Record<Language, string> = {
 
 export default function QuestionsPage() {
   const [questions, setQuestions] = useState<Question[]>([])
+  const [questionStats, setQuestionStats] = useState({
+    total: 0,
+    byLanguage: { java: 0, cpp: 0, python: 0 },
+  })
   const [papers, setPapers] = useState<Paper[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all')
   const [selectedPaper, setSelectedPaper] = useState<string>('all')
   const [selectedType, setSelectedType] = useState<string>('all')
+  const [pagination, setPagination] = useState({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+  })
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [viewingQuestion, setViewingQuestion] = useState<Question | null>(null)
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null)
@@ -158,19 +167,47 @@ export default function QuestionsPage() {
       if (selectedLanguage !== 'all') params.set('language', selectedLanguage)
       if (selectedPaper !== 'all') params.set('paper_id', selectedPaper)
       if (selectedType !== 'all') params.set('type', selectedType)
-      params.set('limit', '100')
-      
+      if (searchQuery.trim()) params.set('search', searchQuery.trim())
+      params.set('limit', pagination.pageSize.toString())
+      params.set('offset', ((pagination.page - 1) * pagination.pageSize).toString())
+
       const res = await fetch(`/api/questions?${params}`)
       const data = await res.json()
-      if (data.success) {
+      if (data.success && Array.isArray(data.data)) {
         setQuestions(data.data)
+        setPagination(prev => ({
+          ...prev,
+          total: Number(data.total) || 0,
+        }))
       }
     } catch (error) {
       console.error('Failed to fetch questions:', error)
     } finally {
       setLoading(false)
     }
-  }, [selectedLanguage, selectedPaper, selectedType])
+  }, [selectedLanguage, selectedPaper, selectedType, searchQuery, pagination.page, pagination.pageSize])
+
+  const fetchQuestionStats = useCallback(async () => {
+    try {
+      const [all, java, cpp, python] = await Promise.all([
+        fetch('/api/questions?limit=1').then(r => r.json()),
+        fetch('/api/questions?language=java&limit=1').then(r => r.json()),
+        fetch('/api/questions?language=cpp&limit=1').then(r => r.json()),
+        fetch('/api/questions?language=python&limit=1').then(r => r.json()),
+      ])
+      const n = (x: unknown) => Number(x) || 0
+      setQuestionStats({
+        total: all.success ? n(all.total) : 0,
+        byLanguage: {
+          java: java.success ? n(java.total) : 0,
+          cpp: cpp.success ? n(cpp.total) : 0,
+          python: python.success ? n(python.total) : 0,
+        },
+      })
+    } catch (error) {
+      console.error('Failed to fetch question stats:', error)
+    }
+  }, [])
 
   const fetchPapers = async () => {
     try {
@@ -187,12 +224,8 @@ export default function QuestionsPage() {
   useEffect(() => {
     fetchQuestions()
     fetchPapers()
-  }, [fetchQuestions])
-
-  const filteredQuestions = questions.filter(q => {
-    const matchesSearch = q.content.includes(searchQuery) || q.id.toString().includes(searchQuery)
-    return matchesSearch
-  })
+    fetchQuestionStats()
+  }, [fetchQuestions, fetchQuestionStats])
 
   const languagePapers = papers.filter(c => c.language === newQuestion.language)
   
@@ -296,6 +329,7 @@ export default function QuestionsPage() {
         })
         setIsAddDialogOpen(false)
         fetchQuestions()
+        fetchQuestionStats()
       } else {
         alert(data.error || '添加失败')
       }
@@ -331,6 +365,7 @@ export default function QuestionsPage() {
         setEditingQuestion(null)
         setIsEditDialogOpen(false)
         fetchQuestions()
+        fetchQuestionStats()
       } else {
         alert(data.error || '更新失败')
       }
@@ -350,6 +385,7 @@ export default function QuestionsPage() {
       const data = await res.json()
       if (data.success) {
         fetchQuestions()
+        fetchQuestionStats()
       } else {
         alert(data.error || '删除失败')
       }
@@ -485,6 +521,7 @@ export default function QuestionsPage() {
     }
     
     await fetchQuestions()
+    await fetchQuestionStats()
     
     alert(`批量导入完成\n共 ${data.length} 条\n成功 ${importedCount} 条\n失败 ${failedCount} 条\n重复 ${duplicateCount} 条`)
   }
@@ -534,19 +571,6 @@ export default function QuestionsPage() {
       setLoading(false)
     }
   }
-
-  const getQuestionStats = () => {
-    return {
-      total: questions.length,
-      byLanguage: {
-        java: questions.filter(q => q.language === 'java').length,
-        cpp: questions.filter(q => q.language === 'cpp').length,
-        python: questions.filter(q => q.language === 'python').length,
-      },
-    }
-  }
-
-  const stats = getQuestionStats()
 
   return (
     <div className="space-y-6">
@@ -671,7 +695,7 @@ export default function QuestionsPage() {
                             <TableCell className="font-mono text-sm">{paper.papers_id || '—'}</TableCell>
                             <TableCell className="font-medium">{paper.name}</TableCell>
                             <TableCell className="text-muted-foreground">{paper.description || '-'}</TableCell>
-                            <TableCell>{paper.question_count ?? questions.filter(q => q.paper_id === paper.id).length}</TableCell>
+                            <TableCell>{paper.question_count ?? '—'}</TableCell>
                             <TableCell>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -916,25 +940,25 @@ export default function QuestionsPage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardContent className="p-4">
-                <div className="text-2xl font-bold text-foreground">{stats.total}</div>
+                <div className="text-2xl font-bold text-foreground">{questionStats.total}</div>
                 <p className="text-sm text-muted-foreground">总题目数</p>
               </CardContent>
             </Card>
             <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardContent className="p-4">
-                <div className="text-2xl font-bold text-java">{stats.byLanguage.java}</div>
+                <div className="text-2xl font-bold text-java">{questionStats.byLanguage.java}</div>
                 <p className="text-sm text-muted-foreground">Java 题目</p>
               </CardContent>
             </Card>
             <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardContent className="p-4">
-                <div className="text-2xl font-bold text-cpp">{stats.byLanguage.cpp}</div>
+                <div className="text-2xl font-bold text-cpp">{questionStats.byLanguage.cpp}</div>
                 <p className="text-sm text-muted-foreground">C/C++ 题目</p>
               </CardContent>
             </Card>
             <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
               <CardContent className="p-4">
-                <div className="text-2xl font-bold text-python">{stats.byLanguage.python}</div>
+                <div className="text-2xl font-bold text-python">{questionStats.byLanguage.python}</div>
                 <p className="text-sm text-muted-foreground">Python 题目</p>
               </CardContent>
             </Card>
@@ -949,11 +973,18 @@ export default function QuestionsPage() {
                   <Input
                     placeholder="搜索题目内容或ID..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value)
+                      setPagination(p => ({ ...p, page: 1 }))
+                    }}
                     className="pl-9 bg-input border-border"
                   />
                 </div>
-                <Select value={selectedLanguage} onValueChange={(v) => { setSelectedLanguage(v); setSelectedPaper('all') }}>
+                <Select value={selectedLanguage} onValueChange={(v) => {
+                  setSelectedLanguage(v)
+                  setSelectedPaper('all')
+                  setPagination(p => ({ ...p, page: 1 }))
+                }}>
                   <SelectTrigger className="w-full sm:w-32 bg-input border-border">
                     <SelectValue />
                   </SelectTrigger>
@@ -964,7 +995,10 @@ export default function QuestionsPage() {
                     <SelectItem value="python">Python</SelectItem>
                   </SelectContent>
                 </Select>
-                <Select value={selectedPaper} onValueChange={setSelectedPaper}>
+                <Select value={selectedPaper} onValueChange={(v) => {
+                  setSelectedPaper(v)
+                  setPagination(p => ({ ...p, page: 1 }))
+                }}>
                   <SelectTrigger className="w-full sm:w-40 bg-input border-border">
                     <SelectValue placeholder="试卷" />
                   </SelectTrigger>
@@ -980,7 +1014,10 @@ export default function QuestionsPage() {
                       ))}
                   </SelectContent>
                 </Select>
-                <Select value={selectedType} onValueChange={setSelectedType}>
+                <Select value={selectedType} onValueChange={(v) => {
+                  setSelectedType(v)
+                  setPagination(p => ({ ...p, page: 1 }))
+                }}>
                   <SelectTrigger className="w-full sm:w-32 bg-input border-border">
                     <SelectValue />
                   </SelectTrigger>
@@ -1000,14 +1037,14 @@ export default function QuestionsPage() {
           <Card className="border-border shadow-card transition-card hover:shadow-card-hover">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg">题目列表</CardTitle>
-              <CardDescription>共筛选出 {filteredQuestions.length} 道题目</CardDescription>
+              <CardDescription>共 {pagination.total} 道题目</CardDescription>
             </CardHeader>
             <CardContent>
               {loading ? (
                 <div className="flex items-center justify-center py-8">
                   <Loader2 className="w-8 h-8 animate-spin text-primary" />
                 </div>
-              ) : filteredQuestions.length === 0 ? (
+              ) : questions.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
                   <p>暂无题目数据</p>
@@ -1027,7 +1064,7 @@ export default function QuestionsPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredQuestions.map((question) => (
+                    {questions.map((question) => (
                       <TableRow key={question.id} className="border-border">
                         <TableCell className="font-mono text-sm">{question.id}</TableCell>
                         <TableCell>
@@ -1077,6 +1114,53 @@ export default function QuestionsPage() {
                 </Table>
               )}
             </CardContent>
+            {!loading && pagination.total > 0 && (
+              <CardContent className="border-t border-border py-3">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 min-h-[2.5rem]">
+                  <div className="text-muted-foreground text-sm">
+                    共 {pagination.total} 条记录
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Select
+                      value={pagination.pageSize.toString()}
+                      onValueChange={(value) => {
+                        setPagination(prev => ({ ...prev, pageSize: Number(value), page: 1 }))
+                      }}
+                    >
+                      <SelectTrigger className="w-24 bg-input border-border">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="20">20条/页</SelectItem>
+                        <SelectItem value="50">50条/页</SelectItem>
+                        <SelectItem value="100">100条/页</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        disabled={pagination.page === 1}
+                        onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                      >
+                        ←
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        {pagination.page} / {Math.max(1, Math.ceil(pagination.total / pagination.pageSize))}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        disabled={pagination.page * pagination.pageSize >= pagination.total}
+                        onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                      >
+                        →
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            )}
           </Card>
         </TabsContent>
       </Tabs>

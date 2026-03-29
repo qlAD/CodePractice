@@ -1,0 +1,588 @@
+试卷编号：205
+试卷总分：100.0分
+题型数：4个
+
+━━━━━━━━━━━━━━━━
+一、单选题 共20题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（1分）
+下列数据类型的精度由高到低的顺序是()
+(A)float,double,int,long
+(B)double,float,int,byte
+(C)byte,long,double,float
+(D)double,int,float,long
+
+答案：B
+
+---
+
+第2题（1分）
+Java application中的主类包含main方法，main方法的返回类型是什么？()
+(A)int
+(B)float
+(C)void
+(D)double
+
+答案：C
+
+---
+
+第3题（1分）
+定义变量int x=3;那么表达式x/6*5的计算结果是()
+(A)0
+(B)1
+(C)2.5
+(D)2
+
+答案：A
+
+---
+
+第4题（1分）
+对于一个三位的正整数n，取出它的十位数字k(k为整型)的表达式是()
+(A)k = n / 10 % 10
+(B)k = n % 10 % 10
+(C)k = n % 10
+(D)k = n / 10
+
+答案：A
+
+---
+
+第5题（1分）
+下列不可作为Java语言标识符的是()
+(A)a2
+(B)$2
+(C)_2
+(D)22
+
+答案：D
+
+---
+
+第6题（1分）
+有以下代码,其中变量可能的类型是
+switch(i){ default:System.out.println("hello");}
+(A)byte
+(B)long
+(C)double
+(D)A and B
+
+答案：A
+
+---
+
+第7题（1分）
+下列语句序列执行后,k的值是
+int i=4,j=5,k=9,m=5;
+if(i > j || m < k) k++;
+else k--;
+(A)5
+(B)9
+(C)8
+(D)10
+
+答案：D
+
+---
+
+第8题（1分）
+下列关于for循环和while循环的说法中哪个是正确的？()
+(A)while循环中不能使用continue语句，for循环中可以使用；
+(B)while循环的循环条件不能省略，for循环的循环条件可以省略；
+(C)while循环语句前不能加语句标号，for循环可以加语句标号；
+(D)以上全都不对
+
+答案：B
+
+---
+
+第9题（1分）
+下列语句序列执行后,i的值是
+int i=10;
+do{ i/=2; }while(i>1);
+(A)1
+(B)5
+(C)2
+(D)0
+
+答案：A
+
+---
+
+第10题（1分）
+下面方法定义中,正确的是:
+(A)int x(){char ch='a';return (int)ch;}
+(B)void x(){return true;}
+(C)int x(){return true;}
+(D)int x(int a,b){return a-b;}
+
+答案：A
+
+---
+
+第11题（1分）
+在创建对象时必须()
+(A)先声明对象,然后才能使用对象
+(B)先声明对象,为对象分配内存空间,然后才能使用对象
+(C)先声明对象,为对象分配内存空间,对对象初始化,然后才能使用对象
+(D)上述说法都对
+
+答案：C
+
+---
+
+第12题（1分）
+类Test1, Test2定义如下:
+1. public class Test1{
+2.   public float aMethod(float a, float b) throws 
+3.   IOException{ }
+4. }
+5. public class Test2 extends Test1{
+6.
+7. }
+将以下哪种方法插入行6是不合法的。
+(A)float aMethod(float a, float b ){}
+(B)public int aMethod(int a, int b) throws Exception{}
+(C)public float aMethod(float p, float q){}
+(D)public int aMethod(int a, int b ) throws IOException{}
+
+答案：A
+
+---
+
+第13题（1分）
+下列不属于面向对象的三大特征的是？
+(A)继承
+(B)方法
+(C)封装
+(D)多态
+
+答案：B
+
+---
+
+第14题（1分）
+有一个类A，以下为其构造方法的声明，其中正确的是？
+(A)void A(int x)
+(B)A(int x)
+(C)a(int x)
+(D)void a(int x)
+
+答案：B
+
+---
+
+第15题（1分）
+以下关于构造函数的描述错误的是？
+(A)构造函数的返回类型只能是void型
+(B)构造函数是类的一种特殊函数，它的方法名必须与类名相同
+(C)构造函数的主要作用是完成对类的对象的初始化工作
+(D)一般在创建新对象时，系统会自动调用构造函数
+
+答案：A
+
+---
+
+第16题（1分）
+下列对构造方法的调用方式的描述中正确的是？
+(A)使用new调用
+(B)使用类名调用
+(C)使用对象名调用
+(D)调用方法为对象名.方法名()
+
+答案：A
+
+---
+
+第17题（1分）
+下面哪个关键字用来修饰静态()
+(A)static
+(B)protected
+(C)public
+(D)private
+
+答案：A
+
+---
+
+第18题（1分）
+假设A类有如下定义，设a是A类的一个实例，下列语句调用哪个是错误的？
+class A{
+    int i;
+    static String s;
+    void method1(){}
+    static void method2(){}
+}
+(A)System.out.println(a.i);
+(B)a.method1();
+(C)A.method1();
+(D)A.method2();
+
+答案：C
+
+---
+
+第19题（1分）
+若在某个类中定义如下的方法:static void testMethod() 该方法属于？
+(A)本地方法
+(B)最终方法
+(C)静态方法
+(D)抽象方法
+
+答案：C
+
+---
+
+第20题（1分）
+设X是已定义的类名，下列声明X类的对象x1的语句中正确的是()
+(A)static X x1(123);
+(B)public X x1=new X(123);
+(C)Y x1;
+(D)X x1=X();
+
+答案：B
+
+━━━━━━━━━━━━━━━━
+二、程序填空 共4题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Circle类，此类中包括一个半径属性radius和一个计算周长的方法findLong。
+在main方法中创建Circle类的对象c，并计算半径为10的圆的周长。
+---------------------------------------------*/
+public class Circle {
+    double radius;
+    double findLong(){
+        return 2*Math.PI*radius;
+    }
+public static void main(String[] args){
+/**********SPACE**********/
+    【?】;
+    c.radius=10.0;
+/**********SPACE**********/
+    System.out.println(【?】);
+}
+}
+
+答案：
+=======(答案1)=======
+Circle c = new Circle()
+=======(答案2)=======
+c.findLong()
+
+---
+
+第2题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Dog类，此类中包括1个大小属性size。在main方法中创建Dog类的对象d，并设置其大小为8。
+---------------------------------------------*/
+class Dog {
+    int size;
+    public static void main(String[] args){
+/**********SPACE**********/
+    【?】;
+/**********SPACE**********/
+    【?】 = 8;
+}
+}
+
+答案：
+=======(答案1)=======
+Dog d = new Dog()
+=======(答案2)=======
+d.size
+
+---
+
+第3题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Telephone类，属性有电话费charge，还有2个构造方法，其中一个没有参数，一个带参数。
+---------------------------------------------*/
+public class Telephone {
+    double charge;
+/**********SPACE**********/
+    【?】 {
+        charge=50.5;
+    }
+    Telephone(double charge){
+/**********SPACE**********/
+        【?】 = charge;
+    }
+}
+
+答案：
+=======(答案1)=======
+Telephone()
+=======(答案2)=======
+this.charge
+
+---
+
+第4题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Telephone类，属性有电话品牌brand，还有2个构造方法，其中一个没有参数，一个带参数。
+---------------------------------------------*/
+public class Telephone {
+    String brand;
+/**********SPACE**********/
+    【?】 {
+        brand="Iphone6";
+    }
+    Telephone(String brand){
+/**********SPACE**********/
+        【?】 = brand;
+    }
+}
+
+答案：
+=======(答案1)=======
+Telephone()
+=======(答案2)=======
+this.brand
+
+━━━━━━━━━━━━━━━━
+三、程序改错 共2题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（10分）
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目:蒙特卡罗模拟使用随机数和概率来解决问题。这个方法在数学、物理、化学和财经方面有很广的应用。
+使用蒙特卡罗模拟来估算pai值.为了使用蒙特卡罗方法来估算pai值，画出一个圆的外接正方形，假设这个圆的半径为1。
+那么圆面积就是pai而外接正方形的面积是4。随机产生正方形中的一个点。
+该点落在这个园内的概率为circleArea/squareArea(圆面积/正方形面积)=pai/4.
+编写程序，在正方形内随机产生1000000个点，用numberOfHits表示落在园内的点。由此求出pai的近似值。
+---------------------------------------------*/
+public class MonteCarloSimulation {
+    public static void main(String[] args) {
+        final int NUMBER_OF_TRIALS = 1000000;
+        int numberOfHits = 0;
+        /**********FOUND**********/
+        for(int i=0;i<numberOfHits;i++){
+            double x = Math.random() * 2.0 - 1;
+            double y = Math.random() * 2.0 - 1;
+            if(x*x + y*y <= 1) {
+                numberOfHits++;
+            } 
+        }
+/**********FOUND**********/
+        double pi = 4.0 * NUMBER_OF_TRIALS / numberOfHits;
+        System.out.println("π = " + pi);
+    }
+}
+
+答案：
+=======(答案1)=======
+for(int i=0;i<NUMBER_OF_TRIALS;i++){
+=======(答案2)=======
+double pi = 4.0 * numberOfHits / NUMBER_OF_TRIALS;
+
+---
+
+第2题（10分）
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目:定义一个汽车类，成员变量有载客人数、重量和颜色。方法有输出所有成员变量的方法。
+定义一个测试类，创建一个汽车，输出该汽车的所有信息。
+---------------------------------------------*/
+class Vehicle {
+    int passengers;
+    double weight;
+/**********FOUND**********/
+    public outputInfo() {
+        System.out.println("passengers=" + passengers);
+        System.out.println("weight=" + weight);
+        System.out.println("color=" + color);
+    }
+    public static void main(String[] args) {
+        Vehicle v1 = new Vehicle();
+/**********FOUND**********/
+    outputInfo()
+    }
+}
+
+答案：
+=======(答案1)=======
+public void outputInfo() {
+=======(答案2)=======
+v1.outputInfo();
+
+━━━━━━━━━━━━━━━━
+四、程序设计 共4题（共40.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：使用for循环语句实现计算并输出1-100的奇数和，循环变量名为i，存放和的变量名为sum。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    public static void main(String[] args) {
+        int i, sum = 0;
+        for(i=1;i<=100;i++){
+            if(i % 2 != 0){
+                sum = sum + i;
+            }
+        }
+        System.out.println(sum);
+    }
+}
+
+---
+
+第2题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:使用for循环和if语句实现输出1到100中能被7整除或者个位数是7的数字，循环变量名为i
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    public static void main(String[] args) {
+        for(int i=1;i<=100;i++){
+            if(i % 7 == 0 || i % 10 == 7){
+                System.out.println(i);
+            }
+        }
+    }
+}
+
+---
+
+第3题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:设计一个描述二维平面上点的类Point，要求如下：
+(a)该类需要描述点的双精度浮点型的横坐标x和纵坐标y。
+(b)提供能够初始化横纵坐标的有参构造方法，要求参数名称与属性同名。
+(c)计算两点间距离的方法distance。
+提示:两点之间距离等于两点横纵坐标之差的平方和再开方
+Math类中求平方根的方法:static double sqrt(double a)
+---------------------------------------------*/
+/**********Program**********/
+
+/**********  End  **********/
+
+public class Progl{
+    public static void main(Stringll args) {
+        Point p1=new Point(2,3);
+        Point p2=new Point(4,5);
+        System.out.printIn("两个点的距离:"+p1.distance(p2));
+    }
+}
+
+答案：
+class Point{
+    double x;
+    double y;
+    public Point(double x,double y){
+        this.x = x;
+        this.y = y;
+    }
+    public double distance(Point p){
+        return Math.sqrt((x-p.x)*(x-p.x)+(y-p.y)*(y-p.y));
+    }
+}
+
+---
+
+第4题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:定义一个教师类Teacher，要求如下:
+(a)教师的姓名(name,String类型)，所授课程(course,String类型)，课时数量(courseNum,double类型)和课时系数(radio，double类型)，所有教师的课时系数相同。属性均是私有的。
+(b)提供一个有参的构造方法(要求包括姓名，所授课程，课时数量)。
+(c)为私有属性提供访问器方法。
+(d)定义一个计算课时当量的courseCompute方法(课时当量=课时量*系数)，返回值类型为double。
+(e)定义一个计算课时费的moneyCompute()方法(课时费=课时当量*钱数，如果当量超过100，每课时30元，当量不超过100每课时20元)
+(f)要求所有方法都是共有的
+---------------------------------------------*/
+/**********Program**********/
+
+/**********  End  **********/
+public class Progl{
+    public static void main(String[] args) {
+        Teacher.setRadio(1.2);
+        Teacher t1=new Teacher("张三","Java",64.0);
+        System.out.println(t1.getName()+" "+t1.getCourse()+" "+t1.getCourseNum());
+        double num=tl.courseCompute();
+        System.out.println("课时当量:"+num);
+        System.out.println("课时费:"+t1.moneyCompute());
+    }
+}
+
+答案：
+class Teacher {
+    private String name;
+    private String course;
+    private double courseNum;
+    private static double radio;
+    public Teacher(String name,String course,double courseNum){
+        this.name=name;
+        this.course=course;
+        this.courseNum=courseNum;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setCourse(String course) {
+        this.course = course;
+    }
+    public void setCourseNum(double courseNum) {
+        this.courseNum = courseNum;
+    }
+    public static void setRadio(double radio) {
+        Teacher.radio = radio;
+    }
+    public String getName(){
+        return name;
+    }
+    public String getCourse() {
+        return course;
+    }
+    public double getCourseNum() {
+        return courseNum;
+    }
+    public static double getRadio() {
+        return radio;
+    }
+    public double courseCompute() {
+        return courseNum*radio;
+    }
+    public double moneyCompute() {
+        if(this.courseCompute()>100){
+            return (courseCompute()-100)*30+100*20;
+        } else {
+            return this.courseCompute()*20;
+        }
+    }
+}

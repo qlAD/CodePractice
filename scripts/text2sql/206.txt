@@ -1,0 +1,558 @@
+试卷编号：206
+试卷总分：100.0分
+题型数：4个
+
+━━━━━━━━━━━━━━━━
+一、单选题 共20题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（1分）
+定义变量int x=3;那么表达式i/6*5的计算结果是()
+(A)0
+(B)1
+(C)2.5
+(D)2
+
+答案：A
+
+---
+
+第2题（1分）
+Java是从（）语言改进重新设计。
+(A)Ada
+(B)C++
+(C)Pascal
+(D)BASIC
+
+答案：B
+
+---
+
+第3题（1分）
+对于一个三位的正整数n，取出它的十位数字k(k为整型)的表达式是()
+(A)k = n / 10 % 10
+(B)k = n % 10 % 10
+(C)k = n % 10
+(D)k = n / 10
+
+答案：A
+
+---
+
+第4题（1分）
+Java application中的主类需包含main方法，main方法的返回类型是什么？()
+(A)int
+(B)float
+(C)void
+(D)double
+
+答案：C
+
+---
+
+第5题（1分）
+整型数据类型中，需要内存空间最少的是()
+(A)short
+(B)long
+(C)int
+(D)byte
+
+答案：D
+
+---
+
+第6题（1分）
+下列语句序列执行后,m的值是
+int i=10,j=9;
+while(i>j) i--;
+m=i;
+(A)15
+(B)120
+(C)60
+(D)0
+
+答案：B
+
+---
+
+第7题（1分）
+有以下代码,其中变量可能的类型是
+switch(i){ default:System.out.println("hello");}
+(A)byte
+(B)long
+(C)double
+(D)A and B
+
+答案：A
+
+---
+
+第8题（1分）
+以下for循环的执行次数是:
+for(int x=0;(x==4)&(x<4);x++);
+(A)无限次
+(B)一次也不执行
+(C)4次
+(D)3次
+
+答案：B
+
+---
+
+第9题（1分）
+Java支持的3种跳转语句不包括
+(A)break语句
+(B)continue语句
+(C)return语句
+(D)goto语句
+
+答案：D
+
+---
+
+第10题（1分）
+关于以下application的说明，正确的是()
+1. class StaticStuff
+2. {
+3.   static int x=10;
+4.   static { x+=5;}
+5.   public static void main (String args[ ])
+6.   {
+7.     System.out.println("x="+x);
+8.   }
+9.   static {x/=3;}
+10. }
+(A)4行与9行不能通过编译，因为缺少方法名和返回类型
+(B)9行不能通过编译，因为只能有一个静态初始化器
+(C)编译通过，执行结果为:x=5
+(D)编译通过，执行结果为:x=3
+
+答案：C
+
+---
+
+第11题（1分）
+若在某一个类定义中定义有如下的方法:static void testMethod() 该方法属于？
+(A)本地方法
+(B)最终方法
+(C)静态方法
+(D)抽象方法?
+
+答案：C
+
+---
+
+第12题（1分）
+下面方法定义中,不正确的是:
+(A)float x(int a,int b){return a-b;}
+(B)int x(int a,int b){return a-b;}
+(C)int x(int a,int b){return a*b;}
+(D)int x(int a,int b){return 1.2*(a-b);}
+
+答案：D
+
+---
+
+第13题（1分）
+下面正确的main方法是()
+(A)public static void main(String args)
+(B)public static int main(String[] args)
+(C)public static void main(String[] args)
+(D)public final void main(String args)
+
+答案：C
+
+---
+
+第14题（1分）
+以下关于构造函数的描述错误的是（）
+(A)构造函数的返回类型只能是void型。
+(B)构造函数是类的一种特殊函数，它的方法名必须与类名相同。
+(C)构造函数的主要作用是完成对类的对象的初始化工作。
+(D)一般在创建新对象时，系统会自动调用构造函数。
+
+答案：A
+
+---
+
+第15题（1分）
+this在程序中代表的是？
+(A)类的对象
+(B)属性
+(C)方法
+(D)父类
+
+答案：A
+
+---
+
+第16题（1分）
+有一个类A，以下为其构造方法的声明，其中正确的是？
+(A)void A(int x)
+(B)A(int x)
+(C)a(int x)
+(D)void a(int x)
+
+答案：B
+
+---
+
+第17题（1分）
+假设A类有如下定义,设a是A类的一个实例,下列语句调用哪个是错误的?
+class A{
+    int i;
+    static String s;
+    void method1(){}
+    static void method2(){}
+}
+(A)System.out.println(a.i);
+(B)a.method1();
+(C)A.method1();
+(D)A.method2();
+
+答案：C
+
+---
+
+第18题（1分）
+下列关于静态方法的描述中,错误的是
+(A)静态方法指的是被static关键字修饰的方法
+(B)静态方法不占用对象的内存空间,而非静态方法占用对象的内存空间
+(C)静态方法内可以使用this关键字
+(D)静态方法内部只能访问被static修饰的成员
+
+答案：C
+
+---
+
+第19题（1分）
+下列哪个关键字在定义类时用不到？
+(A)class
+(B)public
+(C)extends
+(D)int
+
+答案：D
+
+---
+
+第20题（1分）
+设X、Y均为已定义的类名，下列声明类X的对象x1的语句中正确的是？
+(A)X x1 = new X();
+(B)X x1 = X();
+(C)X x1 = new Y();
+(D)int X x1;
+
+答案：AA
+
+━━━━━━━━━━━━━━━━
+二、程序填空 共4题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Dog类，此类中包括1个大小属性size。在main方法中创建Dog类的对象d，并设置其大小为8。
+---------------------------------------------*/
+class Dog {
+    int size;
+    public static void main(String[] args){
+/**********SPACE**********/
+    【?】;
+/**********SPACE**********/
+    【?】 = 8;
+}
+}
+
+答案：
+=======(答案1)=======
+Dog d = new Dog()
+=======(答案2)=======
+d.size
+
+---
+
+第2题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：定义一个接口
+---------------------------------------------*/
+public interface MyInterface { //定义一个接口
+/**********SPACE**********/
+    void【?】;
+    void showMessage();
+}
+/**********SPACE**********/
+public class MyClass 【?】 MyInterface { //MyClass类实现MyInterface接口
+    @Override
+    public void myMethod() {
+        System.out.println(""This is a method from the interface");
+    }
+    @Override
+    public void show showMessage() {
+        System.out.println("Hello from MyClass!");
+    }
+}
+
+答案：
+=======(答案1)=======
+myMethod()
+=======(答案2)=======
+implements
+
+---
+
+第3题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Employee类，属性有员工姓名name，还有2个构造方法，其中一个没有参数，一个带参数
+---------------------------------------------*/
+public class Employee {
+    String name;
+/**********SPACE**********/
+    【?】 {
+        name="LiYang";
+    }
+    Employee(String name){
+/**********SPACE**********/
+        【?】 = name;
+    }
+}
+
+答案：
+=======(答案1)=======
+Employee()
+=======(答案2)=======
+this.name
+
+---
+
+第4题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Telephone类，属性有电话品牌brand，还有2个构造方法，其中一个没有参数，一个带参数
+---------------------------------------------*/
+public class Telephone {
+    String brand;
+/**********SPACE**********/
+    【?】 {
+        brand="Iphone6";
+    }
+    Telephone(String brand){
+/**********SPACE**********/
+        【?】 = brand;
+    }
+}
+
+答案：
+=======(答案1)=======
+Telephone()
+=======(答案2)=======
+this.brand
+
+━━━━━━━━━━━━━━━━
+三、程序改错 共2题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（10分）
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目:蒙特卡罗模拟使用随机数和概率来解决问题。这个方法在数学、物理、化学和财经方面有很广的应用。
+使用蒙特卡罗模拟来估算pai值.为了使用蒙特卡罗方法来估算pai值，画出一个圆的外接正方形，假设这个圆的半径为1。
+那么圆面积就是pai而外接正方形的面积是4。随机产生正方形中的一个点。
+该点落在这个园内的概率为circleArea/squareArea(圆面积/正方形面积)=pai/4.
+编写程序，在正方形内随机产生1000000个点，用numberOfHits表示落在园内的点。由此求出pai的近似值。
+---------------------------------------------*/
+public class MonteCarloSimulation {
+    public static void main(String[] args) {
+        final int NUMBER_OF_TRIALS = 1000000;
+        int numberOfHits = 0;
+        /**********FOUND**********/
+        for(int i=0;i<numberOfHits;i++){
+            double x = Math.random() * 2.0 - 1;
+            double y = Math.random() * 2.0 - 1;
+            if(x*x + y*y <= 1) {
+                numberOfHits++;
+            } 
+        }
+/**********FOUND**********/
+        double pi = 4.0 * NUMBER_OF_TRIALS / numberOfHits;
+        System.out.println("π = " + pi);
+    }
+}
+
+答案：
+=======(答案1)=======
+for(int i=0;i<NUMBER_OF_TRIALS;i++){
+=======(答案2)=======
+double pi = 4.0 * numberOfHits / NUMBER_OF_TRIALS;
+
+---
+
+第2题（10分）
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：下面是一个类的定义，请修改程序中的错误。
+---------------------------------------------*/
+class Car {
+    private String brand;
+    private double color;
+    private double speed;
+/**********FOUND**********/
+    public Car(String brand,double color){
+        this.brand = brand;
+        this.color = color;
+    }
+}
+public class Test {
+    public static void main(String[] args){
+/**********FOUND**********/
+        Car obj = new Car("Nissan");
+    }
+}
+
+答案：
+=======(答案1)=======
+public Car(String brand,String color){
+=======(答案2)=======
+Car obj = new Car("Nissan","黑色");
+
+━━━━━━━━━━━━━━━━
+四、程序设计 共4题（共40.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:编写一个应用程序，应用for循环计算整数n的阶乘，n的初始值为8，并将结果输出，循环变量名为i存放阶乘的变量名为p
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    public static void main(String[] args) {
+        int p = 1;
+        int n = 8;
+        for (int i = 1; i <= n; i++) {
+            p = p * i;
+        }
+        System.out.println("n的阶乘是" + p);
+    }
+}
+
+---
+
+第2题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：使用for循环语句实现计算并输出1-100的奇数和，循环变量名为i，存放和的变量名为sum。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    public static void main(String[] args) {
+        int i, sum = 0;
+        for(i=1;i<=100;i++){
+            if(i % 2 != 0){
+                sum = sum + i;
+            }
+        }
+        System.out.println(sum);
+    }
+}
+
+---
+
+第3题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:定义一个名为Prog1的类，包含一个名为radius属性，类型为int，不带参数的构造方法和计算并输出面积方法findArea (面积=3.14*radius*radius )，在main方法中,创建Prog1类的一个对象c，调用findArea方法。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+int radius;
+Prog1(){
+    radius=10;
+}
+void findArea() {
+    double area=3.14*radius*radius;
+    System.out.println("面积是"+area);
+}
+public static void main(String[] args) {
+    Progl c = new Prog1();
+    c.findArea();
+}
+
+---
+
+第4题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:定义一个MP3类，要求如下:
+(a)属性包括:MP3品牌brand (String类型)、颜色color (String类型)和存储容量capacity(double类型)，并且所有属性为私有。
+(b)至少提供一个有参的构造方法(要求品牌和颜色可以初始化为任意值，但存储容量的初始值必须为0)。
+(c)为私有属性提供访问器方法。
+---------------------------------------------*/
+/**********Program**********/
+
+/**********  End  **********/
+public class Prog1{
+    public static void main(String[] args){
+        MP3 m1 = new MP3("ipod","white");
+        m1.setCapacity(16.0);
+    }
+}
+
+答案：
+class MP3{
+    private String brand;
+    private String color;
+    private double capacity;
+    public MP3(String brand,String color){
+        this.brand = brand;
+        this.color = color;
+        capacity = 0;
+    }
+    public double getCapacity(){
+        return capacity;
+    }
+    public void setCapacity(double capacity){
+        this.capacity = capacity;
+    }
+    public String getColor(){
+        return color;
+    }
+    public void setColor(String color){
+        this.color = color;
+    }
+    public String getBrand(){
+        return brand;
+    }
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+}

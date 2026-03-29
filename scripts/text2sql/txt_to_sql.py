@@ -32,8 +32,10 @@ def parse_file(filepath):
     language = 'java'
     default_paper_id = paper_id_from_filename(filepath)
 
-    # 新格式：第1题 （1.0分）；旧格式：含 题号: 难度: 第N章
-    question_start_new = re.compile(r'^第\d+题\s*[（(](\d+\.?\d*)分[）)]')
+    # 新格式：第1题（10分）/第1题 - 5.0分；旧格式：含 题号: 难度: 第N章
+    question_start_new = re.compile(
+        r'^第\d+题\s*(?:[（(](\d+\.?\d*)分[）)]|-\s*(\d+\.?\d*)分)'
+    )
     question_start_old = re.compile(
         r'^第\d+题.*[（(](\d+\.?\d*)分[）)].*题号:\d+.*难度:.+.*第(\d+)章'
     )
@@ -66,23 +68,25 @@ def parse_file(filepath):
     while i < len(lines):
         line = lines[i].strip()
         
-        # Check for section headers
-        if '一、单选' in line:
-            current_section_type = 'single_choice'
-            i += 1
-            continue
-        elif '二、程序填空' in line:
-            current_section_type = 'fill_blank'
-            i += 1
-            continue
-        elif '三、程序改错' in line:
-            current_section_type = 'error_fix'
-            i += 1
-            continue
-        elif '四、程序设计' in line:
-            current_section_type = 'programming'
-            i += 1
-            continue
+        m_sec = re.match(r'^([一二三四]、)(.+)', line)
+        if m_sec:
+            rest = m_sec.group(2)
+            if '单选' in rest:
+                current_section_type = 'single_choice'
+                i += 1
+                continue
+            if '程序填空' in rest:
+                current_section_type = 'fill_blank'
+                i += 1
+                continue
+            if '程序改错' in rest:
+                current_section_type = 'error_fix'
+                i += 1
+                continue
+            if '程序设计' in rest:
+                current_section_type = 'programming'
+                i += 1
+                continue
             
         if '━━━━━━━━━━━━━━━━' in line:
             i += 1
@@ -93,7 +97,8 @@ def parse_file(filepath):
         paper_id = default_paper_id
         score = None
         if match:
-            score = float(match.group(1))
+            s1, s2 = match.group(1), match.group(2)
+            score = float(s1 if s1 is not None else s2)
         else:
             match = question_start_old.match(line)
             if match:

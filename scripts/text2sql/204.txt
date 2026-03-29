@@ -1,0 +1,588 @@
+试卷编号：204
+试卷总分：100.0分
+题型数：4个
+
+━━━━━━━━━━━━━━━━
+一、单选题 共20题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（1分）
+关于数据类型转换的说法哪个是不正确的()
+(A)Java共有两种数据类型的转换方式:自动转换和强制转换
+(B)Java中当两个类型不同的运算对象进行二元运算时,Java自动把精度较低的类型转换成另一个精度较高的类型
+(C)boolean型数据能和其他数据类型进行转换
+(D)char型和int型数据可以互相转换
+
+答案：C
+
+---
+
+第2题（1分）
+以下的选项中能正确表示Java语言中的一个整型常量的是()
+(A)12.
+(B)-20
+(C)1,000
+(D)4 5 6
+
+答案：B
+
+---
+
+第3题（1分）
+现有一个变量声明为boolean aa,下面赋值语句中正确的是()
+(A)aa=false;
+(B)aa=False;
+(C)aa="true";
+(D)aa=0;
+
+答案：A
+
+---
+
+第4题（1分）
+下列运算符合法的是()
+(A)&&
+(B)<>
+(C)if
+(D):=
+
+答案：A
+
+---
+
+第5题（1分）
+设int x = 2，则表达式(x++) * 3的值是()
+(A)6
+(B)9
+(C)6.0
+(D)9.0
+
+答案：A
+
+---
+
+第6题（1分）
+Java支持的跳转语句不包括()
+(A)break语句
+(B)continue语句
+(C)return语句
+(D)goto语句
+
+答案：D
+
+---
+
+第7题（1分）
+下列语句序列执行后,i的值是
+int i=10;
+do{ i/=2; }while(i>1);
+(A)1
+(B)5
+(C)2
+(D)0
+
+答案：A
+
+---
+
+第8题（1分）
+有以下代码,运行完后的最终值是
+int i=1;
+int j=i++;
+if((i>++j)&&(i++==j)) i+=j;
+(A)1
+(B)2
+(C)3
+(D)4
+
+答案：B
+
+---
+
+第9题（1分）
+有以下代码,其中变量可能的类型是
+switch(i){ default:System.out.println("hello");}
+(A)byte
+(B)long
+(C)double
+(D)A and B
+
+答案：A
+
+---
+
+第10题（1分）
+定义类头时,不可能用到的关键字是?
+(A)class
+(B)public
+(C)extends
+(D)static
+
+答案：D
+
+---
+
+第11题（1分）
+下列不属于面向对象的三大特征的是?
+(A)继承
+(B)方法
+(C)封装
+(D)多态
+
+答案：B
+
+---
+
+第12题（1分）
+在创建对象时必须()
+(A)先声明对象,然后才能使用对象
+(B)先声明对象,为对象分配内存空间,然后才能使用对象
+(C)先声明对象,为对象分配内存空间,对对象初始化,然后才能使用对象
+(D)上述说法都对
+
+答案：C
+
+---
+
+第13题（1分）
+在创建对象时必须()
+(A)先声明对象,然后才能使用对象
+(B)先声明对象,为对象分配内存空间,然后才能使用对象
+(C)先声明对象,为对象分配内存空间,对对象初始化,然后才能使用对象
+(D)上述说法都对
+
+答案：C
+
+---
+
+第14题（1分）
+下列对构造方法的调用方式的描述中正确的是?
+(A)使用new调用
+(B)使用类名调用
+(C)使用对象名调用
+(D)调用方法为对象名.方法名()
+
+答案：A
+
+---
+
+第15题（1分）
+this在程序中代表的是()
+(A)类的对象
+(B)属性
+(C)方法
+(D)父类
+
+答案：A
+
+---
+
+第16题（1分）
+下列说法正确的有()
+(A)class中的构造方法不可省略
+(B)构造方法必须与class同名，但方法不能与class同名
+(C)构造方法在一个对象被new时执行
+(D)一个class只能定义一个构造方法
+
+答案：C
+
+---
+
+第17题（1分）
+下列关于静态方法的描述中,错误的是()
+(A)静态方法属于类的共享成员
+(B)静态方法是通过"类名.方法名"的方式来调用
+(C)静态方法只能被类调用,不能被对象调用
+(D)静态方法中可以访问静态变量
+
+答案：C
+
+---
+
+第18题（1分）
+下面哪个关键字用来修饰静态()
+(A)static
+(B)protected
+(C)public
+(D)private
+
+答案：A
+
+---
+
+第19题（1分）
+关于Java源文件下列说法正确的是?
+(A)一个java源文件中只能有一个public修饰的类
+(B)一个java源文件中只能有一个缺省的类。
+(C)一个java源文件中可以有多个protected修饰的类
+(D)一个java源文件中可以有多个private修饰的类
+
+答案：A
+
+---
+
+第20题（1分）
+设X是已定义的类名,下列声明X类的对象x1的语句中正确的是()
+(A)static X x1;
+(B)public X x1=new X(123);
+(C)X x1;
+(D)X x1=X();
+
+答案：B
+
+━━━━━━━━━━━━━━━━
+二、程序填空 共4题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Dog类，此类中包括1个大小属性size。在main方法中创建Dog类的对象d，并设置其大小为8。
+---------------------------------------------*/
+class Dog {
+    int size;
+    public static void main(String[] args){
+/**********SPACE**********/
+    【?】;
+/**********SPACE**********/
+    【?】 = 8;
+}
+}
+
+答案：
+=======(答案1)=======
+Dog d = new Dog()
+=======(答案2)=======
+d.size
+
+---
+
+第2题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Circle类，此类中包括一个半径属性radius和一个计算周长的方法findLong。
+---------------------------------------------*/
+public class Circle {
+    double radius;
+    double findLong(){
+        return 2*Math.PI*radius;
+    }
+public static void main(String[] args){
+/**********SPACE**********/
+    【?】;
+    c.radius=10.0;
+/**********SPACE**********/
+    System.out.println(【?】);
+}
+}
+
+答案：
+=======(答案1)=======
+Circle c = new Circle()
+=======(答案2)=======
+c.findLong()
+
+---
+
+第3题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Telephone类，属性有电话费charge，还有2个构造方法，其中一个没有参数，一个带参数。
+---------------------------------------------*/
+public class Telephone {
+    double charge;
+/**********SPACE**********/
+    【?】 {
+        charge=50.5;
+    }
+    Telephone(double charge){
+/**********SPACE**********/
+        【?】 = charge;
+    }
+}
+
+答案：
+=======(答案1)=======
+Telephone()
+=======(答案2)=======
+this.charge
+
+---
+
+第4题（5分）
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Telephone类，属性有电话品牌brand，还有2个构造方法，其中一个没有参数，一个带参数。
+---------------------------------------------*/
+public class Telephone {
+    String brand;
+/**********SPACE**********/
+    【?】 {
+        brand="Iphone6";
+    }
+    Telephone(String brand){
+/**********SPACE**********/
+        【?】 = brand;
+    }
+}
+
+答案：
+=======(答案1)=======
+Telephone()
+=======(答案2)=======
+this.brand
+
+━━━━━━━━━━━━━━━━
+三、程序改错 共2题（共20.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（10分）
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目:蒙特卡罗模拟使用随机数和概率来解决问题。这个方法在数学、物理、化学和财经方面有很广的应用。
+使用蒙特卡罗模拟来估算pai值.为了使用蒙特卡罗方法来估算pai值，画出一个圆的外接正方形，假设这个圆的半径为1。
+那么圆面积就是pai而外接正方形的面积是4。随机产生正方形中的一个点。
+该点落在这个园内的概率为circleArea/squareArea(圆面积/正方形面积)=pai/4.
+编写程序，在正方形内随机产生1000000个点，用numberOfHits表示落在园内的点。由此求出pai的近似值。
+---------------------------------------------*/
+public class MonteCarloSimulation {
+    public static void main(String[] args) {
+        final int NUMBER_OF_TRIALS = 1000000;
+        int numberOfHits = 0;
+        /**********FOUND**********/
+        for(int i=0;i<numberOfHits;i++){
+            double x = Math.random() * 2.0 - 1;
+            double y = Math.random() * 2.0 - 1;
+            if(x*x + y*y <= 1) {
+                numberOfHits++;
+            } 
+        }
+/**********FOUND**********/
+        double pi = 4.0 * NUMBER_OF_TRIALS / numberOfHits;
+        System.out.println("π = " + pi);
+    }
+}
+
+答案：
+=======(答案1)=======
+for(int i=0;i<NUMBER_OF_TRIALS;i++){
+=======(答案2)=======
+double pi = 4.0 * numberOfHits / NUMBER_OF_TRIALS;
+
+---
+
+第2题（10分）
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：下面是一个类的定义，请修改程序中的错误。
+---------------------------------------------*/
+class Car {
+    private String brand;
+    private double color;
+    private double speed;
+/**********FOUND**********/
+    public Car(String brand,double color){
+        this.brand = brand;
+        this.color = color;
+    }
+}
+public class Test {
+    public static void main(String[] args){
+/**********FOUND**********/
+        Car obj = new Car("Nissan");
+    }
+}
+
+答案：
+=======(答案1)=======
+public Car(String brand,String color){
+=======(答案2)=======
+Car obj = new Car("Nissan","黑色");
+
+━━━━━━━━━━━━━━━━
+四、程序设计 共4题（共40.0分）
+━━━━━━━━━━━━━━━━
+
+第1题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：使用while循环语句实现计算并输出1-100的能被3整除的数的和，循环变量名为i，存放和的变量名为sum。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    public static void main(String[] args) {
+        int i = 1, sum = 0;
+        while(i <= 100){
+            if(i % 3 == 0){
+                sum = sum + i;
+            }
+            i++;
+        }
+        System.out.println("结果为" + sum);
+    }
+}
+
+---
+
+第2题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：使用for循环和if语句实现计算并输出1-100的奇数和，循环变量名为i，存放和的变量名为sum。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    public static void main(String[] args) {
+        int i, sum = 0;
+        for (i = 1l i <= 100; i++) {
+            if (i % 2 != 0) {
+                sum = sum + i;
+            }
+        }
+        System.out.println( sum);
+    }
+}
+
+---
+
+第3题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:定义一个电风扇类Fan，要求如下:
+(a)属性包括:电风扇型号model(String类型)、价格price(double类型)
+    和开关状态running(boolean类型)，并且所有属性为私有。
+(b)至少提供一个有参的构造方法(要求型号可以初始化为任意值，价格不能小于0，
+    开关状态必须为false)。
+(c)为私有属性提供访问器方法。
+---------------------------------------------*/
+/**********Program**********/
+
+/**********  End  **********/
+public class Prog1{
+    public static void main(String[] args) {
+        Fan m1 = new Fan("吊扇", 300);
+    }
+}
+
+答案：
+class Fan {
+    private String model;
+    private double price;
+    private boolean running;
+    public Fan(String model,double price) {
+        this.model=model;
+        if(price >=0) {
+            this.price=price;
+        }
+        this.running=false;
+    }
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    public boolean isRunning() {
+        return running;
+    }
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+    public String getModel(){
+        return model;
+    }
+}
+---
+
+第4题（10分）
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:定义一个教师类Teacher，要求如下:
+(a)教师的姓名(name,String类型)，所授课程(course,String类型)，课时数量(courseNum,double类型)和课时系数(radio，double类型)，所有教师的课时系数相同。属性均是私有的。
+(b)提供一个有参的构造方法(要求包括姓名，所授课程，课时数量)。
+(c)为私有属性提供访问器方法。
+(d)定义一个计算课时当量的courseCompute方法(课时当量=课时量*系数)，返回值类型为double。
+(e)定义一个计算课时费的moneyCompute()方法(课时费=课时当量*钱数，如果当量超过100，每课时30元，当量不超过100每课时20元)
+(f)要求所有方法都是共有的
+---------------------------------------------*/
+/**********Program**********/
+
+/**********  End  **********/
+public class Progl{
+    public static void main(String[] args) {
+        Teacher.setRadio(1.2);
+        Teacher t1=new Teacher("张三","Java",64.0);
+        System.out.println(t1.getName()+" "+t1.getCourse()+" "+t1.getCourseNum());
+        double num=tl.courseCompute();
+        System.out.println("课时当量:"+num);
+        System.out.println("课时费:"+t1.moneyCompute());
+    }
+}
+
+答案：
+class Teacher {
+    private String name;
+    private String course;
+    private double courseNum;
+    private static double radio;
+    public Teacher(String name,String course,double courseNum){
+        this.name=name;
+        this.course=course;
+        this.courseNum=courseNum;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setCourse(String course) {
+        this.course = course;
+    }
+    public void setCourseNum(double courseNum) {
+        this.courseNum = courseNum;
+    }
+    public static void setRadio(double radio) {
+        Teacher.radio = radio;
+    }
+    public String getName(){
+        return name;
+    }
+    public String getCourse() {
+        return course;
+    }
+    public double getCourseNum() {
+        return courseNum;
+    }
+    public static double getRadio() {
+        return radio;
+    }
+    public double courseCompute() {
+        return courseNum*radio;
+    }
+    public double moneyCompute() {
+        if(this.courseCompute()>100){
+            return (courseCompute()-100)*30+100*20;
+        } else {
+            return this.courseCompute()*20;
+        }
+    }
+}

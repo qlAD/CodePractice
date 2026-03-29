@@ -9,6 +9,7 @@ export async function GET(request: Request) {
     const language = searchParams.get('language')
     const type = searchParams.get('type')
     const paper_id = searchParams.get('paper_id')
+    const search = searchParams.get('search')?.trim()
     const limitParam = searchParams.get('limit')
     const limit = limitParam !== null ? Number(limitParam) : 100
     const offset = Number(searchParams.get('offset')) || 0
@@ -28,6 +29,11 @@ export async function GET(request: Request) {
     if (paper_id && paper_id !== 'all') {
       sql += ' AND q.paper_id = ?'
       params.push(paper_id)
+    }
+    if (search) {
+      sql += ' AND (CAST(q.id AS CHAR) LIKE ? OR q.content LIKE ?)'
+      const like = `%${search}%`
+      params.push(like, like)
     }
 
     const countSql = sql.replace(

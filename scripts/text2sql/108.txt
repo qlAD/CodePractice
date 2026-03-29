@@ -1,0 +1,501 @@
+一、程序填空 - 共6题（共30.0分）
+
+第1题 - 5.0分
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Dog类，此类中包括1个大小属性size。在main方法中创建Dog类的对象d，并设置其大小为8。
+---------------------------------------------*/
+class Dog {
+    int size;
+    public static void main(String[] args){
+    /**********SPACE**********/
+        【?】;
+    /**********SPACE**********/
+        【?】 = 8;
+    }
+}
+
+答案：
+=======(答案1)=======
+Dog d = new Dog()
+=======(答案2)=======
+d.size
+
+---
+
+第2题 - 5.0分
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Dog类，此类中包括1个姓名属性name。在main方法中创建Dog类的对象d，并设置其姓名为"XiaoBai"。
+---------------------------------------------*/
+public class Dog {
+    String name;
+    public static void main(String[] args){
+    /**********SPACE**********/
+        【?】;
+    /**********SPACE**********/
+        【?】 = "XiaoBai";
+    }
+}
+
+答案：
+=======(答案1)=======
+Dog d = new Dog()
+=======(答案2)=======
+d.name
+
+---
+
+第3题 - 5.0分
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：创建一个Telephone类，属性有电话号码number，还有2个构造方法，其中一个没有参数，一个带参数。
+---------------------------------------------*/
+class Telephone {
+    String number;
+/**********SPACE**********/
+    【?】 {
+        number="041184835202";
+    }
+    Telephone(String number){
+/**********SPACE**********/
+        【?】 = number;
+    }
+}
+
+答案：
+=======(答案1)=======
+Telephone()
+=======(答案2)=======
+this.number
+
+---
+
+第4题 - 5.0分
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：利用方法重载定义平均值的方法average(),既能求三个整数的平均值，又能求两个整数的平均值
+---------------------------------------------*/
+public class Test2 {
+/**********SPACE**********/
+    public static 【?】 average(int a,int b,int c){
+        return (a+b+c)/3.0;
+    }
+    public static double average(int a,int b){
+/**********SPACE**********/
+        return 【?】 ;
+    }
+}
+
+答案：
+=======(答案1)=======
+double
+=======(答案2)=======
+(a + b) / 2.0
+
+---
+
+第5题 - 5.0分
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：定义求绝对值的方法abs(),利用方法的重载实现既能求整数的绝对值，又能求浮点数的绝对值。
+---------------------------------------------*/
+public class Test1 {
+    public static int abs(int n){
+/**********SPACE**********/
+        if(【?】)
+            return -n;
+        else return n;
+    }
+/**********SPACE**********/
+    public static DOUBLE 【?】 (double n){
+        if(n<=0)
+            return -n;
+        else return n;
+    }
+}
+
+答案：
+=======(答案1)=======
+n < 0
+=======(答案2)=======
+abs
+
+---
+
+第6题 - 5.0分
+/*-------------------------------------------
+【程序填空】
+---------------------------------------------
+功能：编写一个方法isSubStr(String originalStr,String str){,判断一个字符串是否为另一个字符串的子串。
+---------------------------------------------*/
+public static boolean isSubStr(String originalStr,String str){
+/**********SPACE**********/
+    if(originalStr.【?】 !=-1){
+        return true;
+    }
+/**********SPACE**********/
+    else 【?】 ;
+}
+
+答案：
+=======(答案1)=======
+indexOf(str)
+=======(答案2)=======
+return false
+
+---
+
+二、程序改错 - 共6题（共30.0分）
+
+第1题 - 5.0分
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：输出1到100之间的所有完全数。(完全数是其所有因子（包括1但不包括该数本身）的和值等于该数自身的数)
+---------------------------------------------*/
+public class Prog1
+{
+    public static void main(String args[])
+    {
+/**********FOUND**********/
+        int n,sum=0;
+        for(n=1;n<=100;n++)
+        {
+/**********FOUND**********/
+            sum=sum;
+            for(int k=1;k<n;k++)
+/**********FOUND**********/
+                if(n/k==0)
+                    sum+=k;
+/**********FOUND**********/
+            if(sum=n)
+                System.out.print(n+" ");
+        }
+    }
+}
+
+答案：
+=======(答案1)=======
+int n, sum;
+=======(答案2)=======
+sum = 0;
+=======(答案3)=======
+if(n%k==0)
+=======(答案4)=======
+if(sum==n)
+
+---
+
+第2题 - 5.0分
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：从键盘上输入一个整数n，求此n的最小约数
+---------------------------------------------*/
+import java.io.*;
+public class Prog1
+{
+    public static void main(String args[]) throws IOException
+    {
+        int n;
+/**********FOUND**********/
+        char b;
+        BufferedReader buf;
+        buf=new BufferedReader(new InputStreamReader(System.in));
+        n=Integer.parseInt(buf.readLine());
+        do {
+            n=n+1;
+            b=true;
+            for(t=1;t<n;t++)
+            {
+                for(i=2;i<n;i++)
+/**********FOUND**********/
+                    if(n/i==0) {
+                        b=false;
+/**********FOUND**********/
+                        continue;
+                    } 
+/**********FOUND**********/
+            } while(b==true);
+            System.out.println("所求的约数是"+n);
+        }
+    }
+}
+
+答案：
+=======(答案1)=======
+boolean b;
+=======(答案2)=======
+if(n%i==0)
+=======(答案3)=======
+break;
+=======(答案4)=======
+}while(!b);
+
+---
+
+第3题 - 5.0分
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：写一个方法，顺序输出任意一个整数
+---------------------------------------------*/
+public void printReverse(int a)
+{
+    int b;
+/**********FOUND**********/
+    while(a == 0)
+    {
+        b=a%10;
+/**********FOUND**********/
+        a=a%10;
+        System.out.print(b);
+    }
+}
+
+答案：
+=======(答案1)=======
+while(a != 0)
+=======(答案2)=======
+a = a / 10;
+
+---
+
+第4题 - 5.0分
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：假设某个大学今年的学费是10000美金，而且以每年7%的速度增加，多少年之后学费会翻倍？
+---------------------------------------------*/
+class Tuition {
+    public static void main(String[] args) {
+        double tuition = 10000;
+        int year = 1;
+/**********FOUND**********/
+        while(tuition<=20000)
+        {
+            tuition = tuition * 1.07;
+/**********FOUND**********/
+            year--;
+        }
+        System.out.println("Tuition will be doubled in "
+                + year + " years");
+    }
+}
+
+答案：
+=======(答案1)=======
+while(tuition < 20000)
+=======(答案2)=======
+year++;
+
+---
+
+第5题 - 5.0分
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：改写下面类的错误
+---------------------------------------------*/
+class Test{
+    public static void main(String args[]){
+/**********FOUND**********/
+        MyClass a = new Class();
+    }
+}
+
+class MyClass{
+/**********FOUND**********/
+    private MyClass(){
+        System.out.println("constructor");
+    }
+}
+
+答案：
+=======(答案1)=======
+MyClass a = new MyClass();
+=======(答案2)=======
+public MyClass()
+
+---
+
+第6题 - 5.0分
+/*-------------------------------------------
+【程序改错】
+---------------------------------------------
+题目：定义一个电话类，属性有字符串类型的电话型号，方法有对属性进行访问的访问器方法，请改正程序的错误。
+---------------------------------------------*/
+class Telephone{
+    private String type;
+/**********FOUND**********/
+    public void setType(char type){
+        this.type=type;
+    }
+/**********FOUND**********/
+    public void getType(){
+        return this.type;
+    }
+}
+
+答案：
+=======(答案1)=======
+public void setType(String type)
+=======(答案2)=======
+public String getType()
+
+---
+
+三、程序设计 - 共4题（共40.0分）
+
+第1题 - 10分
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：定义类，属性包括商品名称name（String）、商品编号id（String）和价格price（double）三个属性，
+有无参的构造方法，和计算折扣价格并输出的方法，方法头为public void computeDiscout(double percent)，其中形参代表打折的百分比。
+创建商品类的对象，对象名为g，调用计算折扣价格的方法，打印9折的折扣价。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    String name;
+    String id;
+    double price;
+    Prog1(){
+        name = "虾条";
+        id = "g009";
+        price = 3.5;
+    }
+    public void computeDiscout(double percent){
+        System.out.println(name + "原价为" + price + "元");
+        price = price * percent;
+        System.out.println(name + "折扣后的价格是" + price + "元");
+    }
+    public static void main(String[] args){
+        Prog1 g = new Prog1();
+        g.computeDiscout(0.9);
+    }
+}
+
+---
+
+第2题 - 10分
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目:定义一个MP3类，要求如下:
+(a)属性包括:MP3品牌brand (String类型)、颜色color (String类型)和存储容量capacity(double类型)，并且所有属性为私有。
+(b)至少提供一个有参的构造方法(要求品牌和颜色可以初始化为任意值，但存储容量的初始值必须为0)。
+(c)为私有属性提供访问器方法。
+---------------------------------------------*/
+/**********Program**********/
+
+/**********  End  **********/
+public class Prog1{
+    public static void main(String[] args){
+        MP3 m1 = new MP3("ipod","white");
+        m1.setCapacity(16.0);
+    }
+}
+
+答案：
+class MP3{
+    private String brand;
+    private String color;
+    private double capacity;
+    public MP3(String brand,String color){
+        this.brand = brand;
+        this.color = color;
+        capacity = 0;
+    }
+    public double getCapacity(){
+        return capacity;
+    }
+    public void setCapacity(double capacity){
+        this.capacity = capacity;
+    }
+    public String getColor(){
+        return color;
+    }
+    public void setColor(String color){
+        this.color = color;
+    }
+    public String getBrand(){
+        return brand;
+    }
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+}
+
+
+---
+
+第3题 - 10分
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：从键盘输入10个整题目:从键盘上输入十个成绩(0-100之间的整数)存放在数组score中，找出数组中的最高成绩及其下标(index)并输出。
+注:最高成绩的下标(index)用变量m保存
+---------------------------------------------*/
+import java.util.Scanner;
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+import java.util.Scanner;
+public class Prog1{
+    public static void main(String[] args){
+        int[] score = new int[10];
+        Scanner sc = new Scanner(System.in);
+        int i;
+        int m;
+        m = 0;
+        for(i=0;i<score.length;i++){
+            score[i] = sc.nextInt();
+            if(score[i] > score[m]){
+                m = i;
+            }
+        }
+        System.out.println("最高成绩是" + score[m] + "，下标是" + m);
+    }
+}
+
+---
+
+第4题 - 10分
+/*-------------------------------------------
+【程序设计】
+---------------------------------------------
+题目：编写一个方法计算长方形的面积，方法名为area，参数为length、width，在main方法中调用该方法计算长为5.5、宽为3.5的长方形面积，并输出该面积。
+---------------------------------------------*/
+public class Prog1{
+/**********Program**********/
+
+/**********  End  **********/
+}
+
+答案：
+public class Prog1{
+    public static double area(double length,double width){
+        return length * width;
+    }
+    public static void main(String[] args){
+        System.out.println(area(5.5,3.5));
+    }
+}
+```
